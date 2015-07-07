@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".devices.phone.PhoneMainActivity"
+            android:label="@string/title_activity_phone_main" >
+        </activity>
+        <activity
+            android:name=".devices.tablet.TabletMainActivity"
+            android:label="@string/title_activity_tablet_main" >
+        </activity>
     </application>
 
 </manifest>

@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_phone_main">PhoneMainActivity</string>
+    <string name="title_activity_tablet_main">TabletMainActivity</string>
 </resources>
