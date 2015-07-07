@@ -5,13 +5,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.todo.behtarinhotel.searching.GlobalSearch;
+import com.todo.behtarinhotel.simpleobjects.SearchParams;
 
-public class MainActivity extends ActionBarActivity {
+import java.util.ArrayList;
+
+
+public class MainActivity extends ActionBarActivity implements GlobalSearch.GlobalSearchCallBackListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GlobalSearch globalSearch = new GlobalSearch();
+
+        globalSearch.setGlobalSearchCallBackListener(this);
+
+        globalSearch.searchingHotelsByParams(new SearchParams());
     }
 
     @Override
@@ -34,5 +45,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResult(ArrayList<Object> result) {
+
     }
 }
