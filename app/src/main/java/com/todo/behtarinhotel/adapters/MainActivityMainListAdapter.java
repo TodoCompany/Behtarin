@@ -1,6 +1,5 @@
 package com.todo.behtarinhotel.adapters;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -10,18 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
-
 import java.util.ArrayList;
 
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
-
 
 /**
  * Created by dmytro on 7/8/15.
