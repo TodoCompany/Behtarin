@@ -9,4 +9,12 @@
     <string name="text_read_more">Read more</string>
     <string name="text_check_availability">Check avail.</string>
     <string name="text_price_from">Price from</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="text_where_search_activity">Where</string>
+    <string name="text_check_in">Check in</string>
+    <string name="text_check_out">Check out</string>
+    <string name="text_room">Room(s)</string>
+    <string name="text_adult">Adult</string>
+    <string name="text_children">Children</string>
+    <string name="text_search_for_hotels">Search for Hotels</string>
 </resources>
