@@ -2,6 +2,7 @@ package com.todo.behtarinhotel;
 
 import android.graphics.Color;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -25,13 +26,15 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 public abstract class BaseMainActivity extends BaseActivity {
 
     MaterialMenu materialMenu;
+    Drawer drawer;
 
     protected void initDrawer(){
 
         materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
         materialMenu.setState(MaterialMenuDrawable.IconState.BURGER);
+        materialMenu.setTransformationDuration(400);
 
-// Create the AccountHeader
+        // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.mipmap.todo_delete)
@@ -46,8 +49,8 @@ public abstract class BaseMainActivity extends BaseActivity {
                 })
                 .build();
 
-//Now create your drawer and pass the AccountHeader.Result
-        Drawer result = new DrawerBuilder()
+        //Now create your drawer and pass the AccountHeader.Result
+        drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
@@ -58,13 +61,12 @@ public abstract class BaseMainActivity extends BaseActivity {
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
                     public void onDrawerOpened(View view) {
-                        materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
-
+                        materialMenu.setState(MaterialMenuDrawable.IconState.ARROW);
                     }
 
                     @Override
                     public void onDrawerClosed(View view) {
-                        materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+                        materialMenu.setState(MaterialMenuDrawable.IconState.BURGER);
                     }
 
                     @Override
@@ -86,6 +88,20 @@ public abstract class BaseMainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (materialMenu.getState() == MaterialMenuDrawable.IconState.BURGER){
+                drawer.openDrawer();
+                materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
+
+            }else{
+                drawer.closeDrawer();
+                materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
+            }
+        }
         return true;
     }
 
