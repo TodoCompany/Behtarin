@@ -1,9 +1,7 @@
 package com.todo.behtarinhotel;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,12 +10,9 @@ import android.widget.ListView;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
+import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
-import com.todo.behtarinhotel.simpleobjects.PayPallParams;
-import com.todo.behtarinhotel.simpleobjects.Product;
-import com.todo.behtarinhotel.simpleobjects.SearchParams;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 
 import org.json.JSONException;
@@ -63,6 +58,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
         listView.setAdapter(new MainActivityMainListAdapter(this, searchResultSOArrayList));
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
