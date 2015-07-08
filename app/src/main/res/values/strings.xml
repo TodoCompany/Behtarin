@@ -5,4 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_phone_main">PhoneMainActivity</string>
     <string name="title_activity_tablet_main">TabletMainActivity</string>
+    <string name="text_location_property">Location Property</string>
+    <string name="text_read_more">Read more</string>
+    <string name="text_check_availability">Check avail.</string>
+    <string name="text_price_from">Price from</string>
 </resources>
