@@ -1,5 +1,6 @@
 package com.todo.behtarinhotel;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -30,9 +31,8 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initDrawer();
-
-
 
         // PayPall call payment
 //        PayPallParams payPallParams = new PayPallParams(new Product("Sample product", "45.54", Product.USD));

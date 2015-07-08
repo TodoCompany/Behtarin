@@ -27,77 +27,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
  */
 public abstract class BaseActivity extends FragmentActivity {
 
-    MaterialMenu materialMenu;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }
-
-
-
-    protected void initDrawer(){
-
-
-        materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
-        materialMenu.setState(MaterialMenuDrawable.IconState.BURGER);
-
-// Create the AccountHeader
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.mipmap.todo_delete)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com").withIcon(getResources().getDrawable(R.mipmap.icon_profile))
-                )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
-                .build();
-
-//Now create your drawer and pass the AccountHeader.Result
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withAccountHeader(headerResult)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Home"),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("Settings")
-                )
-                .withOnDrawerListener(new Drawer.OnDrawerListener() {
-                    @Override
-                    public void onDrawerOpened(View view) {
-                        materialMenu.animateState(MaterialMenuDrawable.IconState.ARROW);
-
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View view) {
-                        materialMenu.animateState(MaterialMenuDrawable.IconState.BURGER);
-                    }
-
-                    @Override
-                    public void onDrawerSlide(View view, float v) {
-
-                    }
-                })
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
-                        // do something with the clicked item :D
-                        return false;
-                    }
-                })
-                .build();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 }
