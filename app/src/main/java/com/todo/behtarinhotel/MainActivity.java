@@ -1,31 +1,51 @@
 package com.todo.behtarinhotel;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.searching.GlobalSearch;
+import com.todo.behtarinhotel.simpleobjects.PayPallParams;
+import com.todo.behtarinhotel.simpleobjects.Product;
 import com.todo.behtarinhotel.simpleobjects.SearchParams;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements GlobalSearch.GlobalSearchCallBackListener {
+public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
+
+    MyPayPall myPayPall;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        GlobalSearch globalSearch = new GlobalSearch();
-//
-//        globalSearch.setGlobalSearchCallBackListener(this);
-//
-//        globalSearch.searchingHotelsByParams(new SearchParams());
+        initDrawer();
+
+        // PayPall call payment
+//        PayPallParams payPallParams = new PayPallParams(new Product("Sample product", "45.54", Product.USD));
+//        myPayPall = new MyPayPall();
+//        myPayPall.makeAPayment(this, payPallParams);
+
+
+
+
+        GlobalSearch globalSearch = new GlobalSearch();
 
         ListView listView = (ListView) findViewById(R.id.lv_main_list_main_activity);
         SearchResultSO searchResultSO = new SearchResultSO("Hostel 639",
@@ -69,5 +89,31 @@ public class MainActivity extends ActionBarActivity implements GlobalSearch.Glob
     @Override
     public void onResult(ArrayList<Object> result) {
 
+    }
+
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) {
+                try {
+                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
+
+                    // TODO: send 'confirm' to your server for verification.
+                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                    // for more details.
+
+                } catch (JSONException e) {
+                    Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                }
+            }
+        }
+        else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.i("paymentExample", "The user canceled.");
+        }
+        else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+        }
     }
 }
