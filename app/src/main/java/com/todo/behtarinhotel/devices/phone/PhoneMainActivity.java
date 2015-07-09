@@ -1,9 +1,6 @@
 package com.todo.behtarinhotel.devices.phone;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.todo.behtarinhotel.BaseMainActivity;
 import com.todo.behtarinhotel.R;
@@ -14,6 +11,11 @@ public class PhoneMainActivity extends BaseMainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_main);
+    }
+
+    @Override
+    public void init(Bundle bundle) {
+
     }
 
 
