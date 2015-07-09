@@ -14,31 +14,34 @@ public class SearchResultSO {
     float minPrice;
     String tripAdvisorRatingURL;
     String locationDescription;
-
+    float latitude;
+    float longitude;
 
     public SearchResultSO() {
     }
 
-    public SearchResultSO(String hotelName,
+    public SearchResultSO(String photoURL,
+                          String hotelName,
                           String city,
                           String address,
                           int likeCounter,
                           float stars,
                           float minPrice,
-                          String tripAdvisorRate,
+                          String tripAdvisorRatingURL,
                           String locationDescription,
-                          String photoURL) {
-
+                          float latitude,
+                          float longitude) {
+        this.photoURL = photoURL;
         this.hotelName = hotelName;
         this.city = city;
         this.address = address;
         this.likeCounter = likeCounter;
         this.stars = stars;
         this.minPrice = minPrice;
-        this.tripAdvisorRatingURL = tripAdvisorRate;
+        this.tripAdvisorRatingURL = tripAdvisorRatingURL;
         this.locationDescription = locationDescription;
-        this.photoURL = photoURL;
-
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getHotelName() {
@@ -111,5 +114,21 @@ public class SearchResultSO {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 }

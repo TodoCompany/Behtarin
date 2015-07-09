@@ -11,7 +11,6 @@ import android.widget.ListView;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
-import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
@@ -67,15 +66,18 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 //        GlobalSearch globalSearch = new GlobalSearch();
 //
 //        ListView listView = (ListView) findViewById(R.id.lv_main_list_main_activity);
-//        SearchResultSO searchResultSO = new SearchResultSO("Hostel 639",
-//                                                            "London",
-//                                                            "639 Harrow Road",
-//                                                            100,
-//                                                            3.5f,
-//                                                            10,
-//                "http://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/2.0-12345-4.gif",
-//                                                            "Bla Bla Bla",
-//                "http://images.travelnow.com//hotels/3000000/2840000/2831600/2831521/2831521_59_b.jpg");
+//SearchResultSO searchResultSO = new SearchResultSO("http://images.travelnow.com//hotels/3000000/2840000/2831600/2831521/2831521_59_b.jpg",
+//        "Hostel 639",
+//        "London",
+//        "639 Harrow Road",
+//        100,
+//        3.5f,
+//        10,
+//        "http://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/2.0-12345-4.gif",
+//        "Bla Bla Bla",
+//        42.33f,
+//        -71.111336f);
+
 //
 //        ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
 //        searchResultSOArrayList.add(searchResultSO);

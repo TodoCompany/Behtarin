@@ -1,7 +1,10 @@
 package com.todo.behtarinhotel.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +12,22 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import roboguice.inject.ContentView;
@@ -50,6 +64,9 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<SearchResultSO> searchResultSOArrayList;
+
+    String tripAdvisorWebURL;
+    String tripAdvisorApiURL;
 
 
     public MainActivityMainListAdapter(Context ctx, ArrayList<SearchResultSO> searchResultSOArrayList) {
@@ -152,6 +169,44 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 //todo onclicklistener
             }
         });
+
+        ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(tripAdvisorWebURL != null){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(tripAdvisorWebURL));
+                    ctx.startActivity(browserIntent);
+                    Log.d("MainListAdapter","Open URL");
+                }
+            }
+        });
+
+        tripAdvisorApiURL = "http://api.tripadvisor.com/api/partner/2.0/map/" + searchResultSOArrayList.get(position).getLatitude() +
+                "," + searchResultSOArrayList.get(position).getLongitude() + "/hotels?key=cc1fb67fbf9c4c4592a1b7071a926087";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                tripAdvisorApiURL,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray data = response.getJSONArray("data");
+                            JSONObject obj = data.getJSONObject(0);
+                            tripAdvisorWebURL = obj.getString("web_url");
+                            Log.d("MainListAdapter", tripAdvisorWebURL);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+
+                }
+            }
+        );
+        VolleySingleton.getInstance(ctx).addToRequestQueue(jsonObjectRequest);
 
 
         return view;
