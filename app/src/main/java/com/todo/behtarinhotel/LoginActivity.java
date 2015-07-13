@@ -1,35 +1,21 @@
 package com.todo.behtarinhotel;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.todo.behtarinhotel.simpleobjects.UserSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 
 
 /**
@@ -37,15 +23,13 @@ import java.util.List;
  */
 public class LoginActivity extends Activity {
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-
     //reg info
     EditText etRegName, etRegEmail, etRegPassword;
     Button btnSignUp;
-
     ProgressDialog pd;
+    // UI references.
+    private AutoCompleteTextView mEmailView;
+    private EditText mPasswordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,12 +179,21 @@ public class LoginActivity extends Activity {
      */
 
     private void userLoginTask(String email, String password) {
-        startActivity(new Intent(this, MainActivity.class));
+        AppState.userLoggedIn(new UserSO("empty_name", email, password));
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void userRegisterTask(String name, String email, String password) {
-        startActivity(new Intent(this, MainActivity.class));
+        AppState.userLoggedIn(new UserSO(name, email, password));
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
+
 
 }
 

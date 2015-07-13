@@ -4,21 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+
+import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 
 public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
@@ -31,6 +30,16 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
         this.addSection(newSection("Section 1", new TestFragment()));
         this.addSection(newSection("Section 2", new TestFragment()));
+        this.addSection(newSection("Log out", new MaterialSectionListener() {
+            @Override
+            public void onClick(MaterialSection materialSection) {
+                Intent in = new Intent(MainActivity.this, LauncherActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+                finish();
+                AppState.userLoggedOut();
+            }
+        }));
         this.addSubheader("Subheader title");
         closeDrawer();
     }
