@@ -48,24 +48,27 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/reg_edittext_back"
+                    android:hint="email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="@color/registration_text"
-                    android:hint="email" />
+                    android:textColor="@color/registration_text" />
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/reg_edittext_back"
+                    android:hint="password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="Sign"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="@color/registration_text"
-                    android:hint="password" />
+                    android:textColor="@color/registration_text" />
 
                 <Button
                     android:id="@+id/email_sign_in_button"
@@ -97,96 +100,99 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <Button
-            style="?android:textAppearanceSmall"
             android:id="@+id/btn_register"
+            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_gravity="top|center"
             android:layout_marginTop="16dp"
             android:background="@drawable/btn_registration"
+            android:clickable="false"
             android:text="Register"
             android:textColor="@color/registration_text"
-            android:textStyle="bold"
-            android:layout_gravity="top|center"
-            android:clickable="false"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Full Name"
             android:id="@+id/textView2"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/registration_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/et_reg_name"
-            android:hint="e.g. John Doe"
-            android:textColor="@color/registration_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Email"
-            android:id="@+id/textView3"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/registration_text"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/et_reg_email"
-            android:hint="e.g. johndoe@gmail.com"
-            android:textColor="@color/registration_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Password"
-            android:id="@+id/textView4"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/registration_text"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/et_reg_password"
-            android:hint="my secret password"
-            android:textColor="@color/registration_text"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginTop="16dp"
+            android:text="Full Name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/registration_text" />
+
+        <EditText
+            android:id="@+id/et_reg_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/reg_edittext_back"
+            android:ems="10"
+            android:hint="e.g. John Doe"
+            android:inputType="textPersonName"
+            android:textColor="@color/registration_text" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Email"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/registration_text" />
+
+        <EditText
+            android:id="@+id/et_reg_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/reg_edittext_back"
+            android:ems="10"
+            android:hint="e.g. johndoe@gmail.com"
+            android:inputType="textPersonName"
+            android:textColor="@color/registration_text" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Password"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/registration_text" />
+
+        <EditText
+            android:id="@+id/et_reg_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/reg_edittext_back"
+            android:ems="10"
+            android:hint="my secret password"
+            android:inputType="textPersonName"
+            android:textColor="@color/registration_text" />
 
         <Button
-            style="?android:textAppearanceSmall"
             android:id="@+id/btn_sign_up"
+            style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:background="@drawable/btn_registration"
+            android:clickable="false"
             android:text="Sign Up"
             android:textColor="@color/registration_text"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:clickable="false" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
@@ -16,6 +17,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
@@ -28,6 +30,12 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     public void init(Bundle savedInstanceState) {
 
 
+        this.addAccount(new MaterialAccount(
+                getResources(),
+                AppState.getLoggedUser().getFullName(), "",
+                R.mipmap.icon_profile,
+                R.drawable.back_drawer));
+        addAccountSection(newSection("Profile", new MyAccountFragment()));
         this.addSection(newSection("Section 1", new TestFragment()));
         this.addSection(newSection("Section 2", new TestFragment()));
         this.addSection(newSection("Log out", new MaterialSectionListener() {
