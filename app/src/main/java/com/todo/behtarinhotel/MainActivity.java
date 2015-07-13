@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
@@ -37,7 +38,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                 R.drawable.back_drawer));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         this.addSection(newSection("Section 1", new TestFragment()));
-        this.addSection(newSection("Section 2", new TestFragment()));
+        this.addSection(newSection("Section 2", new CheckAvailabilityFragment()));
         this.addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
             public void onClick(MaterialSection materialSection) {

@@ -6,12 +6,19 @@ import android.telephony.TelephonyManager;
 
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by maxvitruk on 07.07.15.
  */
 public class AppState {
 
     private static final String LOG_STATUS = "LogStatus";
+    //API data
+    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
+    private static final String CID = "55505";
     public static int screenWidth;
     public static int screenHeight;
     private static UserSO loggedUser;
@@ -68,6 +75,41 @@ public class AppState {
 
     public static boolean isUserLoggedIn() {
         return sPrefLog.getBoolean(LOG_STATUS, false);
+    }
+
+    public static String generateUrlForHotelAvailability(int hotelIdNumber, String arrDate, String depDate) {
+        String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/avail?";
+        String apiKey = "&apiKey=";
+        String cid = "&cid=";
+        String arrivalDate = "&arrivalDate=";
+        String departureDate = "&departureDate=";
+        String sig = "&sig=" + getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
+        String hotelId = "&hotelId=" + hotelIdNumber;
+
+        return endpoint
+                + cid + CID
+                + sig
+                + apiKey + API_KEY
+                + hotelId
+                + arrivalDate + arrDate
+                + departureDate + depDate
+                + "&includeRoomImages=true";
+    }
+
+    private static String getMD5EncryptedString(String encTarget) {
+        MessageDigest mdEnc = null;
+        try {
+            mdEnc = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Exception while encrypting to md5");
+            e.printStackTrace();
+        } // Encryption algorithm
+        mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
+        String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
+        while (md5.length() < 32) {
+            md5 = "0" + md5;
+        }
+        return md5;
     }
 
 }
