@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +33,7 @@ public class CheckAvailabilityFragment extends Fragment {
     Gson gson;
     AvailableRoomsSO availableRoomsSO;
     ListView roomsListView;
+    ViewGroup rootView;
 
 
     public CheckAvailabilityFragment() {
@@ -41,18 +43,17 @@ public class CheckAvailabilityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_check_availability, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_check_availability, container, false);
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
-        getData();
-
+        getData(324424, "09/03/2015", "09/04/2015");
 
         return rootView;
     }
 
-    private void getData() {
-        final String url = AppState.generateUrlForHotelAvailability(324424, "09/03/2015", "09/04/2015");
+    public void getData(int hotelId, String dateArrival, String dateDeparture) {
+        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -60,10 +61,15 @@ public class CheckAvailabilityFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 Log.d("API", "Request was: " + url + "; Response: " + response.toString());
                 try {
-                    response = response.getJSONObject("HotelRoomAvailabilityResponse");
-                    availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
-                    AvailableRoomsAdapter adapter = new AvailableRoomsAdapter(getActivity(), availableRoomsSO);
-                    roomsListView.setAdapter(adapter);
+                    if (getActivity() != null) {
+                        response = response.getJSONObject("HotelRoomAvailabilityResponse");
+                        availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter(getActivity(), availableRoomsSO);
+                        roomsListView.setAdapter(adapter);
+                        if (availableRoomsSO.getRoomSO().size() == 0){
+                            setError("There are no free rooms in this hotel for that days");
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -73,10 +79,19 @@ public class CheckAvailabilityFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("API", "Request was: " + url + "; Error response: " + error.toString());
+                setError("Something went wrong =( cant get hotel rooms. Check your internet connection");
             }
         });
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
     }
 
+    private void setError(String errorText){
+        if (getActivity() != null) {
+            rootView.removeAllViews();
+            TextView tvError = new TextView(getActivity());
+            tvError.setText(errorText);
+            rootView.addView(tvError);
+        }
+    }
 
 }

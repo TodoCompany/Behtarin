@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
@@ -18,8 +19,10 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
+import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 
@@ -31,6 +34,20 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     public void init(Bundle savedInstanceState) {
 
 
+        this.setAccountListener(new MaterialAccountListener() {
+            @Override
+            public void onAccountOpening(MaterialAccount materialAccount) {
+                setFragment(new MyAccountFragment(), "Profile");
+            }
+
+            @Override
+            public void onChangeAccount(MaterialAccount materialAccount) {
+
+            }
+        });
+        this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+        this.allowArrowAnimation();
+        this.disableLearningPattern();
         this.addAccount(new MaterialAccount(
                 getResources(),
                 AppState.getLoggedUser().getFullName(), "",
@@ -50,7 +67,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
             }
         }));
         this.addSubheader("Subheader title");
-        closeDrawer();
     }
 
     @Override

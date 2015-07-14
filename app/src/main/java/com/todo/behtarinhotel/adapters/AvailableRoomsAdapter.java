@@ -21,7 +21,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
     NetworkImageView roomImageView;
     ImageLoader imageLoader;
-    TextView tvCurrentPrice, tvOldPrice, tvRoomDescription;
+    TextView tvCurrentPrice, tvOldPrice, tvRoomDescription, tvRoomBeds;
 
     Context ctx;
     LayoutInflater lInflater;
@@ -65,14 +65,22 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         tvCurrentPrice = (TextView) view.findViewById(R.id.tv_room_current_price);
         tvOldPrice = (TextView) view.findViewById(R.id.tv_room_old_price);
         tvRoomDescription = (TextView) view.findViewById(R.id.tv_room_description);
+        tvRoomBeds = (TextView) view.findViewById(R.id.tv_room_beds);
 
         tvRoomDescription.setText(availableRooms.getRoomSO().get(position).getDescription());
+        tvCurrentPrice.setText("Price: " + availableRooms.getRoomSO().get(position).getAverageRate());
         tvOldPrice.setText("" + availableRooms.getRoomSO().get(position).getOldPrice());
         tvOldPrice.setPaintFlags(tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        tvCurrentPrice.setText("Price: " + availableRooms.getRoomSO().get(position).getAverageRate() + "/ 1 night");
+        tvRoomBeds.setText(availableRooms.getRoomSO().get(position).getBedDescription());
         roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImage(), imageLoader);
         roomImageView.setDefaultImageResId(R.color.background_material_light);
         roomImageView.setErrorImageResId(R.mipmap.ic_launcher);
+
+        if(availableRooms.getRoomSO().get(position).getAverageRate() == availableRooms.getRoomSO().get(position).getOldPrice()){
+            tvOldPrice.setVisibility(View.INVISIBLE);
+        }else{
+            tvOldPrice.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
