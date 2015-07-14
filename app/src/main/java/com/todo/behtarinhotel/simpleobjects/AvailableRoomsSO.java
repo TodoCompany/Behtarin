@@ -70,19 +70,27 @@ public class AvailableRoomsSO {
             return description;
         }
 
-        public RoomImages getRoomImages() {
-            return roomImages;
+        public String getRoomImage() {
+            return roomImages.getRoomImage().getUrl();
         }
 
-        public class RoomImages {
+        public float getAverageRate() {
+            return rateInfo.getChargeableRateInfo().getAverageRate();
+        }
+
+        public float getOldPrice() {
+            return rateInfo.getChargeableRateInfo().getOldPrice();
+        }
+
+        private class RoomImages {
             @SerializedName("RoomImage")
             private RoomImage roomImage;
 
-            public RoomImage getRoomImage() {
+            private RoomImage getRoomImage() {
                 return roomImage;
             }
 
-            public class RoomImage {
+            private class RoomImage {
                 @SerializedName("url")
                 private String url;
 
@@ -92,20 +100,26 @@ public class AvailableRoomsSO {
             }
         }
 
-        public class RateInfo {
+        private class RateInfo {
             @SerializedName("ChargeableRateInfo")
             private ChargeableRateInfo chargeableRateInfo;
 
-            public ChargeableRateInfo getChargeableRateInfo() {
+            private ChargeableRateInfo getChargeableRateInfo() {
                 return chargeableRateInfo;
             }
 
-            public class ChargeableRateInfo {
+            private class ChargeableRateInfo {
                 @SerializedName("@averageRate")
                 private float averageRate;
+                @SerializedName("@averageBaseRate")
+                private float oldPrice;
 
-                public float getAverageRate() {
+                private float getAverageRate() {
                     return averageRate;
+                }
+
+                private float getOldPrice() {
+                    return oldPrice;
                 }
 
             }

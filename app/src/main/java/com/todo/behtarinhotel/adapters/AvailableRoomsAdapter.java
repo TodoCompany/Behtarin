@@ -1,6 +1,7 @@
 package com.todo.behtarinhotel.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
     NetworkImageView roomImageView;
     ImageLoader imageLoader;
-    TextView tvName, tvRoomDescription;
+    TextView tvCurrentPrice, tvOldPrice, tvRoomDescription;
 
     Context ctx;
     LayoutInflater lInflater;
@@ -61,12 +62,15 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
         roomImageView = (NetworkImageView) view.findViewById(R.id.room_image_view);
 
-        tvName = (TextView) view.findViewById(R.id.tv_name);
+        tvCurrentPrice = (TextView) view.findViewById(R.id.tv_room_current_price);
+        tvOldPrice = (TextView) view.findViewById(R.id.tv_room_old_price);
         tvRoomDescription = (TextView) view.findViewById(R.id.tv_room_description);
 
-        tvName.setText(availableRooms.getRoomSO().get(position).getDescription());
-        tvRoomDescription.setText("Price: " + availableRooms.getRoomSO().get(position).getRateInfo().getChargeableRateInfo().getAverageRate());
-        roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImages().getRoomImage().getUrl(), imageLoader);
+        tvRoomDescription.setText(availableRooms.getRoomSO().get(position).getDescription());
+        tvOldPrice.setText("" + availableRooms.getRoomSO().get(position).getOldPrice());
+        tvOldPrice.setPaintFlags(tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        tvCurrentPrice.setText("Price: " + availableRooms.getRoomSO().get(position).getAverageRate() + "/ 1 night");
+        roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImage(), imageLoader);
         roomImageView.setDefaultImageResId(R.color.background_material_light);
         roomImageView.setErrorImageResId(R.mipmap.ic_launcher);
 
