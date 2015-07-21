@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -67,6 +70,8 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
     String tripAdvisorWebURL;
     String tripAdvisorApiURL;
+    public static final String PHOTO_URL_START = "http://images.travelnow.com";
+    public static final String PHOTO_URL_END = "b.jpg";
 
 
     public MainActivityMainListAdapter(Context ctx, ArrayList<SearchResultSO> searchResultSOArrayList) {
@@ -128,10 +133,13 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvHotelName.setText(searchResultSOArrayList.get(position).getHotelName());
         tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSOArrayList.get(position).getAddress());
-        tvLocationDescription.setText(searchResultSOArrayList.get(position).getLocationDescription());
+        //todo encode from html, works 50/50
+        tvLocationDescription.setText(Html.fromHtml(searchResultSOArrayList.get(position).getLocationDescription()));
         tvPrice.setText("" + searchResultSOArrayList.get(position).getMinPrice());
 
-        ivPhoto.setImageUrl(searchResultSOArrayList.get(position).getPhotoURL(), imageLoader);
+        String temp = searchResultSOArrayList.get(position).getPhotoURL()
+                .substring(0, searchResultSOArrayList.get(position).getPhotoURL().length() - 5);
+        ivPhoto.setImageUrl(PHOTO_URL_START + temp + PHOTO_URL_END , imageLoader);
         ivPhoto.setDefaultImageResId(R.color.background_material_light);
         ivPhoto.setErrorImageResId(R.mipmap.ic_launcher);
 
@@ -199,12 +207,12 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                         }
                     }
                 }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.e("Error: ", error.getMessage());
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
 
-                }
             }
+        }
         );
         VolleySingleton.getInstance(ctx).addToRequestQueue(jsonObjectRequest);
 

@@ -1,20 +1,34 @@
 package com.todo.behtarinhotel.simpleobjects;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by dmytro on 7/8/15.
  */
-public class SearchResultSO {
-
+public class SearchResultSO implements Serializable{
+    @SerializedName("thumbNailUrl")
     String photoURL;
+    @SerializedName("name")
     String hotelName;
+    @SerializedName("city")
     String city;
+    @SerializedName("address1")
     String address;
+    @SerializedName("tripAdvisorReviewCount")
     int likeCounter;
+    @SerializedName("hotelRating")
     float stars;
+    @SerializedName("lowRate")
     float minPrice;
+    @SerializedName("tripAdvisorRatingUrl")
     String tripAdvisorRatingURL;
+    @SerializedName("shortDescription")
     String locationDescription;
+    @SerializedName("latitude")
     float latitude;
+    @SerializedName("longitude")
     float longitude;
 
     public SearchResultSO() {
