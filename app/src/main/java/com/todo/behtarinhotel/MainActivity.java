@@ -10,6 +10,7 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
+import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
@@ -34,7 +35,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     public void init(Bundle savedInstanceState) {
 
 
-        this.setAccountListener(new MaterialAccountListener() {
+        setAccountListener(new MaterialAccountListener() {
             @Override
             public void onAccountOpening(MaterialAccount materialAccount) {
                 setFragment(new MyAccountFragment(), "Profile");
@@ -45,18 +46,19 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
             }
         });
-        this.setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
-        this.allowArrowAnimation();
-        this.disableLearningPattern();
-        this.addAccount(new MaterialAccount(
+        setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+        allowArrowAnimation();
+        disableLearningPattern();
+        addAccount(new MaterialAccount(
                 getResources(),
                 AppState.getLoggedUser().getFullName(), "",
                 R.mipmap.icon_profile,
                 R.drawable.back_drawer));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
-        this.addSection(newSection("Section 1", new TestFragment()));
-        this.addSection(newSection("Section 2", new CheckAvailabilityFragment()));
-        this.addSection(newSection("Log out", new MaterialSectionListener() {
+        addSection(newSection("Section 1", new TestFragment()));
+        addSection(newSection("Section 2", new CheckAvailabilityFragment()));
+        addSection(newSection("SearchFragment", new SearchFragment()));
+        addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
             public void onClick(MaterialSection materialSection) {
                 Intent in = new Intent(MainActivity.this, LauncherActivity.class);
@@ -66,7 +68,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                 AppState.userLoggedOut();
             }
         }));
-        this.addSubheader("Subheader title");
+        addSubheader("Subheader title");
     }
 
     @Override
