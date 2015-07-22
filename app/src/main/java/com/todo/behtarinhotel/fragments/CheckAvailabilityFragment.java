@@ -47,7 +47,7 @@ public class CheckAvailabilityFragment extends Fragment {
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
-        getData(324424, "09/03/2015", "09/04/2015");
+
 
         return rootView;
     }

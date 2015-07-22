@@ -72,9 +72,12 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         tvOldPrice.setText("" + availableRooms.getRoomSO().get(position).getOldPrice());
         tvOldPrice.setPaintFlags(tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         tvRoomBeds.setText(availableRooms.getRoomSO().get(position).getBedDescription());
-        roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImage(), imageLoader);
-        roomImageView.setDefaultImageResId(R.color.background_material_light);
-        roomImageView.setErrorImageResId(R.mipmap.ic_launcher);
+        String url = availableRooms.getRoomSO().get(position).getRoomImage();
+        if (url != null && !url.equals("")) {
+            roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImage(), imageLoader);
+            roomImageView.setDefaultImageResId(R.color.background_material_light);
+            roomImageView.setErrorImageResId(R.mipmap.ic_launcher);
+        }
 
         if(availableRooms.getRoomSO().get(position).getAverageRate() == availableRooms.getRoomSO().get(position).getOldPrice()){
             tvOldPrice.setVisibility(View.INVISIBLE);

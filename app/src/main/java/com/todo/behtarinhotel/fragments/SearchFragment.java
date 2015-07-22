@@ -2,9 +2,8 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -34,36 +34,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SearchFragment extends Fragment {
 
+    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
+    private static final String CID = "55505";
     TextView tvCheckIn;
     TextView tvCheckOut;
     TextView tv;
-
     EditText etLocation;
     EditText etRoom;
     EditText etAdult;
     EditText etChildren;
-
     Button btnSearchForHotels;
-
     RangeBar rbStars;
-
-
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
-
     String url;
     String apiKey = "&apiKey=";
     String cid = "&cid=";
@@ -74,7 +63,7 @@ public class SearchFragment extends Fragment {
     String currencyCode = "&currencyCode=USD";
     String departureDate = "&departureDate=";
     String city = "&destinationString=";
-    String sig = "&sig=" + getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
+    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
     String customerUserAgent = "&customerUserAgent=TravelWizard/1.0(iOS 10_10_3)MOBILE_APP";
     String minorRev = "&minorRev=30";
     String room = "&room1=";
@@ -85,12 +74,31 @@ public class SearchFragment extends Fragment {
     boolean isCheckInSelected;
 
     ArrayList<SearchResultSO> searchResultSOArrayList;
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            int realMonth = monthOfYear + 1;
+            String month = "" + realMonth;
+            String day = "" + dayOfMonth;
+            if (realMonth < 10) {
+                month = "0" + realMonth;
+            }
+            if (dayOfMonth < 10) {
+                day = "0" + day;
+            }
+            if (isCheckInSelected) {
+                tvCheckIn.setText(month + "/" + day + "/" + year);
+            } else {
+                tvCheckOut.setText(month + "/" + day + "/" + year);
+            }
+        }
+    };
 
 
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -180,11 +188,11 @@ public class SearchFragment extends Fragment {
 
                                 //todo change fragment to mainfragment instead of activity
 
-                                MaterialNavigationDrawer parentActivity = (MaterialNavigationDrawer) getActivity();
+                                MainActivity parentActivity = (MainActivity) getActivity();
                                 MainFragment mainFragment = new MainFragment();
-                                parentActivity.setFragment(mainFragment, "Main Fragment");
-                                mainFragment.initMailList(searchResultSOArrayList);
-
+                                parentActivity.setFragment(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                                mainFragment.initMailList(searchResultSOArrayList, tvCheckIn.getText().toString(), tvCheckOut.getText().toString());
+                                parentActivity.setMainSearchFragment(mainFragment);
 
 
                             }
@@ -192,7 +200,6 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.e("Error: ", error.getMessage());
-
                     }
                 }
 
@@ -201,24 +208,6 @@ public class SearchFragment extends Fragment {
             }
 
         });
-    }
-
-    public  String getMD5EncryptedString(String encTarget){
-        MessageDigest mdEnc = null;
-        try {
-            mdEnc = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Exception while encrypting to md5");
-            e.printStackTrace();
-        } // Encryption algorithm
-        if (mdEnc != null) {
-            mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
-        }
-        String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
-        while ( md5.length() < 32 ) {
-            md5 = "0"+md5;
-        }
-        return md5;
     }
 
     private void showDatePicker() {
@@ -238,27 +227,6 @@ public class SearchFragment extends Fragment {
         date.setCallBack(ondate);
         date.show(getFragmentManager(), "Date Picker");
     }
-
-    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            int realMonth = monthOfYear +1;
-            String month = "" + realMonth;
-            String day = "" + dayOfMonth;
-            if(realMonth < 10){
-                month = "0" + realMonth;
-            }
-            if(dayOfMonth < 10){
-                day  = "0" + day ;
-            }
-            if(isCheckInSelected){
-                tvCheckIn.setText(month + "/" + day + "/" + year);
-            }else {
-                tvCheckOut.setText(month + "/" + day + "/" + year);
-            }
-        }
-    };
 
 
 }

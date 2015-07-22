@@ -1,84 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/text_where_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_where_search_activity"
-        android:id="@+id/text_where_search_activity"/>
+        android:text="@string/text_where_search_activity" />
 
     <EditText
+        android:id="@+id/et_location_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/et_location_search_activity"
         android:text="London" />
 
     <TextView
+        android:id="@+id/text_check_in_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_check_in"
-        android:id="@+id/text_check_in_search_activity"
-        android:clickable="true" />
+        android:clickable="true"
+        android:text="@string/text_check_in" />
 
     <TextView
+        android:id="@+id/tv_check_in_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_check_in_search_activity"
 
         android:text="09/10/2015" />
 
     <TextView
+        android:id="@+id/text_check_out_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_check_out"
-        android:id="@+id/text_check_out_search_activity" />
+        android:text="@string/text_check_out" />
 
     <TextView
+        android:id="@+id/tv_check_out_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_check_out_search_activity"
         android:text="09/11/2015" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_room"
-        android:id="@+id/text_room_search_activity" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_room_search_activity"
-        android:inputType="number"
-        android:text="1" />
+        <TextView
+            android:id="@+id/text_room_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_room" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_adult"
-        android:id="@+id/text_adult_search_activity" />
+        <EditText
+            android:id="@+id/et_room_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_adult_search_activity"
-        android:inputType="number"
-        android:text="1" />
+        <TextView
+            android:id="@+id/text_adult_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_adult" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_children"
-        android:id="@+id/text_children_search_activity" />
+        <EditText
+            android:id="@+id/et_adult_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_children_search_activity"
-        android:inputType="number"
-        android:text="1" />
+        <TextView
+            android:id="@+id/text_children_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_children" />
+
+        <EditText
+            android:id="@+id/et_children_search_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="1" />
+
+    </LinearLayout>
 
     <com.edmodo.rangebar.RangeBar
         android:id="@+id/rb_stars"
@@ -87,22 +95,22 @@
         android:indeterminate="false" />
 
     <Button
+        android:id="@+id/btn_search_for_hotels_search_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_search_for_hotels"
-        android:id="@+id/btn_search_for_hotels_search_activity" />
+        android:text="@string/text_search_for_hotels" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal" >
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
-            android:id="@+id/textView"
             android:textSize="8sp" />
     </ScrollView>
 </LinearLayout>

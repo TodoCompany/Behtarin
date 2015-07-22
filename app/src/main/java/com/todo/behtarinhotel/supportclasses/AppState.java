@@ -96,7 +96,7 @@ public class AppState {
                 + "&includeRoomImages=true";
     }
 
-    private static String getMD5EncryptedString(String encTarget) {
+    public static String getMD5EncryptedString(String encTarget) {
         MessageDigest mdEnc = null;
         try {
             mdEnc = MessageDigest.getInstance("MD5");

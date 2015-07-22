@@ -22,4 +22,7 @@
     <string name="text_children">Children</string>
     <string name="text_search_for_hotels">Search for Hotels</string>
     <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="fragment_searchhotels">Search Hotels</string>
+    <string name="fragment_availablehotels">Available hotels</string>
+    <string name="fragment_checkavailablerooms">Check availability</string>
 </resources>

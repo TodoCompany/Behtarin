@@ -75,7 +75,10 @@ public class AvailableRoomsSO {
         }
 
         public String getRoomImage() {
-            return roomImages.getRoomImage().getUrl();
+            if (roomImages != null && roomImages.getRoomImage() != null && roomImages.getRoomImage().getUrl() != null) {
+                return roomImages.getRoomImage().getUrl();
+            }
+            return null;
         }
 
         public float getAverageRate() {
@@ -132,6 +135,11 @@ public class AvailableRoomsSO {
         private class BedTypes{
             @SerializedName("BedType")
             private BedType bedType;
+
+            public BedType getBedType() {
+                return bedType;
+            }
+
             private class BedType{
                 @SerializedName("description")
                 private String description;
@@ -139,10 +147,6 @@ public class AvailableRoomsSO {
                 public String getDescription() {
                     return description;
                 }
-            }
-
-            public BedType getBedType() {
-                return bedType;
             }
         }
     }

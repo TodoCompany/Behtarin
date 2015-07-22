@@ -1,9 +1,8 @@
 package com.todo.behtarinhotel.fragments;
 
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,8 @@ public class MainFragment extends Fragment {
 
     ArrayList<SearchResultSO> searchResultSOArrayList;
     ListView listView;
+    String arrivalDate;
+    String departureDate;
 
 
 
@@ -38,19 +39,22 @@ public class MainFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.lv_main_list_main_activity);
 
         if (searchResultSOArrayList != null){
-            listView.setAdapter(new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList));
+            final MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrivalDate, departureDate);
+            listView.setAdapter(adapter);
+
         }
 
         // Inflate the layout for this fragment
         return rootView;
     }
 
-    public void initMailList(ArrayList<SearchResultSO> soArrayList){
+    public void initMailList(ArrayList<SearchResultSO> soArrayList, String arrivalDate, String departureDate) {
          searchResultSOArrayList = soArrayList;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
 
 
     }
-
 
 
 }

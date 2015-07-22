@@ -1,16 +1,15 @@
 package com.todo.behtarinhotel.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
@@ -42,45 +43,42 @@ import roboguice.inject.InjectView;
 @ContentView(R.layout.main_activity_main_list_item)
 public class MainActivityMainListAdapter extends BaseAdapter {
 
+    public static final String PHOTO_URL_START = "http://images.travelnow.com";
+    public static final String PHOTO_URL_END = "b.jpg";
     ImageLoader imageLoader;
-
     NetworkImageView ivPhoto;
     ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     NetworkImageView ivTripAdvisorRate;
-
     TextView tvHotelName;
     TextView tvCity;
     TextView tvAddress;
     TextView tvPrice;
     TextView tvLocationDescription;
-
     ArrayList<ImageView> imageViews;
     float rate;
     Resources res;
-
     Button btnLikeCounter;
     @InjectView(R.id.btn_read_more_main_activity_main_list)
     Button btnReadMore;
     @InjectView(R.id.btn_check_availability_main_activity_main_list)
     Button btnCheckAvailability;
-
-    Context ctx;
+    Activity activity;
     LayoutInflater lInflater;
     ArrayList<SearchResultSO> searchResultSOArrayList;
-
     String tripAdvisorWebURL;
     String tripAdvisorApiURL;
-    public static final String PHOTO_URL_START = "http://images.travelnow.com";
-    public static final String PHOTO_URL_END = "b.jpg";
+    String arrivalDate, departureDate;
 
 
-    public MainActivityMainListAdapter(Context ctx, ArrayList<SearchResultSO> searchResultSOArrayList) {
-        this.ctx = ctx;
+    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate) {
+        this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
-        lInflater = (LayoutInflater) ctx
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader = VolleySingleton.getInstance(ctx).getImageLoader();
-        res = ctx.getResources();
+        imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
+        res = activity.getResources();
     }
 
     @Override
@@ -174,7 +172,10 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo onclicklistener
+                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
+                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
+                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
+                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
             }
         });
 
@@ -183,7 +184,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if(tripAdvisorWebURL != null){
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(tripAdvisorWebURL));
-                    ctx.startActivity(browserIntent);
+                    activity.startActivity(browserIntent);
                     Log.d("MainListAdapter","Open URL");
                 }
             }
@@ -214,7 +215,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             }
         }
         );
-        VolleySingleton.getInstance(ctx).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getInstance(activity).addToRequestQueue(jsonObjectRequest);
 
 
         return view;

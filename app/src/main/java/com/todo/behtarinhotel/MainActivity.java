@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
+import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.TestFragment;
@@ -30,10 +29,18 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
 public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
 
     MyPayPall myPayPall;
+    SearchFragment searchFragment;
+    MainFragment mainFragment;
 
     @Override
     public void init(Bundle savedInstanceState) {
 
+        searchFragment = new SearchFragment();
+
+        initDrawer();
+    }
+
+    private void initDrawer() {
 
         setAccountListener(new MaterialAccountListener() {
             @Override
@@ -46,7 +53,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
             }
         });
-        setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_TO_FIRST);
+        setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
         addAccount(new MaterialAccount(
@@ -56,8 +63,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                 R.drawable.back_drawer));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection("Section 1", new TestFragment()));
-        addSection(newSection("Section 2", new CheckAvailabilityFragment()));
-        addSection(newSection("SearchFragment", new SearchFragment()));
+        addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
             public void onClick(MaterialSection materialSection) {
@@ -71,20 +77,11 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
         addSubheader("Subheader title");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        // set the indicator for child fragments
-        // N.B. call this method AFTER the init() to leave the time to instantiate the ActionBarDrawerToggle
-        this.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+    public void setMainSearchFragment(MainFragment mainFragment) {
+        this.mainFragment = mainFragment;
     }
 
-    @Override
-    public void onHomeAsUpSelected() {
-        // when the back arrow is selected this method is called
-
-    }
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);

@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class SearchResultSO implements Serializable{
     @SerializedName("thumbNailUrl")
     String photoURL;
+    @SerializedName("hotelId")
+    int hotelId;
     @SerializedName("name")
     String hotelName;
     @SerializedName("city")
@@ -34,29 +36,7 @@ public class SearchResultSO implements Serializable{
     public SearchResultSO() {
     }
 
-    public SearchResultSO(String photoURL,
-                          String hotelName,
-                          String city,
-                          String address,
-                          int likeCounter,
-                          float stars,
-                          float minPrice,
-                          String tripAdvisorRatingURL,
-                          String locationDescription,
-                          float latitude,
-                          float longitude) {
-        this.photoURL = photoURL;
-        this.hotelName = hotelName;
-        this.city = city;
-        this.address = address;
-        this.likeCounter = likeCounter;
-        this.stars = stars;
-        this.minPrice = minPrice;
-        this.tripAdvisorRatingURL = tripAdvisorRatingURL;
-        this.locationDescription = locationDescription;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
+
 
     public String getHotelName() {
         return hotelName;
@@ -144,5 +124,13 @@ public class SearchResultSO implements Serializable{
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }
