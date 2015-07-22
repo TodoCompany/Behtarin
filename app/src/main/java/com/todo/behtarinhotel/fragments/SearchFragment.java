@@ -190,7 +190,7 @@ public class SearchFragment extends Fragment {
 
                                 MainActivity parentActivity = (MainActivity) getActivity();
                                 MainFragment mainFragment = new MainFragment();
-                                parentActivity.setFragment(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                                parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
                                 mainFragment.initMailList(searchResultSOArrayList, tvCheckIn.getText().toString(), tvCheckOut.getText().toString());
                                 parentActivity.setMainSearchFragment(mainFragment);
 

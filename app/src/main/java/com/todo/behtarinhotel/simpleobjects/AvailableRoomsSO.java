@@ -53,8 +53,7 @@ public class AvailableRoomsSO {
         private String description;
         @SerializedName("RoomImages")
         private RoomImages roomImages;
-        @SerializedName("BedTypes")
-        private BedTypes bedTypes;
+        private String bedDescription;
 
         public int getRoomTypeCode() {
             return roomTypeCode;
@@ -68,7 +67,13 @@ public class AvailableRoomsSO {
             return rateInfo;
         }
 
-        public String getBedDescription() { return bedTypes.getBedType().getDescription(); }
+        public String getBedDescription() {
+            return bedDescription;
+        }
+
+        public void setBedDescription(String descr) {
+            bedDescription = descr;
+        }
 
         public String getDescription() {
             return description;
@@ -132,23 +137,23 @@ public class AvailableRoomsSO {
             }
         }
 
-        private class BedTypes{
-            @SerializedName("BedType")
-            private BedType bedType;
-
-            public BedType getBedType() {
-                return bedType;
-            }
-
-            private class BedType{
-                @SerializedName("description")
-                private String description;
-
-                public String getDescription() {
-                    return description;
-                }
-            }
-        }
+//        private class BedTypes{
+//            @SerializedName("BedType")
+//            private ArrayList<BedType> bedType;
+//
+//            public ArrayList<BedType> getBedType() {
+//                return bedType;
+//            }
+//
+//            private class BedType{
+//                @SerializedName("description")
+//                private String description;
+//
+//                public String getDescription() {
+//                    return description;
+//                }
+//            }
+//        }
     }
 
 

@@ -21,6 +21,7 @@ import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,8 +48,6 @@ public class CheckAvailabilityFragment extends Fragment {
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
-
-
         return rootView;
     }
 
@@ -64,6 +63,27 @@ public class CheckAvailabilityFragment extends Fragment {
                     if (getActivity() != null) {
                         response = response.getJSONObject("HotelRoomAvailabilityResponse");
                         availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
+                        JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
+                        for (int i = 0; i < hotelRoomsResponse.length(); i++) {
+                            JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
+                            String bedDescription = "";
+                            try {
+
+                                JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
+                                for (int n = 0; n < bedTypesArray.length(); n++) {
+                                    JSONObject object = bedTypesArray.getJSONObject(n);
+                                    bedDescription = bedDescription + object.getString("description") + "\n";
+                                }
+                            } catch (Exception itIsNotAnArray) {
+                                JSONObject bedType = bedTypesObject.getJSONObject("BedType");
+                                bedDescription = bedDescription + bedType.getString("description") + "\n";
+
+                            }
+                            availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
+
+                        }
+
+
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter(getActivity(), availableRoomsSO);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0){
