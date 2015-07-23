@@ -10,7 +10,6 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
-import com.todo.behtarinhotel.fragments.TestFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.supportclasses.AppState;
@@ -62,7 +61,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                 R.mipmap.icon_profile,
                 R.drawable.back_drawer));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
-        addSection(newSection("Section 1", new TestFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
