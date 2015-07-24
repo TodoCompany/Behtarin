@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
@@ -27,6 +28,7 @@ public class RoomQueryAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         roomGuests = new ArrayList<>();
+        addAdult();
     }
 
     public ArrayList<RoomQueryGuestSO> getRoomGuests() {
@@ -34,8 +36,18 @@ public class RoomQueryAdapter extends BaseAdapter {
     }
 
     public void addChild(int age) {
-        roomGuests.add(new RoomQueryGuestSO(age));
-        notifyDataSetChanged();
+        int childsInRoom = 0;
+        for (RoomQueryGuestSO guest : roomGuests) {
+            if (guest.isChild()) {
+                childsInRoom++;
+            }
+        }
+        if (childsInRoom < 5) {
+            roomGuests.add(new RoomQueryGuestSO(age));
+            notifyDataSetChanged();
+        } else {
+            Toast.makeText(context, "There can't be more than 6 childs in room", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean removeChild(int age) {
@@ -101,7 +113,6 @@ public class RoomQueryAdapter extends BaseAdapter {
             touristImageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.icon_profile));
             tvChildYears.setText("");
         }
-
 
         return item;
     }

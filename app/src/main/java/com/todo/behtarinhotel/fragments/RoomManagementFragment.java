@@ -131,7 +131,11 @@ public class RoomManagementFragment extends Fragment {
         roomGuestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                roomQueryAdapter.remove(position);
+                if (position != 0) {
+                    roomQueryAdapter.remove(position);
+                } else {
+                    Toast.makeText(getActivity(), "In each room must be at least 1 adult", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
