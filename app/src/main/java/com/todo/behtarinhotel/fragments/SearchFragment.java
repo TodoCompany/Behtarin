@@ -46,13 +46,17 @@ public class SearchFragment extends Fragment {
     private static final String CID = "55505";
     TextView tvCheckIn;
     TextView tvCheckOut;
-    TextView tv;
+
     EditText etLocation;
     EditText etRoom;
     EditText etAdult;
     EditText etChildren;
     Button btnSearchForHotels;
     RangeBar rbStars;
+
+
+    LayoutInflater inflater;
+
     String url;
     String apiKey = "&apiKey=";
     String cid = "&cid=";
@@ -103,7 +107,8 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         initViewsById(rootView);
@@ -140,14 +145,13 @@ public class SearchFragment extends Fragment {
         rbStars = (RangeBar) view.findViewById(R.id.rb_stars);
         rbStars.setTickCount(5);
 
-        tv = (TextView) view.findViewById(R.id.textView);
 
         btnSearchForHotels = (Button) view.findViewById(R.id.btn_search_for_hotels_search_activity);
         btnSearchForHotels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?"+
-                        apiKey+ API_KEY +
+                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
+                        apiKey + API_KEY +
                         cid + CID +
                         sig +
                         customerIpAddress +
@@ -175,13 +179,13 @@ public class SearchFragment extends Fragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>(){}.getType();
+                                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                                }.getType();
 
                                 if (arr != null) {
                                     searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
                                 }
 
-                                tv.setText(response.toString());
                                 Log.d("MainActivity", url);
                                 Log.d("MainActivity", searchResultSOArrayList.size() + "");
                                 Log.d("MainActivity", response.toString());
