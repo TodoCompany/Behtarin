@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/base_white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_photo_main_activity_main_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_hotel_name_main_activity_main_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Best hotel"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/base_text"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_address_main_activity_main_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adress"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/base_hint"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_price_main_activity_main_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:gravity="right"
+                    android:text="300.25 $"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/smiling_face" />
+
+                <TextView
+                    android:id="@+id/tv_like_counter_activity_main_main_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="3432"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/expandableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_tripadvisor_rate_main_activity_main_list"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:scaleType="fitEnd" />
+
+                <TextView
+                    android:id="@+id/tv_location_description_main_activity_main_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Best hotel"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/base_text"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:id="@+id/btn_read_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#1E88E5"
+                        android:gravity="left"
+                        android:text="READ MORE" />
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:id="@+id/btn_check_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#1E88E5"
+                        android:gravity="right"
+                        android:text="CHECK AVAILABILITY" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:background="#EBEBEB"></FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_star5_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star4_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star3_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star2_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star1_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitStart" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btnOpenExpandableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/seek_thumb_normal" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

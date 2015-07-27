@@ -190,7 +190,6 @@ public class SearchFragment extends Fragment {
                                 Log.d("MainActivity", searchResultSOArrayList.size() + "");
                                 Log.d("MainActivity", response.toString());
 
-                                //todo change fragment to mainfragment instead of activity
 
                                 MainActivity parentActivity = (MainActivity) getActivity();
                                 MainFragment mainFragment = new MainFragment();

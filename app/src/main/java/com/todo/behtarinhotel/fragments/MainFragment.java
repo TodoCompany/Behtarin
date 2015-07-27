@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
@@ -39,8 +40,9 @@ public class MainFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.lv_main_list_main_activity);
 
         if (searchResultSOArrayList != null){
-            final MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrivalDate, departureDate);
-            listView.setAdapter(adapter);
+            MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrivalDate, departureDate);
+            SlideExpandableListAdapter slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.btnOpenExpandableLayout, R.id.expandableLayout);
+            listView.setAdapter(slideExpandableListAdapter);
 
         }
 

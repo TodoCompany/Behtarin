@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,9 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -33,9 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 
 /**
  * Created by dmytro on 7/8/15.
@@ -46,22 +42,22 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
     public static final String PHOTO_URL_END = "b.jpg";
     ImageLoader imageLoader;
-    NetworkImageView ivPhoto;
+    ImageView ivPhoto;
     ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
-    NetworkImageView ivTripAdvisorRate;
+    ImageView ivTripAdvisorRate;
     TextView tvHotelName;
-    TextView tvCity;
+    //  TextView tvCity;
     TextView tvAddress;
     TextView tvPrice;
     TextView tvLocationDescription;
     ArrayList<ImageView> imageViews;
     float rate;
     Resources res;
-    Button btnLikeCounter;
-    @InjectView(R.id.btn_read_more_main_activity_main_list)
-    Button btnReadMore;
-    @InjectView(R.id.btn_check_availability_main_activity_main_list)
-    Button btnCheckAvailability;
+    TextView tvLikeCounter;
+    //    @InjectView(R.id.btn_read_more_main_activity_main_list)
+//    Button btnReadMore;
+//    @InjectView(R.id.btn_check_availability_main_activity_main_list)
+//    Button btnCheckAvailability;
     Activity activity;
     LayoutInflater lInflater;
     ArrayList<SearchResultSO> searchResultSOArrayList;
@@ -101,10 +97,10 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.main_activity_main_list_item, null);
+            view = lInflater.inflate(R.layout.hotel_item, null);
         }
 
-        ivPhoto = (NetworkImageView) view.findViewById(R.id.iv_photo_main_activity_main_list);
+        ivPhoto = (ImageView) view.findViewById(R.id.iv_photo_main_activity_main_list);
 
         ivStar1 = (ImageView) view.findViewById(R.id.iv_star1_main_activity_main_list);
         ivStar2 = (ImageView) view.findViewById(R.id.iv_star2_main_activity_main_list);
@@ -120,16 +116,16 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         imageViews.add(ivStar5);
 
 
-        ivTripAdvisorRate = (NetworkImageView) view.findViewById(R.id.iv_tripadvisor_rate_main_activity_main_list);
+        ivTripAdvisorRate = (ImageView) view.findViewById(R.id.iv_tripadvisor_rate_main_activity_main_list);
 
         tvHotelName = (TextView) view.findViewById(R.id.tv_hotel_name_main_activity_main_list);
-        tvCity = (TextView) view.findViewById(R.id.tv_city_name_main_activity_main_list);
+//        tvCity = (TextView) view.findViewById(R.id.tv_city_name_main_activity_main_list);
         tvAddress = (TextView) view.findViewById(R.id.tv_address_main_activity_main_list);
         tvPrice = (TextView) view.findViewById(R.id.tv_price_main_activity_main_list);
         tvLocationDescription = (TextView) view.findViewById(R.id.tv_location_description_main_activity_main_list);
 
         tvHotelName.setText(searchResultSOArrayList.get(position).getHotelName());
-        tvCity.setText(searchResultSOArrayList.get(position).getCity());
+//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSOArrayList.get(position).getAddress());
         //todo encode from html, works 50/50
         tvLocationDescription.setText(Html.fromHtml(searchResultSOArrayList.get(position).getLocationDescription()));
@@ -137,47 +133,53 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
         String temp = searchResultSOArrayList.get(position).getPhotoURL()
                 .substring(0, searchResultSOArrayList.get(position).getPhotoURL().length() - 5);
-        ivPhoto.setImageUrl(PHOTO_URL_START + temp + PHOTO_URL_END , imageLoader);
-        ivPhoto.setDefaultImageResId(R.color.background_material_light);
-        ivPhoto.setErrorImageResId(R.mipmap.ic_launcher);
+        Glide.with(activity)
+                .load(PHOTO_URL_START + temp + PHOTO_URL_END)
+                .placeholder(R.color.background_material_light)
+                .error(R.mipmap.ic_launcher)
+                .into(ivPhoto);
 
-        ivTripAdvisorRate.setImageUrl(searchResultSOArrayList.get(position).getTripAdvisorRatingURL(), imageLoader);
-        ivTripAdvisorRate.setDefaultImageResId(R.color.background_material_light);
-        ivTripAdvisorRate.setErrorImageResId(R.mipmap.ic_launcher);
+        Glide.with(activity)
+                .load(searchResultSOArrayList.get(position).getTripAdvisorRatingURL())
+                .placeholder(R.color.background_material_light)
+                .error(R.mipmap.ic_launcher)
+                .into(ivTripAdvisorRate);
+
+
 
         rate = searchResultSOArrayList.get(position).getStars();
         for (int i = 0; i < 5; i++) {
             if (rate >= 1) {
                 rate--;
             } else if (rate == 0.5) {
-                imageViews.get(i).setBackground(res.getDrawable(R.drawable.abc_btn_radio_to_on_mtrl_000));
+                imageViews.get(i).setImageDrawable(res.getDrawable(R.drawable.abc_btn_radio_to_on_mtrl_000));
                 rate = 0;
             } else if (rate == 0) {
-                imageViews.get(i).setBackground(res.getDrawable(R.mipmap.ic_launcher));
+                imageViews.get(i).setImageDrawable(res.getDrawable(R.mipmap.ic_launcher));
             }
         }
 
-        btnLikeCounter = (Button) view.findViewById(R.id.btn_like_counter_activity_main_main_list);
-        btnLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
+//        btnLikeCounter = (Button) view.findViewById(R.id.btn_like_counter_activity_main_main_list);
+//        btnLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
 
-        btnReadMore = (Button) view.findViewById(R.id.btn_read_more_main_activity_main_list);
-        btnReadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo onclicklistener
-            }
-        });
+//        btnReadMore = (Button) view.findViewById(R.id.btn_read_more_main_activity_main_list);
+//        btnReadMore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //todo onclicklistener
+//            }
+//        });
 
-        btnCheckAvailability = (Button) view.findViewById(R.id.btn_check_availability_main_activity_main_list);
-        btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
-                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
-                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
-                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
-            }
-        });
+//        btnCheckAvailability = (Button) view.findViewById(R.id.btn_check_availability_main_activity_main_list);
+//        btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
+//                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
+//                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
+//                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
+//            }
+//        });
 
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,52 @@
     android:background="@color/base_white"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter hotel" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Check-in" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Check-out" />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        </LinearLayout>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/text_where_search_activity"
         android:layout_width="wrap_content"

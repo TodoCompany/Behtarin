@@ -2,124 +2,125 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    android:focusableInTouchMode="false">
+    android:background="@color/base_white"
+    android:focusableInTouchMode="false"
+    android:padding="8dp">
 
     <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_photo_main_activity_main_list"
         android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/iv_photo_main_activity_main_list" />
+        android:layout_height="80dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hotel name"
         android:id="@+id/tv_hotel_name_main_activity_main_list"
-        android:layout_toRightOf="@+id/iv_photo_main_activity_main_list"
-        android:layout_alignTop="@+id/iv_photo_main_activity_main_list"
-        android:layout_marginLeft="16dp" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="City"
+        android:layout_alignTop="@+id/iv_photo_main_activity_main_list"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/iv_photo_main_activity_main_list"
+        android:text="Hotel name" />
+
+    <TextView
         android:id="@+id/tv_city_name_main_activity_main_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tv_hotel_name_main_activity_main_list"
-        android:layout_below="@+id/tv_hotel_name_main_activity_main_list" />
+        android:layout_below="@+id/tv_hotel_name_main_activity_main_list"
+        android:text="City" />
 
     <ImageView
+        android:id="@+id/iv_star1_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_star1_main_activity_main_list"
         android:layout_alignLeft="@+id/btn_like_counter_activity_main_main_list"
         android:layout_below="@+id/btn_like_counter_activity_main_main_list"
         android:background="@drawable/abc_btn_radio_to_on_mtrl_015" />
 
     <ImageView
+        android:id="@+id/iv_star2_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_star2_main_activity_main_list"
         android:layout_alignTop="@+id/iv_star1_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_star1_main_activity_main_list"
         android:background="@drawable/abc_btn_radio_to_on_mtrl_015"/>
 
     <ImageView
+        android:id="@+id/iv_star3_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_star3_main_activity_main_list"
         android:layout_alignTop="@+id/iv_star1_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_star2_main_activity_main_list"
         android:background="@drawable/abc_btn_radio_to_on_mtrl_015"/>
 
     <ImageView
+        android:id="@+id/iv_star4_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_star4_main_activity_main_list"
         android:layout_alignTop="@+id/iv_star1_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_star3_main_activity_main_list"
         android:background="@drawable/abc_btn_radio_to_on_mtrl_015"/>
 
     <ImageView
+        android:id="@+id/iv_star5_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_star5_main_activity_main_list"
         android:layout_alignTop="@+id/iv_star1_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_star4_main_activity_main_list"
         android:background="@drawable/abc_btn_radio_to_on_mtrl_015"/>
 
     <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_tripadvisor_rate_main_activity_main_list"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
-        android:id="@+id/iv_tripadvisor_rate_main_activity_main_list"
         android:layout_alignTop="@+id/iv_star1_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_star5_main_activity_main_list" />
 
     <Button
+        android:id="@+id/btn_like_counter_activity_main_main_list"
         android:layout_width="70dp"
         android:layout_height="32dp"
-        android:id="@+id/btn_like_counter_activity_main_main_list"
         android:layout_alignLeft="@+id/tv_city_name_main_activity_main_list"
         android:layout_below="@+id/tv_city_name_main_activity_main_list"
         android:drawableLeft="@mipmap/smiling_face"
-        android:textSize="10sp"
-        android:text="12345" />
+        android:text="12345"
+        android:textSize="10sp" />
 
     <ImageView
+        android:id="@+id/iv_location_icon_main_activity_main_list"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_location_icon_main_activity_main_list"
-        android:background="@android:drawable/ic_menu_mapmode"
         android:layout_alignLeft="@+id/btn_like_counter_activity_main_main_list"
-        android:layout_below="@+id/iv_star1_main_activity_main_list" />
+        android:layout_below="@+id/iv_star1_main_activity_main_list"
+        android:background="@android:drawable/ic_menu_mapmode" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Adress"
         android:id="@+id/tv_address_main_activity_main_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/iv_location_icon_main_activity_main_list"
-        android:layout_toRightOf="@+id/iv_location_icon_main_activity_main_list" />
+        android:layout_toRightOf="@+id/iv_location_icon_main_activity_main_list"
+        android:text="Adress" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_price_from"
         android:id="@+id/text_price_from_main_activity_main_list"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$$"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:text="@string/text_price_from" />
+
+    <TextView
         android:id="@+id/tv_price_main_activity_main_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/text_price_from_main_activity_main_list"
-        android:layout_below="@+id/text_price_from_main_activity_main_list" />
+        android:layout_below="@+id/text_price_from_main_activity_main_list"
+        android:text="$$" />
 
     <Button
+        android:id="@+id/btn_read_more_main_activity_main_list"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:id="@+id/btn_read_more_main_activity_main_list"
         android:layout_alignLeft="@+id/text_price_from_main_activity_main_list"
         android:layout_below="@+id/tv_price_main_activity_main_list"
         android:layout_marginTop="8dp"
@@ -127,27 +128,27 @@
         android:textSize="8sp" />
 
     <Button
+        android:id="@+id/btn_check_availability_main_activity_main_list"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="@string/text_check_availability"
-        android:id="@+id/btn_check_availability_main_activity_main_list"
         android:layout_alignLeft="@+id/text_price_from_main_activity_main_list"
         android:layout_below="@+id/btn_read_more_main_activity_main_list"
+        android:text="@string/text_check_availability"
         android:textSize="8sp" />
 
     <TextView
+        android:id="@+id/text_property_location_main_activity_main_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_location_property"
-        android:id="@+id/text_property_location_main_activity_main_list"
+        android:layout_below="@+id/btn_check_availability_main_activity_main_list"
         android:layout_toRightOf="@+id/iv_photo_main_activity_main_list"
-        android:layout_below="@+id/btn_check_availability_main_activity_main_list" />
+        android:text="@string/text_location_property" />
 
     <TextView
+        android:id="@+id/tv_location_description_main_activity_main_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tv_location_description_main_activity_main_list"
         android:layout_alignLeft="@+id/text_property_location_main_activity_main_list"
-        android:layout_below="@+id/text_property_location_main_activity_main_list" />
+        android:layout_below="@+id/text_property_location_main_activity_main_list"
+        android:text="New Text" />
 </RelativeLayout>
