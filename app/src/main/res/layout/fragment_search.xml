@@ -16,9 +16,12 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:id="@+id/et_location_search_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter hotel" />
+                android:hint="Enter hotel"
+                android:text="London"
+                android:textColor="@color/base_text" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         <LinearLayout
@@ -32,9 +35,12 @@
                 android:layout_weight="1">
 
                 <EditText
+                    android:id="@+id/et_check_in_search_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Check-in" />
+                    android:hint="Check-in"
+                    android:text="09/10/2015"
+                    android:textColor="@color/base_text" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
             <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -43,51 +49,16 @@
                 android:layout_weight="1">
 
                 <EditText
+                    android:id="@+id/et_check_out_search_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Check-out" />
+                    android:hint="Check-out"
+                    android:text="09/11/2015"
+                    android:textColor="@color/base_text" />
             </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/text_where_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_where_search_activity" />
-
-    <EditText
-        android:id="@+id/et_location_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="London" />
-
-    <TextView
-        android:id="@+id/text_check_in_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="@string/text_check_in" />
-
-    <TextView
-        android:id="@+id/tv_check_in_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="09/10/2015" />
-
-    <TextView
-        android:id="@+id/text_check_out_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_check_out" />
-
-    <TextView
-        android:id="@+id/tv_check_out_search_activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="09/11/2015" />
 
     <LinearLayout
         android:layout_width="match_parent"

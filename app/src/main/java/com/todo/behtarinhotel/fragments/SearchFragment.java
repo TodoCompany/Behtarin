@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -44,8 +43,8 @@ public class SearchFragment extends Fragment {
 
     private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
     private static final String CID = "55505";
-    TextView tvCheckIn;
-    TextView tvCheckOut;
+    EditText etCheckIn;
+    EditText etCheckOut;
 
     EditText etLocation;
     EditText etRoom;
@@ -92,9 +91,9 @@ public class SearchFragment extends Fragment {
                 day = "0" + day;
             }
             if (isCheckInSelected) {
-                tvCheckIn.setText(month + "/" + day + "/" + year);
+                etCheckIn.setText(month + "/" + day + "/" + year);
             } else {
-                tvCheckOut.setText(month + "/" + day + "/" + year);
+                etCheckOut.setText(month + "/" + day + "/" + year);
             }
         }
     };
@@ -120,13 +119,13 @@ public class SearchFragment extends Fragment {
 
     private void initViewsById(View view) {
 
-        tvCheckIn = (TextView) view.findViewById(R.id.tv_check_in_search_activity);
-        tvCheckOut = (TextView) view.findViewById(R.id.tv_check_out_search_activity);
+        etCheckIn = (EditText) view.findViewById(R.id.et_check_in_search_activity);
+        etCheckOut = (EditText) view.findViewById(R.id.et_check_out_search_activity);
 
-        View.OnClickListener oclTextViews = new View.OnClickListener() {
+        View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(view.getId() == R.id.tv_check_in_search_activity){
+                if (view.getId() == R.id.et_check_in_search_activity) {
                     isCheckInSelected = true;
                 }else {
                     isCheckInSelected = false;
@@ -134,8 +133,8 @@ public class SearchFragment extends Fragment {
                 showDatePicker();
             }
         };
-        tvCheckOut.setOnClickListener(oclTextViews);
-        tvCheckIn.setOnClickListener(oclTextViews);
+        etCheckOut.setOnClickListener(oclDatePicker);
+        etCheckIn.setOnClickListener(oclDatePicker);
 
         etLocation = (EditText) view.findViewById(R.id.et_location_search_activity);
         etRoom = (EditText) view.findViewById(R.id.et_room_search_activity);
@@ -161,8 +160,8 @@ public class SearchFragment extends Fragment {
                         minorRev +
                         locale +
                         city + etLocation.getText() +
-                        arrivalDate + tvCheckIn.getText() +
-                        departureDate + tvCheckOut.getText() +
+                        arrivalDate + etCheckIn.getText() +
+                        departureDate + etCheckOut.getText() +
                         room + etRoom.getText();
 
                 gsonBuilder = new GsonBuilder();
@@ -184,18 +183,16 @@ public class SearchFragment extends Fragment {
 
                                 if (arr != null) {
                                     searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
+                                    Log.d("MainActivity", url);
+                                    Log.d("MainActivity", searchResultSOArrayList.size() + "");
+                                    Log.d("MainActivity", response.toString());
+                                    MainActivity parentActivity = (MainActivity) getActivity();
+                                    MainFragment mainFragment = new MainFragment();
+                                    parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                                    mainFragment.initMailList(searchResultSOArrayList, etCheckIn.getText().toString(), etCheckOut.getText().toString());
+                                    parentActivity.setMainSearchFragment(mainFragment);
+                                    
                                 }
-
-                                Log.d("MainActivity", url);
-                                Log.d("MainActivity", searchResultSOArrayList.size() + "");
-                                Log.d("MainActivity", response.toString());
-
-
-                                MainActivity parentActivity = (MainActivity) getActivity();
-                                MainFragment mainFragment = new MainFragment();
-                                parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-                                mainFragment.initMailList(searchResultSOArrayList, tvCheckIn.getText().toString(), tvCheckOut.getText().toString());
-                                parentActivity.setMainSearchFragment(mainFragment);
 
 
                             }
