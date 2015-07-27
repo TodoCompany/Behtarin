@@ -3,7 +3,9 @@
     <color name="registration_background">#737373</color>
     <color name="registration_text">#ffffff</color>
     <color name="registration_btn">#ffc801</color>
+    <color name="base_yellow">#FFC107</color>
     <color name="base_text">#696969</color>
+    <color name="base_black">#ff000000</color>
     <color name="base_white">#FFFFFF</color>
     <color name="base_background">#E5E5E5</color>
     <color name="base_hint">#D0D0D0</color>

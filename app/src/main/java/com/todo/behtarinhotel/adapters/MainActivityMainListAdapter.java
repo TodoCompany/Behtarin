@@ -21,7 +21,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import roboguice.inject.ContentView;
 
 /**
@@ -45,6 +48,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     ImageView ivPhoto;
     ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     ImageView ivTripAdvisorRate;
+    ButtonFlat btnReadMore;
     TextView tvHotelName;
     //  TextView tvCity;
     TextView tvAddress;
@@ -100,6 +104,15 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.hotel_item, null);
         }
 
+        btnReadMore = (ButtonFlat) view.findViewById(R.id.btn_read_more);
+        btnReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReadMoreFragment readMoreFragment = new ReadMoreFragment();
+                ((MaterialNavigationDrawer) activity).setFragment(readMoreFragment, "About Hotel");
+                readMoreFragment.setHotelData(searchResultSOArrayList.get(position));
+            }
+        });
         ivPhoto = (ImageView) view.findViewById(R.id.iv_photo_main_activity_main_list);
 
         ivStar1 = (ImageView) view.findViewById(R.id.iv_star1_main_activity_main_list);
@@ -107,6 +120,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         ivStar3 = (ImageView) view.findViewById(R.id.iv_star3_main_activity_main_list);
         ivStar4 = (ImageView) view.findViewById(R.id.iv_star4_main_activity_main_list);
         ivStar5 = (ImageView) view.findViewById(R.id.iv_star5_main_activity_main_list);
+
 
         imageViews = new ArrayList<>();
         imageViews.add(ivStar1);
@@ -159,8 +173,8 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             }
         }
 
-//        btnLikeCounter = (Button) view.findViewById(R.id.btn_like_counter_activity_main_main_list);
-//        btnLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
+        tvLikeCounter = (TextView) view.findViewById(R.id.tv_like_counter_activity_main_main_list);
+        tvLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
 
 //        btnReadMore = (Button) view.findViewById(R.id.btn_read_more_main_activity_main_list);
 //        btnReadMore.setOnClickListener(new View.OnClickListener() {

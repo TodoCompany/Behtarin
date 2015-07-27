@@ -47,5 +47,9 @@ dependencies {
     compile(group: 'it.sephiroth.android.library.fork.slideexpandable', name: 'slideexpandable', version: '1.0.3.1', ext: 'aar')
     //Material UI
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    // Google services, contains maps etc.
+    // compile 'com.google.android.gms:play-services:7.5.0'
+
+
 
 }
