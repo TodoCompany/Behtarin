@@ -168,7 +168,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         Glide.with(activity)
                 .load(searchResultSOArrayList.get(position).getTripAdvisorRatingURL())
                 .fitCenter()
-                .placeholder(R.mipmap.icon_profile)
                 .error(R.mipmap.ic_launcher)
                 .into(ivTripAdvisorRate);
 
