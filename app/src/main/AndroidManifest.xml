@@ -38,7 +38,8 @@
         <activity android:name="io.card.payment.DataEntryActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity" >
+            android:label="MainActivity"
+           >
         </activity>
         <activity
             android:name=".LauncherActivity"

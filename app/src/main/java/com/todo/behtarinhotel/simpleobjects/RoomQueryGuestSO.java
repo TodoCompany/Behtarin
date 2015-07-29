@@ -5,16 +5,15 @@ package com.todo.behtarinhotel.simpleobjects;
  */
 public class RoomQueryGuestSO {
 
-    private boolean isChild = false;
-    private int age = 0;
-
-    public RoomQueryGuestSO(int age) {
-        this.age = age;
-        isChild = true;
-    }
+    private boolean isChild;
+    private int age;
 
     public RoomQueryGuestSO() {
+    }
 
+    public RoomQueryGuestSO(boolean isChild, int age) {
+        this.isChild = isChild;
+        this.age = age;
     }
 
     public boolean isChild() {

@@ -43,7 +43,7 @@ public class RoomQueryAdapter extends BaseAdapter {
             }
         }
         if (childsInRoom < 5) {
-            roomGuests.add(new RoomQueryGuestSO(age));
+            roomGuests.add(new RoomQueryGuestSO(true,age));
             notifyDataSetChanged();
         } else {
             Toast.makeText(context, "There can't be more than 6 childs in room", Toast.LENGTH_SHORT).show();

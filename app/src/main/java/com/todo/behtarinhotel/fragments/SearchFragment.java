@@ -128,9 +128,8 @@ public class SearchFragment extends Fragment {
         initViewsById(rootView);
 
         listView = (ListView) rootView.findViewById(R.id.lv_room_fragment_search);
-        soArrayList = new ArrayList<>();
-        soArrayList.add(new SearchRoomSO(2,new int[]{10,20,15}));
-        soArrayList.add(new SearchRoomSO(1,new int[]{10}));
+        soArrayList = new ArrayList<SearchRoomSO>();
+
         listAdapter = new RoomListAdapter(getActivity().getApplicationContext(),soArrayList);
         listView.setAdapter(listAdapter);
         //listView.addFooterView(rootView.findViewById(R.id.right_labels));
