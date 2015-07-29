@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
@@ -48,7 +49,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     ImageView ivPhoto;
     ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     ImageView ivTripAdvisorRate;
-    ButtonFlat btnReadMore;
+    ButtonFlat btnReadMore, btnCheckAvailability;
     TextView tvHotelName;
     //  TextView tvCity;
     TextView tvAddress;
@@ -113,6 +114,17 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 readMoreFragment.setHotelData(searchResultSOArrayList.get(position));
             }
         });
+        btnCheckAvailability = (ButtonFlat) view.findViewById(R.id.btn_check_availability);
+        btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
+                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
+                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
+                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
+            }
+        });
+
         ivPhoto = (ImageView) view.findViewById(R.id.iv_photo_main_activity_main_list);
 
         ivStar1 = (ImageView) view.findViewById(R.id.iv_star1_main_activity_main_list);
@@ -149,13 +161,14 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 .substring(0, searchResultSOArrayList.get(position).getPhotoURL().length() - 5);
         Glide.with(activity)
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
-                .placeholder(R.color.background_material_light)
+                .placeholder(R.mipmap.icon_profile)
                 .error(R.mipmap.ic_launcher)
                 .into(ivPhoto);
 
         Glide.with(activity)
                 .load(searchResultSOArrayList.get(position).getTripAdvisorRatingURL())
-                .placeholder(R.color.background_material_light)
+                .fitCenter()
+                .placeholder(R.mipmap.icon_profile)
                 .error(R.mipmap.ic_launcher)
                 .into(ivTripAdvisorRate);
 
@@ -176,24 +189,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvLikeCounter = (TextView) view.findViewById(R.id.tv_like_counter_activity_main_main_list);
         tvLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
 
-//        btnReadMore = (Button) view.findViewById(R.id.btn_read_more_main_activity_main_list);
-//        btnReadMore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //todo onclicklistener
-//            }
-//        });
-
-//        btnCheckAvailability = (Button) view.findViewById(R.id.btn_check_availability_main_activity_main_list);
-//        btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
-//                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
-//                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
-//                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
-//            }
-//        });
 
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -20,8 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.edmodo.rangebar.RangeBar;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -123,7 +121,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         this.inflater = inflater;
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_search, null, false);
 
         initViewsById(rootView);
 
@@ -220,69 +218,71 @@ public class SearchFragment extends Fragment {
 //        rbStars.setTickCount(5);
 //
 //
-//        btnSearchForHotels = (Button) view.findViewById(R.id.btn_search_for_hotels_search_activity);
-//        btnSearchForHotels.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-//                        apiKey + API_KEY +
-//                        cid + CID +
-//                        sig +
-//                        customerIpAddress +
-//                        //customerUserAgent +
-//                        currencyCode +
-//                        customerSessionID +
-//                        minorRev +
-//                        locale +
-//                        city + etLocation.getText() +
-//                        arrivalDate + etCheckIn.getText() +
-//                        departureDate + etCheckOut.getText() +
-//                        room + etRoom.getText();
-//
-//                gsonBuilder = new GsonBuilder();
-//                gson = gsonBuilder.create();
-//
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-//                        url,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                JSONArray arr = null;
-//                                try {
-//                                    arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-//                                }.getType();
-//
-//                                if (arr != null) {
-//                                    searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-//                                    Log.d("MainActivity", url);
-//                                    Log.d("MainActivity", searchResultSOArrayList.size() + "");
-//                                    Log.d("MainActivity", response.toString());
-//                                    MainActivity parentActivity = (MainActivity) getActivity();
-//                                    MainFragment mainFragment = new MainFragment();
-//                                    parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-//                                    mainFragment.initMailList(searchResultSOArrayList, etCheckIn.getText().toString(), etCheckOut.getText().toString());
-//                                    parentActivity.setMainSearchFragment(mainFragment);
-//
-//                                }
-//
-//
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        VolleyLog.e("Error: ", error.getMessage());
-//                    }
-//                }
-//
-//                );
-//                VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
-//            }
-//
-//        });
+        btnSearchForHotels = (Button) view.findViewById(R.id.btn_search_for_hotels_search_activity);
+        btnSearchForHotels.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
+                        apiKey + API_KEY +
+                        cid + CID +
+                        sig +
+                        customerIpAddress +
+                        //customerUserAgent +
+                        currencyCode +
+                        customerSessionID +
+                        minorRev +
+                        locale +
+                        city + "London" +
+                        arrivalDate + "10/10/2015" +
+                        departureDate + "10/12/2015" +
+                        room + "1";
+
+
+                gsonBuilder = new GsonBuilder();
+                gson = gsonBuilder.create();
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                        url,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                JSONArray arr = null;
+                                try {
+                                    arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                                }.getType();
+
+                                if (arr != null) {
+                                    searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
+                                    Log.d("MainActivity", url);
+                                    Log.d("MainActivity", searchResultSOArrayList.size() + "");
+                                    Log.d("MainActivity", response.toString());
+                                    MainActivity parentActivity = (MainActivity) getActivity();
+                                    MainFragment mainFragment = new MainFragment();
+                                    parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                                    //TODO fill with not hardcoded data
+                                    mainFragment.initMailList(searchResultSOArrayList, "10/10/2015", "10/12/2015");
+                                    parentActivity.setMainSearchFragment(mainFragment);
+
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                }
+
+                );
+                VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+            }
+
+        });
     }
 
     private void showDatePicker() {
@@ -302,6 +302,5 @@ public class SearchFragment extends Fragment {
         date.setCallBack(ondate);
         date.show(getFragmentManager(), "Date Picker");
     }
-
 
 }

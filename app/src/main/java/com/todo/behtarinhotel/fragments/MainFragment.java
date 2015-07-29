@@ -24,6 +24,7 @@ public class MainFragment extends Fragment {
     ListView listView;
     String arrivalDate;
     String departureDate;
+    SlideExpandableListAdapter slideExpandableListAdapter;
 
     public MainFragment() {
         // Required empty public constructor
@@ -38,7 +39,7 @@ public class MainFragment extends Fragment {
 
         if (searchResultSOArrayList != null){
             MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrivalDate, departureDate);
-            SlideExpandableListAdapter slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.btnOpenExpandableLayout, R.id.expandableLayout);
+            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.btnOpenExpandableLayout, R.id.expandableLayout);
             listView.setAdapter(slideExpandableListAdapter);
 
         }
@@ -52,6 +53,5 @@ public class MainFragment extends Fragment {
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
     }
-
 
 }

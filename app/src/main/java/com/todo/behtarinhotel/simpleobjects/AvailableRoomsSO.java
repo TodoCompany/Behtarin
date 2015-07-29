@@ -47,6 +47,8 @@ public class AvailableRoomsSO {
         private int roomTypeCode;
         @SerializedName("rateOccupancyPerRoom")
         private int rateOccupancyPerRoom;
+        @SerializedName("quotedOccupancy")
+        private int maxGuests;
         @SerializedName("RateInfo")
         private RateInfo rateInfo;
         @SerializedName("roomTypeDescription")
@@ -54,6 +56,7 @@ public class AvailableRoomsSO {
         @SerializedName("RoomImages")
         private RoomImages roomImages;
         private String bedDescription;
+        private int bedsQuantity;
 
         public int getRoomTypeCode() {
             return roomTypeCode;
@@ -75,6 +78,14 @@ public class AvailableRoomsSO {
             bedDescription = descr;
         }
 
+        public int getBedsQuantity() {
+            return bedsQuantity;
+        }
+
+        public void setBedsQuantity(int bedsQuantity) {
+            this.bedsQuantity = bedsQuantity;
+        }
+
         public String getDescription() {
             return description;
         }
@@ -84,6 +95,10 @@ public class AvailableRoomsSO {
                 return roomImages.getRoomImage().getUrl();
             }
             return null;
+        }
+
+        public int getMaxGuests() {
+            return maxGuests;
         }
 
         public float getAverageRate() {
