@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00cacaca">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_white"
+        android:elevation="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp">
+
+
+        <TextView
+            android:id="@+id/tv_room_fragment_search_room_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textColor="@color/base_black"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp" />
+
+        <ImageButton
+            android:id="@+id/ib_edit_fragment_search_room_list"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:background="@android:drawable/ic_menu_edit"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tv_room_fragment_search_room_list"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="#76cacaca" />
+
+        <LinearLayout
+            android:id="@+id/container_guests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</FrameLayout>

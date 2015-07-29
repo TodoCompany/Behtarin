@@ -33,7 +33,6 @@ public class SearchActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        initViewsById();
     }
 
     @Override
@@ -59,34 +58,4 @@ public class SearchActivity extends Activity {
 
     }
 
-    private void initViewsById() {
-
-        tvCheckIn = (TextView) findViewById(R.id.tv_check_in_search_activity);
-        tvCheckOut = (TextView) findViewById(R.id.tv_check_out_search_activity);
-
-        View.OnClickListener oclTextViews = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo get DatePickerDialog
-            }
-        };
-        tvCheckOut.setOnClickListener(oclTextViews);
-        tvCheckIn.setOnClickListener(oclTextViews);
-
-        etLocation = (EditText) findViewById(R.id.et_location_search_activity);
-        etRoom = (EditText) findViewById(R.id.et_room_search_activity);
-        etAdult = (EditText) findViewById(R.id.et_adult_search_activity);
-        etChildren = (EditText) findViewById(R.id.et_children_search_activity);
-
-        rbStars = (RangeBar) findViewById(R.id.rb_stars);
-        rbStars.setTickCount(5);
-
-        btnSearchForHotels = (Button) findViewById(R.id.btn_search_for_hotels_search_activity);
-        btnSearchForHotels.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo search for hotels
-            }
-        });
-    }
 }

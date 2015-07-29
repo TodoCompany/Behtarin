@@ -50,6 +50,9 @@ dependencies {
     // Google services, contains maps etc.
     // compile 'com.google.android.gms:play-services:7.5.0'
 
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.getbase:floatingactionbutton:1.10.0'
+
 
 
 }

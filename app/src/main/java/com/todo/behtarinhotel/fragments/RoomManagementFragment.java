@@ -87,7 +87,7 @@ public class RoomManagementFragment extends Fragment {
             try {
                 lastRoomsAdapters.get(lastRoomsAdapters.size() - 1).addChild(Integer.parseInt(etChildAge.getText().toString()));
             } catch (NumberFormatException nan) {
-                Toast.makeText(getActivity(), "Please fill child's age", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Please fill adult's age", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -134,7 +134,7 @@ public class RoomManagementFragment extends Fragment {
                 if (position != 0) {
                     roomQueryAdapter.remove(position);
                 } else {
-                    Toast.makeText(getActivity(), "In each room must be at least 1 adult", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "In each room must be at least 1 child", Toast.LENGTH_SHORT).show();
                 }
             }
         });

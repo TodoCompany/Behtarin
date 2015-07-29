@@ -25,9 +25,6 @@ public class MainFragment extends Fragment {
     String arrivalDate;
     String departureDate;
 
-
-
-
     public MainFragment() {
         // Required empty public constructor
     }
@@ -54,8 +51,6 @@ public class MainFragment extends Fragment {
          searchResultSOArrayList = soArrayList;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-
-
     }
 
 

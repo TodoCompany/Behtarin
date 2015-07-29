@@ -38,13 +38,13 @@
         <activity android:name="io.card.payment.DataEntryActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity" ></activity>
+            android:label="MainActivity" >
+        </activity>
         <activity
             android:name=".LauncherActivity"
             android:label="@string/title_activity_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

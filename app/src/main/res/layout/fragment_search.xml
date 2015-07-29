@@ -1,122 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/base_white"
-    android:orientation="vertical">
+    android:background="@color/base_white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:padding="16dp"
+        android:id="@+id/container_search"
+        android:background="#ff909090"
+        android:elevation="8dp">
 
-        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/et_location_search_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter hotel"
-                android:text="London"
-                android:textColor="@color/base_text" />
-        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            android:layout_height="wrap_content"
+            android:id="@+id/et_location_search_fragment"
+            android:hint="Enter city or hotel name"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="Location"
+            app:met_primaryColor="@color/base_white"
+            android:layout_marginBottom="10dp"
+            app:met_textColor="@color/base_white"
+            app:met_textColorHint="@color/base_white"
+            />
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:id="@+id/container_check_in_out"
+            android:layout_below="@+id/et_location_search_fragment"
+            android:layout_marginBottom="10dp"
+            android:focusable="false">
 
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:id="@+id/et_check_in_search_fragment"
+                android:layout_weight="1"
+                android:hint="Check in"
+                app:met_floatingLabel="highlight"
+                android:layout_marginRight="10dp"
+                app:met_primaryColor="@color/base_white"
+                app:met_textColor="@color/base_white"
+                app:met_textColorHint="@color/base_white"
+                android:focusable="false" />
 
-                <EditText
-                    android:id="@+id/et_check_in_search_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Check-in"
-                    android:text="09/10/2015"
-                    android:textColor="@color/base_text" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/et_check_out_search_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Check-out"
-                    android:text="09/11/2015"
-                    android:textColor="@color/base_text" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+                android:id="@+id/et_check_out_search_fragment"
+                android:layout_weight="1"
+                android:hint="Check out"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/base_white"
+                app:met_textColor="@color/base_white"
+                app:met_textColorHint="@color/base_white"
+                android:focusable="false"
+                />
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_3_search_fragment"
+            android:layout_below="@+id/container_check_in_out"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/star_unselected"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
 
-    <LinearLayout
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_4_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:layout_toRightOf="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_unselected"
+            android:layout_marginRight="20dp" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_5_search_fragment"
+            android:layout_toRightOf="@+id/ib_star_4_search_fragment"
+            android:layout_alignTop="@+id/ib_star_4_search_fragment"
+            android:background="@drawable/star_unselected"/>
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_2_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:layout_toLeftOf="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_unselected"
+            android:layout_marginLeft="20dp" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_1_search_fragment"
+            android:layout_toLeftOf="@+id/ib_star_2_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_selected"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/container_search"
+        android:background="#76cacaca"
+        android:layout_alignParentBottom="false">
 
-        <TextView
-            android:id="@+id/text_room_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_room" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lv_room_fragment_search"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="36dp"
+            android:clipToPadding="false"/>
+    </FrameLayout>
 
-        <EditText
-            android:id="@+id/et_room_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="1" />
-
-        <TextView
-            android:id="@+id/text_adult_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_adult" />
-
-        <EditText
-            android:id="@+id/et_adult_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="1" />
-
-        <TextView
-            android:id="@+id/text_children_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_children" />
-
-        <EditText
-            android:id="@+id/et_children_search_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="1" />
-
-    </LinearLayout>
-
-    <com.edmodo.rangebar.RangeBar
-        android:id="@+id/rb_stars"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="false" />
-
-    <Button
-        android:id="@+id/btn_search_for_hotels_search_activity"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/right_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/text_search_for_hotels" />
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        fab:fab_addButtonSize="mini"
+        fab:fab_labelsPosition="right"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            fab:fab_title="Label on the right"
+           />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            fab:fab_size="mini"
+            fab:fab_title="Another one on the right"
+            />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</RelativeLayout>
