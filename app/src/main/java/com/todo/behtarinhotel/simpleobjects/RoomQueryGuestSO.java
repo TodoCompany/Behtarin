@@ -24,4 +24,11 @@ public class RoomQueryGuestSO {
         return age;
     }
 
+    public void setIsChild(boolean isChild) {
+        this.isChild = isChild;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

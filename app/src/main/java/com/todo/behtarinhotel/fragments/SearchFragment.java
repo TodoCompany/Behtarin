@@ -43,6 +43,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -54,6 +56,8 @@ public class SearchFragment extends Fragment {
     ListView listView;
     RoomListAdapter listAdapter;
     ArrayList<SearchRoomSO> soArrayList;
+
+    FloatingActionButton fabSearch,fabAddRoom;
 
     MaterialEditText etCheckIn;
     MaterialEditText etCheckOut;
@@ -140,6 +144,16 @@ public class SearchFragment extends Fragment {
     }
 
     private void initViewsById(View view) {
+
+        fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
+        fabAddRoom = (FloatingActionButton) view.findViewById(R.id.fab_add_room_fragment_search);
+        fabAddRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(new RoomBuilderFragment(),"Complete");
+            }
+        });
+
 
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);

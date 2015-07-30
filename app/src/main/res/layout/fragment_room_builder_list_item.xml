@@ -2,6 +2,7 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
@@ -13,17 +14,19 @@
     android:paddingTop="16dp">
 
     <ImageView
-        android:id="@+id/iv_type_room_builder_fragment"
+        android:id="@+id/iv_type_room_builder_fragment_item_child"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/child" />
 
     <TextView
-        android:id="@+id/tv_type_room_builder_fragment"
+        android:id="@+id/tv_counter_room_builder_fragment_item_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Child"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="Age"
         android:textColor="@color/base_black" />
-
 </LinearLayout>
