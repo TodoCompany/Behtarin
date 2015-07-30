@@ -18,14 +18,12 @@
         <ImageView
             android:id="@+id/iv_photo_main_activity_main_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="@dimen/hotel_images_height"
             android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="8dp">
 

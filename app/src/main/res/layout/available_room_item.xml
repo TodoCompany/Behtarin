@@ -15,16 +15,14 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/hotel_images_height"
             android:id="@+id/room_image"
-            android:layout_weight="1"
             android:scaleType="fitXY" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:padding="8dp">
 
             <LinearLayout
