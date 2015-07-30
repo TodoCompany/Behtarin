@@ -93,7 +93,7 @@ public class ReadMoreFragment extends Fragment {
         Glide.with(getActivity())
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
                 .placeholder(R.color.background_material_light)
-                .error(R.mipmap.ic_launcher)
+                .error(R.drawable.empty)
                 .into(hotelImage);
 
         Glide.with(getActivity())

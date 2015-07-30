@@ -150,30 +150,38 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvPrice = (TextView) view.findViewById(R.id.tv_price_main_activity_main_list);
         tvLocationDescription = (TextView) view.findViewById(R.id.tv_location_description_main_activity_main_list);
 
-        tvHotelName.setText(searchResultSOArrayList.get(position).getHotelName());
-//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
-        tvAddress.setText(searchResultSOArrayList.get(position).getAddress());
-        //todo encode from html, works 50/50
-        tvLocationDescription.setText(Html.fromHtml(searchResultSOArrayList.get(position).getLocationDescription()));
-        tvPrice.setText("" + searchResultSOArrayList.get(position).getMinPrice());
 
-        String temp = searchResultSOArrayList.get(position).getPhotoURL()
-                .substring(0, searchResultSOArrayList.get(position).getPhotoURL().length() - 5);
+        SearchResultSO searchResultSO = searchResultSOArrayList.get(position);
+        tvHotelName.setText(searchResultSO.getHotelName());
+//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
+        tvAddress.setText(searchResultSO.getAddress());
+        //todo encode from html, works 50/50
+        tvLocationDescription.setText(Html.fromHtml(searchResultSO.getLocationDescription()));
+        tvPrice.setText("" + searchResultSO.getMinPrice());
+
+        String temp;
+        if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {
+            temp = searchResultSO.getPhotoURL()
+                    .substring(0, searchResultSO.getPhotoURL().length() - 5);
+        }
+        temp = searchResultSO.getPhotoURL()
+                .substring(0, searchResultSO.getPhotoURL().length() - 5);
         Glide.with(activity)
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
-                .placeholder(R.mipmap.icon_profile)
-                .error(R.mipmap.ic_launcher)
+                .fitCenter()
+                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .error(R.drawable.empty)
                 .into(ivPhoto);
 
         Glide.with(activity)
-                .load(searchResultSOArrayList.get(position).getTripAdvisorRatingURL())
+                .load(searchResultSO.getTripAdvisorRatingURL())
                 .fitCenter()
                 .error(R.mipmap.ic_launcher)
                 .into(ivTripAdvisorRate);
 
 
 
-        rate = searchResultSOArrayList.get(position).getStars();
+        rate = searchResultSO.getStars();
         for (int i = 0; i < 5; i++) {
             if (rate >= 1) {
                 rate--;
@@ -186,7 +194,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         }
 
         tvLikeCounter = (TextView) view.findViewById(R.id.tv_like_counter_activity_main_main_list);
-        tvLikeCounter.setText("" + searchResultSOArrayList.get(position).getLikeCounter());
+        tvLikeCounter.setText("" + searchResultSO.getLikeCounter());
 
 
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
@@ -200,8 +208,8 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             }
         });
 
-        tripAdvisorApiURL = "http://api.tripadvisor.com/api/partner/2.0/map/" + searchResultSOArrayList.get(position).getLatitude() +
-                "," + searchResultSOArrayList.get(position).getLongitude() + "/hotels?key=cc1fb67fbf9c4c4592a1b7071a926087";
+        tripAdvisorApiURL = "http://api.tripadvisor.com/api/partner/2.0/map/" + searchResultSO.getLatitude() +
+                "," + searchResultSO.getLongitude() + "/hotels?key=cc1fb67fbf9c4c4592a1b7071a926087";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 tripAdvisorApiURL,
                 new Response.Listener<JSONObject>() {

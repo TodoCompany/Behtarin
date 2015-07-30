@@ -285,6 +285,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
+
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
         /**

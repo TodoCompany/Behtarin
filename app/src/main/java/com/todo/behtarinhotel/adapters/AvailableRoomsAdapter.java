@@ -76,12 +76,15 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         tvBedsTypes.setText(room.getBedDescription());
         tvMaxGuests.setText("x" + room.getMaxGuests());
         tvBedsQuantity.setText("x" + room.getBedsQuantity());
-        String temp = room.getRoomImage()
-                .substring(0, room.getRoomImage().length() - 5);
+        String temp = "";
+        if (room.getRoomImage() != null && !room.getRoomImage().equals("")) {
+            temp = room.getRoomImage()
+                    .substring(0, room.getRoomImage().length() - 5);
+        }
         Glide.with(ctx)
                 .load(temp + "b.jpg")
-                .placeholder(R.mipmap.icon_profile)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .error(R.drawable.empty)
                 .into(roomImage);
 
 
