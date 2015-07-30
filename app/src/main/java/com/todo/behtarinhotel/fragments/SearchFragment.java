@@ -286,11 +286,14 @@ public class SearchFragment extends Fragment {
     }
 
 
+
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
         /**
          * Set Up Current Date Into dialog
          */
+
+
         Calendar calender = Calendar.getInstance();
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));

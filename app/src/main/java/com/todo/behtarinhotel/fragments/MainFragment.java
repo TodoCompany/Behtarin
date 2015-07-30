@@ -39,7 +39,7 @@ public class MainFragment extends Fragment {
 
         if (searchResultSOArrayList != null){
             MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrivalDate, departureDate);
-            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.btnOpenExpandableLayout, R.id.expandableLayout);
+            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
             listView.setAdapter(slideExpandableListAdapter);
 
         }

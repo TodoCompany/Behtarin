@@ -105,13 +105,15 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.hotel_item, null);
         }
 
+
+
         btnReadMore = (ButtonFlat) view.findViewById(R.id.btn_read_more);
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ReadMoreFragment readMoreFragment = new ReadMoreFragment();
-                ((MaterialNavigationDrawer) activity).setFragment(readMoreFragment, "About Hotel");
-                readMoreFragment.setHotelData(searchResultSOArrayList.get(position));
+                ((MaterialNavigationDrawer) activity).setFragmentChild(readMoreFragment, "About Hotel");
+                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate);
             }
         });
         btnCheckAvailability = (ButtonFlat) view.findViewById(R.id.btn_check_availability);
@@ -155,9 +157,8 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvHotelName.setText(searchResultSO.getHotelName());
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSO.getAddress());
-        //todo encode from html, works 50/50
-        tvLocationDescription.setText(Html.fromHtml(searchResultSO.getLocationDescription()));
-        tvPrice.setText("" + searchResultSO.getMinPrice());
+        tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
+        tvPrice.setText("$ " + searchResultSO.getMinPrice());
 
         String temp;
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {
@@ -185,11 +186,11 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         for (int i = 0; i < 5; i++) {
             if (rate >= 1) {
                 rate--;
+                imageViews.get(i).setImageDrawable(res.getDrawable(R.drawable.star_selected));
             } else if (rate == 0.5) {
-                imageViews.get(i).setImageDrawable(res.getDrawable(R.drawable.abc_btn_radio_to_on_mtrl_000));
+                imageViews.get(i).setImageDrawable(res.getDrawable(R.drawable.star_half_selected));
                 rate = 0;
             } else if (rate == 0) {
-                imageViews.get(i).setImageDrawable(res.getDrawable(R.mipmap.ic_launcher));
             }
         }
 
