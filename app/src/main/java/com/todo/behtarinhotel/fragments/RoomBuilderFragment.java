@@ -50,7 +50,9 @@ public class RoomBuilderFragment extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.lv_children_fragment_room_builder);
         childrenSOArrayList = new ArrayList<>();
-        final ChildrenListAdapter adapter = new ChildrenListAdapter(getActivity().getApplicationContext(),childrenSOArrayList);
+        final ChildrenListAdapter adapter = new ChildrenListAdapter(getActivity().getApplicationContext(),
+                childrenSOArrayList
+        ,this);
         listView.setAdapter(adapter);
 
 
@@ -78,6 +80,7 @@ public class RoomBuilderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 childrenSOArrayList.add(new RoomQueryGuestSO(true,0));
+
                 adapter.notifyDataSetChanged();
             }
         });

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -12,12 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.RoomBuilderFragment;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 
 import java.util.ArrayList;
@@ -32,11 +36,13 @@ public class ChildrenListAdapter extends BaseAdapter {
     LayoutInflater lInflater;
     ArrayList<RoomQueryGuestSO> childrenSOArrayList;
     TextView childCounter;
+    RoomBuilderFragment fragment;
 
-    public ChildrenListAdapter(Context ctx, ArrayList<RoomQueryGuestSO> childrenSOArrayList) {
+    public ChildrenListAdapter(Context ctx, ArrayList<RoomQueryGuestSO> childrenSOArrayList,RoomBuilderFragment fragment) {
         this.ctx = ctx;
         this.childrenSOArrayList = childrenSOArrayList;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.fragment = fragment;
     }
 
 
@@ -57,10 +63,17 @@ public class ChildrenListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-
-             View view = lInflater.inflate(R.layout.fragment_room_builder_list_item, null);
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
+        View view = convertView;
+        if(view == null){
+            view = lInflater.inflate(R.layout.fragment_room_builder_list_item, null);
+        }
             childCounter = (TextView) view.findViewById(R.id.tv_counter_room_builder_fragment_item_child);
+        if(childrenSOArrayList.get(i).getAge() == 0){
+            childCounter.setText("Age");
+        }else{
+            childCounter.setText(childrenSOArrayList.get(i).getAge() + "");
+        }
 
         childCounter.setTag(i);
 
@@ -68,7 +81,7 @@ public class ChildrenListAdapter extends BaseAdapter {
         childCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(view);
+                show(view,i);
             }
         });
 
@@ -76,101 +89,40 @@ public class ChildrenListAdapter extends BaseAdapter {
         return view;
     }
 
-    private void showPopupMenu(final View v) {
-        PopupMenu popupMenu = new PopupMenu(ctx, v);
-        popupMenu.inflate(R.menu.popupmenu); // Для Android 4.0
-        // для версии Android 3.0 нужно использовать длинный вариант
-        // popupMenu.getMenuInflater().inflate(R.menu.popupmenu,
-        // popupMenu.getMenu());
+    public void show(final View view, final int i)
+    {
 
-        popupMenu
-                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        // Toast.makeText(PopupMenuDemoActivity.this,
-                        // item.toString(), Toast.LENGTH_LONG).show();
-                        // return true;
-                        switch (item.getItemId()) {
-
-                            case R.id.menu1:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu2:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu3:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu4:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu5:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu6:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu7:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu8:
-                                ( (TextView) v).setText("1");
-                                childrenSOArrayList.get((int)v.getTag()).setAge(1);
-                                return true;
-                            case R.id.menu9:
-                                childCounter.setText("9");
-                                return true;
-                            case R.id.menu10:
-                                childCounter.setText("10");
-                                return true;
-                            case R.id.menu11:
-                                childCounter.setText("11");
-                                return true;
-                            case R.id.menu12:
-                                childCounter.setText("12");
-                                return true;
-                            case R.id.menu13:
-                                childCounter.setText("13");
-                                return true;
-                            case R.id.menu14:
-                                childCounter.setText("14");
-                                return true;
-                            case R.id.menu15:
-                                childCounter.setText("15");
-                                return true;
-                            case R.id.menu16:
-                                childCounter.setText("16");
-                                return true;
-                            case R.id.menu17:
-                                childCounter.setText("17");
-                                return true;
-                            case R.id.menu18:
-                                childCounter.setText("18");
-                                return true;
-
-                            default:
-                                return false;
-                        }
-                    }
-                });
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-
+        final Dialog d = new Dialog(fragment.getActivity());
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.dialog);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(18); // max value 100
+        np.setMinValue(1);   // min value 0
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onDismiss(PopupMenu menu) {
-                Toast.makeText(ctx, "onDismiss",
-                        Toast.LENGTH_SHORT).show();
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+
             }
         });
-        popupMenu.show();
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ( (TextView) view).setText(String.valueOf(np.getValue())); //set the value to textview
+                childrenSOArrayList.get(i).setAge(np.getValue());
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
     }
+
 
 }
