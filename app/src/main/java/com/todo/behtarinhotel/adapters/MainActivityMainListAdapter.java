@@ -191,6 +191,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 imageViews.get(i).setImageDrawable(res.getDrawable(R.drawable.star_half_selected));
                 rate = 0;
             } else if (rate == 0) {
+                imageViews.get(i).setImageDrawable(null);
             }
         }
 
