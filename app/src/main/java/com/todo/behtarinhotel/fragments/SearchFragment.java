@@ -14,35 +14,24 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.edmodo.rangebar.RangeBar;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.RoomListAdapter;
+import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
+import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.TooManyListenersException;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -150,7 +139,7 @@ public class SearchFragment extends Fragment {
         }
 
 
-        listAdapter = new RoomListAdapter(getActivity().getApplicationContext(), soArrayList,this);
+        listAdapter = new RoomListAdapter(getActivity().getApplicationContext(), soArrayList, this);
         listView.setAdapter(listAdapter);
         //listView.addFooterView(rootView.findViewById(R.id.right_labels));
 
@@ -166,29 +155,34 @@ public class SearchFragment extends Fragment {
     private void initViewsById(View view) {
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
-        MainActivity parentActivity = (MainActivity) getActivity();
-        MainFragment mainFragment = new MainFragment();
-        parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-        SearchParamsSO searchParamsSO = new SearchParamsSO("London", "10/10/2015", "10/12/2015");
-        mainFragment.setSearchParams(searchParamsSO);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity parentActivity = (MainActivity) getActivity();
+                MainFragment mainFragment = new MainFragment();
+                parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                SearchParamsSO searchParamsSO = new SearchParamsSO("London", "10/10/2015", "10/12/2015");
+                mainFragment.setSearchParams(searchParamsSO);
+                famMenu.collapse();
+            }
+        });
+
 
         fabAddRoom = (FloatingActionButton) view.findViewById(R.id.fab_add_room_fragment_search);
         fabAddRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(soArrayList.size()<8){
+                if (soArrayList.size() < 8) {
                     builderFragment = new RoomBuilderFragment();
                     ((MaterialNavigationDrawer) getActivity()).setFragmentChild(builderFragment, "Complete");
-                }else{
-                    Toast.makeText(getActivity().getApplicationContext(),"Can`t be more than 8 rooms",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Can`t be more than 8 rooms", Toast.LENGTH_SHORT).show();
                 }
                 famMenu.collapse();
 
             }
         });
         famMenu = (FloatingActionsMenu) view.findViewById(R.id.right_labels);
-
-
 
 
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
@@ -258,6 +252,7 @@ public class SearchFragment extends Fragment {
         for (int i = 0; i < 5; i++) {
             ibArray[i].setOnClickListener(oclStars);
         }
+    }
 
 //
 //        etLocation = (EditText) view.findViewById(R.id.et_location_search_fragment);
@@ -269,7 +264,7 @@ public class SearchFragment extends Fragment {
 //        rbStars.setTickCount(5);
 //
 //
-        
+
 
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
@@ -298,8 +293,6 @@ public class SearchFragment extends Fragment {
         soArrayList.get(position).setGuests(room.getGuests());
         listAdapter.notifyDataSetChanged();
     }
-
-
 
 
 }
