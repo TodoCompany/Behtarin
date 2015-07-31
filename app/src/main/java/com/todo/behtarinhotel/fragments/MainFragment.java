@@ -3,10 +3,10 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,7 +15,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,10 +68,9 @@ public class MainFragment extends Fragment {
     String departure;
     SlideExpandableListAdapter slideExpandableListAdapter;
 
-    ButtonRectangle btnTryAgain;
-    ProgressBarCircularIndeterminate pbLoadingHotels;
-    TextView tvError;
-    LinearLayout hotelLoadingScreen;
+    private SwipeRefreshLayout swipeContainer;
+    private ProgressBarCircularIndeterminate progressBar;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -84,20 +82,23 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         listView = (ListView) rootView.findViewById(R.id.lv_main_list_main_activity);
-        btnTryAgain = (ButtonRectangle) rootView.findViewById(R.id.btnTryAgain);
-        pbLoadingHotels = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbLoadingHotels);
-        tvError = (TextView) rootView.findViewById(R.id.tvError);
-
-        btnTryAgain.setOnClickListener(new View.OnClickListener() {
+        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+        progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
+        progressBar.setVisibility(View.VISIBLE);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
                 loadDataFromExpedia();
             }
         });
 
-        hotelLoadingScreen = (LinearLayout) rootView.findViewById(R.id.hotelLoadingScreen);
-        loadDataFromExpedia();
-
+        swipeContainer.setColorSchemeResources(R.color.base_yellow);
+        if (searchResultSOArrayList == null || searchResultSOArrayList.isEmpty()){
+            loadDataFromExpedia();
+        }
         return rootView;
     }
 
@@ -108,9 +109,8 @@ public class MainFragment extends Fragment {
 
 
     public void loadDataFromExpedia(){
-        showLoadingScreen();
-
         if (searchParams != null) {
+            showLoadingScreen();
             url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
                     apiKey + API_KEY +
                     cid + CID +
@@ -122,8 +122,8 @@ public class MainFragment extends Fragment {
                     minorRev +
                     locale +
                     city + searchParams.getCity() +
-                    arrival + searchParams.getArrivalDate() +
-                    departure + searchParams.getDepartureDate() +
+                    arrivalDate + searchParams.getArrivalDate() +
+                    departureDate + searchParams.getDepartureDate() +
                     room + "1";
 
 
@@ -144,7 +144,8 @@ public class MainFragment extends Fragment {
                             Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
                             }.getType();
 
-                            if (arr != null) {
+                            if (arr != null & getActivity() != null) {
+                                searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
                                 MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrival, departure);
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
@@ -168,23 +169,22 @@ public class MainFragment extends Fragment {
     }
 
     private void showError(String errorMessage){
-        hotelLoadingScreen.setVisibility(View.VISIBLE);
-        pbLoadingHotels.setVisibility(View.GONE);
-        btnTryAgain.setVisibility(View.VISIBLE);
-        tvError.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        swipeContainer.setRefreshing(false);
+        TextView tvError = new TextView(getActivity());
+        listView.setEmptyView(tvError);
         tvError.setText(errorMessage);
     }
 
     private void showLoadingScreen(){
-        hotelLoadingScreen.setVisibility(View.VISIBLE);
-        pbLoadingHotels.setVisibility(View.VISIBLE);
-        btnTryAgain.setVisibility(View.GONE);
-        tvError.setVisibility(View.GONE);
     }
 
     private void clearLoadingScreen(){
-        hotelLoadingScreen.setVisibility(View.GONE);
-        tvError.setText("");
+        progressBar.setVisibility(View.GONE);
+        TextView tvError = new TextView(getActivity());
+        tvError.setText("No hotels found");
+        listView.setEmptyView(tvError);
+        swipeContainer.setRefreshing(false);
     }
 
 }
