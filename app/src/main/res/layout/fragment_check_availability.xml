@@ -1,16 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.todo.behtarinhotel.fragments.CheckAvailabilityFragment"
-    android:background="@color/base_background">
+    android:background="@color/base_background"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/pbRoomLoading"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@color/base_yellow"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <ListView
         android:id="@+id/rooms_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"/>
-</FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

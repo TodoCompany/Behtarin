@@ -3,6 +3,7 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
@@ -36,6 +38,11 @@ public class CheckAvailabilityFragment extends Fragment {
     ListView roomsListView;
     ViewGroup rootView;
 
+    int hotelId;
+    String arrivalDate, departureDate;
+
+    private SwipeRefreshLayout swipeContainer;
+    private ProgressBarCircularIndeterminate progressBar;
 
     public CheckAvailabilityFragment() {
     }
@@ -48,10 +55,30 @@ public class CheckAvailabilityFragment extends Fragment {
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
+
+        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+        progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbRoomLoading);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                getData(hotelId, arrivalDate, departureDate);
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(R.color.base_yellow);
+        progressBar.setVisibility(View.VISIBLE);
+
         return rootView;
     }
 
     public void getData(int hotelId, String dateArrival, String dateDeparture) {
+        this.hotelId = hotelId;
+        this.arrivalDate = dateArrival;
+        this.departureDate = dateDeparture;
+        showLoadingScreen();
         final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture);
 
 
@@ -91,7 +118,9 @@ public class CheckAvailabilityFragment extends Fragment {
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter(getActivity(), availableRoomsSO);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0){
-                            setError("There are no free rooms in this hotel for that days");
+                            showError("There are no free rooms in this hotel for that days");
+                        }else{
+                            clearLoadingScreen();
                         }
                     }
                 } catch (JSONException e) {
@@ -103,19 +132,30 @@ public class CheckAvailabilityFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("API", "Request was: " + url + "; Error response: " + error.toString());
-                setError("Something went wrong =( cant get hotel rooms. Check your internet connection");
+                showError("Something went wrong =( cant get hotel rooms. Check your internet connection");
             }
         });
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void setError(String errorText){
-        if (getActivity() != null) {
-            rootView.removeAllViews();
-            TextView tvError = new TextView(getActivity());
-            tvError.setText(errorText);
-            rootView.addView(tvError);
-        }
+    private void showError(String errorMessage){
+        progressBar.setVisibility(View.GONE);
+        swipeContainer.setRefreshing(false);
+        TextView tvError = new TextView(getActivity());
+        roomsListView.setEmptyView(tvError);
+        tvError.setText(errorMessage);
+    }
+
+    private void showLoadingScreen(){
+
+    }
+
+    private void clearLoadingScreen(){
+        progressBar.setVisibility(View.GONE);
+        TextView tvError = new TextView(getActivity());
+        tvError.setText("No hotels found");
+        roomsListView.setEmptyView(tvError);
+        swipeContainer.setRefreshing(false);
     }
 
 }

@@ -53,7 +53,6 @@ public class MainFragment extends Fragment {
     String departureDate = "&departureDate=";
     String city = "&destinationString=";
     String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String customerUserAgent = "&customerUserAgent=TravelWizard/1.0(iOS 10_10_3)MOBILE_APP";
     String minorRev = "&minorRev=30";
     String room = "&room1=";
 
@@ -62,10 +61,8 @@ public class MainFragment extends Fragment {
 
 
     SearchParamsSO searchParams;
-    ArrayList<SearchResultSO> searchResultSOArrayList;
+    ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
     ListView listView;
-    String arrival;
-    String departure;
     SlideExpandableListAdapter slideExpandableListAdapter;
 
     private SwipeRefreshLayout swipeContainer;
@@ -84,7 +81,6 @@ public class MainFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.lv_main_list_main_activity);
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
-        progressBar.setVisibility(View.VISIBLE);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -96,17 +92,18 @@ public class MainFragment extends Fragment {
         });
 
         swipeContainer.setColorSchemeResources(R.color.base_yellow);
-        if (searchResultSOArrayList == null || searchResultSOArrayList.isEmpty()){
+        if (searchResultSOArrayList.isEmpty()){
             loadDataFromExpedia();
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            listView.setAdapter(slideExpandableListAdapter);
         }
         return rootView;
     }
 
-
     public void setSearchParams(SearchParamsSO searchParams){
         this.searchParams = searchParams;
     }
-
 
     public void loadDataFromExpedia(){
         if (searchParams != null) {
@@ -116,7 +113,6 @@ public class MainFragment extends Fragment {
                     cid + CID +
                     sig +
                     customerIpAddress +
-                    //customerUserAgent +
                     currencyCode +
                     customerSessionID +
                     minorRev +
@@ -147,7 +143,7 @@ public class MainFragment extends Fragment {
                             if (arr != null & getActivity() != null) {
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, arrival, departure);
+                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate());
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                 listView.setAdapter(slideExpandableListAdapter);
                                 clearLoadingScreen();
@@ -177,6 +173,7 @@ public class MainFragment extends Fragment {
     }
 
     private void showLoadingScreen(){
+
     }
 
     private void clearLoadingScreen(){
