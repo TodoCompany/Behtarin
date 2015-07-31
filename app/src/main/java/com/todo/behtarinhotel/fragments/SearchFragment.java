@@ -4,7 +4,6 @@ package com.todo.behtarinhotel.fragments;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,30 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.edmodo.rangebar.RangeBar;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.RoomListAdapter;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -45,9 +29,6 @@ import java.util.Calendar;
  * A simple {@link Fragment} subclass.
  */
 public class SearchFragment extends Fragment {
-
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
 
     ListView listView;
     RoomListAdapter listAdapter;
@@ -66,30 +47,10 @@ public class SearchFragment extends Fragment {
     Button btnSearchForHotels;
     RangeBar rbStars;
 
-
     LayoutInflater inflater;
-
-    String url;
-    String apiKey = "&apiKey=";
-    String cid = "&cid=";
-    String locale = "&locale=enUS";
-    String customerSessionID = "&customerSessionID=1";
-    String customerIpAddress = "&customerIpAddress=193.93.219.63";
-    String arrivalDate = "&arrivalDate=";
-    String currencyCode = "&currencyCode=USD";
-    String departureDate = "&departureDate=";
-    String city = "&destinationString=";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String customerUserAgent = "&customerUserAgent=TravelWizard/1.0(iOS 10_10_3)MOBILE_APP";
-    String minorRev = "&minorRev=30";
-    String room = "&room1=";
-
-    GsonBuilder gsonBuilder;
-    Gson gson;
 
     boolean isCheckInSelected;
 
-    ArrayList<SearchResultSO> searchResultSOArrayList;
     DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -222,65 +183,14 @@ public class SearchFragment extends Fragment {
         btnSearchForHotels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-                        apiKey + API_KEY +
-                        cid + CID +
-                        sig +
-                        customerIpAddress +
-                        //customerUserAgent +
-                        currencyCode +
-                        customerSessionID +
-                        minorRev +
-                        locale +
-                        city + "London" +
-                        arrivalDate + "10/10/2015" +
-                        departureDate + "10/12/2015" +
-                        room + "1";
+                MainActivity parentActivity = (MainActivity) getActivity();
+                MainFragment mainFragment = new MainFragment();
+                parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                SearchParamsSO searchParamsSO = new SearchParamsSO("London", "10/10/2015", "10/12/2015");
+                mainFragment.setSearchParams(searchParamsSO);
 
-
-                gsonBuilder = new GsonBuilder();
-                gson = gsonBuilder.create();
-
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                        url,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                JSONArray arr = null;
-                                try {
-                                    arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-                                }.getType();
-
-                                if (arr != null) {
-                                    searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                    Log.d("MainActivity", url);
-                                    Log.d("MainActivity", searchResultSOArrayList.size() + "");
-                                    Log.d("MainActivity", response.toString());
-                                    MainActivity parentActivity = (MainActivity) getActivity();
-                                    MainFragment mainFragment = new MainFragment();
-                                    parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-                                    //TODO fill with not hardcoded data
-                                    mainFragment.initMailList(searchResultSOArrayList, "10/10/2015", "10/12/2015");
-                                    parentActivity.setMainSearchFragment(mainFragment);
-
-                                }
-
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.e("Error: ", error.getMessage());
-                    }
-                }
-
-                );
-                VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
             }
+
 
         });
     }

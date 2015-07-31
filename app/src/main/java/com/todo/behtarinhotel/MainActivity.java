@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.RoomManagementFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
@@ -28,9 +27,13 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
 
 public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
 
+
+
+
     MyPayPall myPayPall;
     SearchFragment searchFragment;
-    MainFragment mainFragment;
+
+
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
             }
         });
+
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
@@ -78,9 +82,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     }
 
 
-    public void setMainSearchFragment(MainFragment mainFragment) {
-        this.mainFragment = mainFragment;
-    }
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -154,4 +155,9 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
             Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
         }
     }
+
+
+
+
+
 }

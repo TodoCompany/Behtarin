@@ -3,8 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_background"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:id="@+id/hotelLoadingScreen">
+
+        <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+            android:id="@+id/pbLoadingHotels"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@color/base_yellow"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Error: "
+            android:id="@+id/tvError"
+            android:layout_marginTop="16dp" />
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/btnTryAgain"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:background="@color/base_yellow"
+            android:text="Try Again"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lv_main_list_main_activity"

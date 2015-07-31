@@ -98,6 +98,8 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         return view;
     }
 
+
+
     private void initViewsById(View rootView) {
         roomImage = (ImageView) rootView.findViewById(R.id.room_image);
         tvRoomDescription = (TextView) rootView.findViewById(R.id.tvRoomDescription);
