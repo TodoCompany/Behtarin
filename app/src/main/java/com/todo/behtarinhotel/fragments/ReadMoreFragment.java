@@ -15,6 +15,7 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class ReadMoreFragment extends Fragment {
     float rate;
     String arrival;
     String departure;
+    ArrayList<SearchRoomSO> rooms;
 
     ArrayList<ImageView> imageViews;
 
@@ -73,10 +75,11 @@ public class ReadMoreFragment extends Fragment {
         btnCheckAvailability = (ButtonFlat) rootView.findViewById(R.id.btn_check_availability);
     }
 
-    public void setHotelData(SearchResultSO searchResultSO, String arrival, String departure) {
+    public void setHotelData(SearchResultSO searchResultSO, String arrival, String departure, ArrayList<SearchRoomSO> rooms) {
         this.searchResultSO = searchResultSO;
         this.arrival = arrival;
         this.departure = departure;
+        this.rooms = rooms;
 
     }
 
@@ -100,7 +103,7 @@ public class ReadMoreFragment extends Fragment {
             public void onClick(View v) {
                 CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
                 ((MaterialNavigationDrawer) getActivity()).setFragmentChild(checkAvailabilityFragment, getActivity().getString(R.string.fragment_checkavailablerooms));
-                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure);
+                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure, rooms);
 
             }
         });

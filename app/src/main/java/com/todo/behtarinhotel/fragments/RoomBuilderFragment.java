@@ -1,9 +1,8 @@
 package com.todo.behtarinhotel.fragments;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,11 +20,9 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.ChildrenListAdapter;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,7 +70,7 @@ public class RoomBuilderFragment extends Fragment {
         btn.setBackgroundColor(0);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        params.setMarginEnd(convertToDp(16));
+        params.rightMargin = convertToDp(16);
         btn.setLayoutParams(params);
         btn.setText("Done");
         btn.setTextColor(getResources().getColor(R.color.base_gold));

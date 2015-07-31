@@ -6,13 +6,23 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+
     <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
         android:id="@+id/pbHotelLoading"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="@color/base_yellow"
-        android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@color/base_yellow"
         android:visibility="gone" />
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -25,7 +35,7 @@
         android:id="@+id/lv_main_list_main_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent" />
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

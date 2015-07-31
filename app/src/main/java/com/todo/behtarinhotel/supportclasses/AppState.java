@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 /**
  * Created by maxvitruk on 07.07.15.
@@ -77,7 +79,7 @@ public class AppState {
         return sPrefLog.getBoolean(LOG_STATUS, false);
     }
 
-    public static String generateUrlForHotelAvailability(int hotelIdNumber, String arrDate, String depDate) {
+    public static String generateUrlForHotelAvailability(int hotelIdNumber, String arrDate, String depDate, ArrayList<SearchRoomSO> rooms) {
         String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/avail?";
         String apiKey = "&apiKey=";
         String cid = "&cid=";
@@ -93,7 +95,9 @@ public class AppState {
                 + hotelId
                 + arrivalDate + arrDate
                 + departureDate + depDate
-                + "&includeRoomImages=true";
+                + "&includeRoomImages=true"
+                + makeRoomString(rooms);
+
     }
 
     public static String getMD5EncryptedString(String encTarget) {
@@ -111,5 +115,22 @@ public class AppState {
         }
         return md5;
     }
+
+    public static String makeRoomString(ArrayList<SearchRoomSO> rooms) {
+        String room = "";
+        for (int a = 0; a < rooms.size(); a++) {
+            room = room + "&room" + (a + 1) + "=";
+            for (int b = 0; b < rooms.get(a).getGuests().size(); b++) {
+                if (b == rooms.get(a).getGuests().size() - 1) {
+                    room = room + rooms.get(a).getGuests().get(b).getAge();
+                } else {
+                    room = room + rooms.get(a).getGuests().get(b).getAge() + ",";
+                }
+            }
+
+        }
+        return room;
+    }
+
 
 }

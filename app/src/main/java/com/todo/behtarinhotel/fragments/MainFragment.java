@@ -60,6 +60,8 @@ public class MainFragment extends Fragment {
     GsonBuilder gsonBuilder;
     Gson gson;
 
+    View rootView;
+    TextView tvError;
 
     SearchParamsSO searchParams;
     ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
@@ -78,10 +80,12 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
         listView = (ListView) rootView.findViewById(R.id.lv_main_list_main_activity);
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
+        tvError = (TextView) rootView.findViewById(R.id.tvError);
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -142,10 +146,15 @@ public class MainFragment extends Fragment {
                             Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
                             }.getType();
 
-                            if (arr != null & getActivity() != null) {
+                            if (arr == null || arr.length() == 0) {
+                                showError("No hotels");
+                                return;
+                            }
+
+                            if (getActivity() != null) {
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate());
+                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms());
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                 listView.setAdapter(slideExpandableListAdapter);
                                 clearLoadingScreen();
@@ -169,16 +178,17 @@ public class MainFragment extends Fragment {
     private void showError(String errorMessage){
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
-        TextView tvError = new TextView(getActivity());
-        listView.setEmptyView(tvError);
-        tvError.setText(errorMessage);
+        tvError.setText("Error: " + errorMessage);
+        tvError.setVisibility(View.VISIBLE);
     }
 
     private void showLoadingScreen(){
+        tvError.setVisibility(View.GONE);
 
     }
 
     private void clearLoadingScreen(){
+        tvError.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         TextView tvError = new TextView(getActivity());
         tvError.setText("No hotels found");

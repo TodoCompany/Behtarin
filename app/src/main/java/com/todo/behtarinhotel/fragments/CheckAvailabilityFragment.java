@@ -20,12 +20,15 @@ import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.AvailableRoomsAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,9 +40,11 @@ public class CheckAvailabilityFragment extends Fragment {
     AvailableRoomsSO availableRoomsSO;
     ListView roomsListView;
     ViewGroup rootView;
+    TextView tvError;
 
     int hotelId;
     String arrivalDate, departureDate;
+    ArrayList<SearchRoomSO> rooms;
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
@@ -58,13 +63,15 @@ public class CheckAvailabilityFragment extends Fragment {
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbRoomLoading);
+        tvError = (TextView) rootView.findViewById(R.id.tvError);
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                getData(hotelId, arrivalDate, departureDate);
+                getData(hotelId, arrivalDate, departureDate, rooms);
             }
         });
 
@@ -74,12 +81,13 @@ public class CheckAvailabilityFragment extends Fragment {
         return rootView;
     }
 
-    public void getData(int hotelId, String dateArrival, String dateDeparture) {
+    public void getData(int hotelId, String dateArrival, String dateDeparture, ArrayList<SearchRoomSO> rooms) {
         this.hotelId = hotelId;
         this.arrivalDate = dateArrival;
         this.departureDate = dateDeparture;
+        this.rooms = rooms;
         showLoadingScreen();
-        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture);
+        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -125,6 +133,8 @@ public class CheckAvailabilityFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (IllegalStateException ie) {
+
                 }
                 Log.d("API", "parsing done");
             }
@@ -139,23 +149,28 @@ public class CheckAvailabilityFragment extends Fragment {
     }
 
     private void showError(String errorMessage){
+
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
-        TextView tvError = new TextView(getActivity());
-        roomsListView.setEmptyView(tvError);
-        tvError.setText(errorMessage);
+        if (tvError != null) {
+            tvError.setText("Error: " + errorMessage);
+            tvError.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showLoadingScreen(){
-
+        if (tvError != null) {
+            tvError.setVisibility(View.GONE);
+        }
     }
 
     private void clearLoadingScreen(){
+        if (tvError != null) {
+            tvError.setVisibility(View.GONE);
+        }
         progressBar.setVisibility(View.GONE);
-        TextView tvError = new TextView(getActivity());
-        tvError.setText("No hotels found");
-        roomsListView.setEmptyView(tvError);
         swipeContainer.setRefreshing(false);
+
     }
 
 }

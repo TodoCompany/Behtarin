@@ -26,6 +26,7 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -69,13 +70,15 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     String tripAdvisorWebURL;
     String tripAdvisorApiURL;
     String arrivalDate, departureDate;
+    ArrayList<SearchRoomSO> rooms;
 
 
-    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate) {
+    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
+        this.rooms = rooms;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
@@ -113,7 +116,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 ReadMoreFragment readMoreFragment = new ReadMoreFragment();
                 ((MaterialNavigationDrawer) activity).setFragmentChild(readMoreFragment, "About Hotel");
-                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate);
+                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate, rooms);
             }
         });
         btnCheckAvailability = (ButtonFlat) view.findViewById(R.id.btn_check_availability);
@@ -123,7 +126,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
                 CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
                 ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
-                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate);
+                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate, rooms);
             }
         });
 
