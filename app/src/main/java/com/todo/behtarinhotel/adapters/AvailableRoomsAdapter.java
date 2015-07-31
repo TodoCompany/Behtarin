@@ -6,22 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 /**
  * Created by Andriy on 13.07.2015.
  */
 public class AvailableRoomsAdapter extends BaseAdapter {
 
-    NetworkImageView roomImageView;
-    ImageLoader imageLoader;
-    TextView tvCurrentPrice, tvOldPrice, tvRoomDescription, tvRoomBeds;
+    ImageView roomImage;
+    TextView tvRoomDescription, tvLocation, tvOldPrice, tvNewPrice, tvMaxGuests, tvBedsQuantity, tvBedsTypes;
+    ButtonRectangle btnBook;
+    AvailableRoomsSO.RoomSO room;
 
     Context ctx;
     LayoutInflater lInflater;
@@ -33,7 +34,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         this.availableRooms = availableRooms;
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader = VolleySingleton.getInstance(ctx).getImageLoader();
+
 
     }
 
@@ -60,21 +61,32 @@ public class AvailableRoomsAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.available_room_item, null);
         }
 
-        roomImageView = (NetworkImageView) view.findViewById(R.id.room_image_view);
+        initViewsById(view);
 
-        tvCurrentPrice = (TextView) view.findViewById(R.id.tv_room_current_price);
-        tvOldPrice = (TextView) view.findViewById(R.id.tv_room_old_price);
-        tvRoomDescription = (TextView) view.findViewById(R.id.tv_room_description);
-        tvRoomBeds = (TextView) view.findViewById(R.id.tv_room_beds);
+//        ImageView roomImage;
+//        TextView tvRoomDescription, tvLocation, tvOldPrice, tvNewPrice, tvMaxGuests, tvBedsQuantity, tvBedsTypes;
+//        Button btnBook;
 
-        tvRoomDescription.setText(availableRooms.getRoomSO().get(position).getDescription());
-        tvCurrentPrice.setText("Price: " + availableRooms.getRoomSO().get(position).getAverageRate());
-        tvOldPrice.setText("" + availableRooms.getRoomSO().get(position).getOldPrice());
+        room = availableRooms.getRoomSO().get(position);
+        tvRoomDescription.setText(room.getDescription());
+        tvLocation.setText(availableRooms.getHotelAddress());
+        tvOldPrice.setText("$" + room.getOldPrice());
         tvOldPrice.setPaintFlags(tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        tvRoomBeds.setText(availableRooms.getRoomSO().get(position).getBedDescription());
-        roomImageView.setImageUrl(availableRooms.getRoomSO().get(position).getRoomImage(), imageLoader);
-        roomImageView.setDefaultImageResId(R.color.background_material_light);
-        roomImageView.setErrorImageResId(R.mipmap.ic_launcher);
+        tvNewPrice.setText("$" + room.getAverageRate());
+        tvBedsTypes.setText(room.getBedDescription());
+        tvMaxGuests.setText("x" + room.getMaxGuests());
+        tvBedsQuantity.setText("x" + room.getBedsQuantity());
+        String temp = "";
+        if (room.getRoomImage() != null && !room.getRoomImage().equals("")) {
+            temp = room.getRoomImage()
+                    .substring(0, room.getRoomImage().length() - 5);
+        }
+        Glide.with(ctx)
+                .load(temp + "b.jpg")
+                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .error(R.drawable.empty)
+                .into(roomImage);
+
 
 
         if(availableRooms.getRoomSO().get(position).getAverageRate() == availableRooms.getRoomSO().get(position).getOldPrice()){
@@ -84,5 +96,19 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         }
 
         return view;
+    }
+
+
+
+    private void initViewsById(View rootView) {
+        roomImage = (ImageView) rootView.findViewById(R.id.room_image);
+        tvRoomDescription = (TextView) rootView.findViewById(R.id.tvRoomDescription);
+        tvLocation = (TextView) rootView.findViewById(R.id.tvLocation);
+        tvOldPrice = (TextView) rootView.findViewById(R.id.tvOldPrice);
+        tvNewPrice = (TextView) rootView.findViewById(R.id.tvNewPrice);
+        tvMaxGuests = (TextView) rootView.findViewById(R.id.tvMaxGuests);
+        tvBedsQuantity = (TextView) rootView.findViewById(R.id.tvBedsQuantity);
+        tvBedsTypes = (TextView) rootView.findViewById(R.id.tvBedsTypes);
+        btnBook = (ButtonRectangle) rootView.findViewById(R.id.btnBook);
     }
 }

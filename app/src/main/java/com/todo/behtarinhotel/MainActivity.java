@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.RoomManagementFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
@@ -168,4 +167,3 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     }
 
 }
-

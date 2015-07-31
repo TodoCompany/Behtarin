@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 
 import java.util.ArrayList;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +30,12 @@ public class ReadMoreFragment extends Fragment {
     TextView tvHotelName, tvHotelAddress, tvHotelDescription, tvHotelPrice, tvHotelLikes;
     ImageView hotelImage, imageTripAdvisor, hotelStar1, hotelStar2, hotelStar3, hotelStar4, hotelStar5;
     ButtonFloat btnFloat;
+    ButtonFlat btnCheckAvailability;
     View rootView;
     SearchResultSO searchResultSO;
     float rate;
+    String arrival;
+    String departure;
 
     ArrayList<ImageView> imageViews;
 
@@ -64,36 +70,49 @@ public class ReadMoreFragment extends Fragment {
         hotelStar4 = (ImageView) rootView.findViewById(R.id.hotel_star_4);
         hotelStar5 = (ImageView) rootView.findViewById(R.id.hotel_star_5);
         btnFloat = (ButtonFloat) rootView.findViewById(R.id.btn_float);
+        btnCheckAvailability = (ButtonFlat) rootView.findViewById(R.id.btn_check_availability);
     }
 
-    public void setHotelData(SearchResultSO searchResultSO) {
+    public void setHotelData(SearchResultSO searchResultSO, String arrival, String departure) {
         this.searchResultSO = searchResultSO;
+        this.arrival = arrival;
+        this.departure = departure;
 
     }
 
     private void fillWithData() {
         imageViews = new ArrayList<>();
-        imageViews.add(hotelStar5);
-        imageViews.add(hotelStar4);
-        imageViews.add(hotelStar3);
-        imageViews.add(hotelStar2);
         imageViews.add(hotelStar1);
+        imageViews.add(hotelStar2);
+        imageViews.add(hotelStar3);
+        imageViews.add(hotelStar4);
+        imageViews.add(hotelStar5);
 
         tvHotelName.setText(searchResultSO.getHotelName());
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvHotelAddress.setText(searchResultSO.getAddress());
-        //todo encode from html, works 50/50
-        tvHotelDescription.setText(Html.fromHtml(searchResultSO.getLocationDescription()));
-        tvHotelPrice.setText("" + searchResultSO.getMinPrice());
+        tvHotelDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
+        tvHotelPrice.setText(searchResultSO.getMinPrice() + " $");
         tvHotelLikes.setText("" + searchResultSO.getLikeCounter());
+
+        btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(checkAvailabilityFragment, getActivity().getString(R.string.fragment_checkavailablerooms));
+                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure);
+
+            }
+        });
+
 
         String temp = searchResultSO.getPhotoURL()
                 .substring(0, searchResultSO.getPhotoURL().length() - 5);
 
         Glide.with(getActivity())
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
-                .placeholder(R.color.background_material_light)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .error(R.drawable.empty)
                 .into(hotelImage);
 
         Glide.with(getActivity())
@@ -107,11 +126,11 @@ public class ReadMoreFragment extends Fragment {
         for (int i = 0; i < 5; i++) {
             if (rate >= 1) {
                 rate--;
+                imageViews.get(i).setImageDrawable(getResources().getDrawable(R.drawable.star_selected));
             } else if (rate == 0.5) {
-                imageViews.get(i).setImageDrawable(getResources().getDrawable(R.drawable.abc_btn_radio_to_on_mtrl_000));
+                imageViews.get(i).setImageDrawable(getResources().getDrawable(R.drawable.star_half_selected));
                 rate = 0;
             } else if (rate == 0) {
-                imageViews.get(i).setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
             }
         }
     }

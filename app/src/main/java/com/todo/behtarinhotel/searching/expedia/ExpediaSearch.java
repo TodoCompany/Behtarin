@@ -2,7 +2,7 @@ package com.todo.behtarinhotel.searching.expedia;
 
 import com.todo.behtarinhotel.searching.ApiSearching;
 import com.todo.behtarinhotel.searching.SearchCallBackListener;
-import com.todo.behtarinhotel.simpleobjects.SearchParams;
+import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class ExpediaSearch implements ApiSearching {
     private SearchCallBackListener searchCallBackListener;
 
     @Override
-    public void search(SearchParams params) {
+    public void search(SearchParamsSO params) {
         //todo make some search and call back
         //on result
         if(searchCallBackListener != null) {

@@ -70,6 +70,7 @@ public class CheckAvailabilityFragment extends Fragment {
                             try {
 
                                 JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
+                                availableRoomsSO.getRoomSO().get(i).setBedsQuantity(bedTypesArray.length());
                                 for (int n = 0; n < bedTypesArray.length(); n++) {
                                     JSONObject object = bedTypesArray.getJSONObject(n);
                                     bedDescription = bedDescription + object.getString("description") + "\n";
@@ -77,8 +78,11 @@ public class CheckAvailabilityFragment extends Fragment {
                             } catch (Exception itIsNotAnArray) {
                                 JSONObject bedType = bedTypesObject.getJSONObject("BedType");
                                 bedDescription = bedDescription + bedType.getString("description") + "\n";
+                                availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
+
 
                             }
+
                             availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
 
                         }

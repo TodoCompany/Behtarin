@@ -167,5 +167,15 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TODO delete this search button"
+        android:id="@+id/btn_search_for_hotels_search_activity"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/right_labels"
+        android:layout_toStartOf="@+id/right_labels"
+        android:textColor="#ffffffff" />
+
 
 </RelativeLayout>

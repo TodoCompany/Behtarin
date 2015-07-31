@@ -52,6 +52,8 @@ dependencies {
 
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.getbase:floatingactionbutton:1.10.0'
+// pull to refresh
+    compile 'com.android.support:support-v4:22.2.0'
 
 
 

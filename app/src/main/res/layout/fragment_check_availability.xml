@@ -2,12 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.todo.behtarinhotel.fragments.CheckAvailabilityFragment">
+    tools:context="com.todo.behtarinhotel.fragments.CheckAvailabilityFragment"
+    android:background="@color/base_background">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ListView
         android:id="@+id/rooms_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"/>
 </FrameLayout>
