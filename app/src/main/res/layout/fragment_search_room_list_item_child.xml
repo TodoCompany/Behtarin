@@ -18,7 +18,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/adult" />
+        android:src="@drawable/adult" />
 
     <TextView
         android:id="@+id/tv_type_search_fragment_item_child"

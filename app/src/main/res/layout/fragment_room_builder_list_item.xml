@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:background="@color/base_white"
-    android:paddingLeft="16dp"
-    android:paddingRight="8dp"
-    android:paddingBottom="16dp"
     android:paddingTop="16dp">
 
     <ImageView
         android:id="@+id/iv_type_room_builder_fragment_item_child"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/child" />
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/child"
+        android:layout_centerVertical="true" />
+
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/btn_remove_child_room_builder_fragment_item"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:background="@null"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:padding="12dp" />
 
     <TextView
         android:id="@+id/tv_counter_room_builder_fragment_item_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_weight="1"
         android:gravity="right"
         android:text="Age"
-        android:textColor="@color/base_black" />
-</LinearLayout>
+        android:textColor="@color/base_black"
+        android:layout_gravity="center_vertical|right"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:textSize="18sp" />
+
+</RelativeLayout>

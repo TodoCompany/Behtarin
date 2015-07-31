@@ -25,13 +25,25 @@
             android:layout_marginTop="16dp" />
 
         <ImageButton
+            android:id="@+id/ib_delete_fragment_search_room_list"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="false"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="32dp"
+            android:layout_toLeftOf="@+id/ib_edit_fragment_search_room_list"
+            android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <ImageButton
             android:id="@+id/ib_edit_fragment_search_room_list"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:background="@android:drawable/ic_menu_edit"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:padding="10dp"
+            android:layout_alignParentTop="false" />
 
         <ImageView
             android:id="@+id/imageView2"

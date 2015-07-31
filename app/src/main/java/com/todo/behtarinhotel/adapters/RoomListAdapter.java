@@ -2,6 +2,7 @@ package com.todo.behtarinhotel.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.RoomBuilderFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.MyListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * Created by dmytro on 7/28/15.
@@ -28,27 +32,21 @@ public class RoomListAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<SearchRoomSO> roomGuests;
-
-    MyListView listView;
-
-    LinearLayout ll;
     LinearLayout linearLayout;
-    TextView tvType;
-    TextView tvCount;
     TextView tvRoom;
-    ImageView ivType;
     Resources res;
-    ImageButton ibEdit;
-    SearchFragment fragment;
-    RoomListItemAdapter adapter;
+    ImageButton ibEdit, ibDelete;
+    SearchFragment parentFragment;
+    private boolean doubleBackToExitPressedOnce;
+    private Handler mHandler = new Handler();
 
 
-    public RoomListAdapter(Context ctx, ArrayList<SearchRoomSO> roomGuests) {
+    public RoomListAdapter(Context ctx, ArrayList<SearchRoomSO> roomGuests, SearchFragment fragment) {
         this.ctx = ctx;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Collections.reverse(roomGuests);
         this.roomGuests = (roomGuests);
         res = ctx.getResources();
+        this.parentFragment = fragment;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class RoomListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return roomGuests.get(roomGuests.size() - i);
+        return roomGuests.get(i);
     }
 
     @Override
@@ -82,37 +80,76 @@ public class RoomListAdapter extends BaseAdapter {
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ctx, roomGuests.get(i).getGuests()[0].getAge() + "", Toast.LENGTH_SHORT).show();
+                ((MaterialNavigationDrawer) parentFragment.getActivity()).setFragmentChild(new RoomBuilderFragment(roomGuests.get(i).getGuests(), i), "");
             }
+        });
+
+        ibDelete = (ImageButton) view.findViewById(R.id.ib_delete_fragment_search_room_list);
+        ibDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (roomGuests.size() != 1) {
+                    if (doubleBackToExitPressedOnce) {
+                        roomGuests.remove(i);
+                        notifyDataSetChanged();
+                        return;
+                    }
+
+                    doubleBackToExitPressedOnce = true;
+                    Toast.makeText(ctx, "Please click again to delete", Toast.LENGTH_SHORT).show();
+                    mHandler.postDelayed(mRunnable, 2000);
+                }else {
+                    Toast.makeText(ctx, "Must be at least one room",Toast.LENGTH_SHORT).show();
+                }
+            }
+
         });
 
 
         tvRoom = (TextView) view.findViewById(R.id.tv_room_fragment_search_room_list);
-        tvRoom.setText("Room " + (roomGuests.size() - i));
+        tvRoom.setText("Room " + (i + 1));
 
         linearLayout = (LinearLayout) view.findViewById(R.id.lv_guests_fragment_search_list);
-//        adapter = new RoomListItemAdapter(ctx,roomGuests.get(i));
-//        listView.setAdapter(adapter);
 
-        for (int j = 0; j < roomGuests.get(i).getGuests().length; j++) {
+
+        for (int j = 0; j < roomGuests.get(i).getGuests().size(); j++) {
             LinearLayout ll = (LinearLayout) lInflater.inflate(R.layout.fragment_search_room_list_item_child, null);
 
             TextView tvCount = (TextView) ll.findViewById(R.id.tv_counter_search_fragment_item_child);
 
 
             TextView tvType = (TextView) ll.findViewById(R.id.tv_type_search_fragment_item_child);
-            if (roomGuests.get(i).getGuests()[j].isChild()) {
+            ImageView ivType = (ImageView) ll.findViewById(R.id.iv_type_search_fragment_item_child);
+            if (roomGuests.get(i).getGuests().get(j).isChild()) {
                 tvType.setText("Child");
-                tvCount.setText(roomGuests.get(i).getGuests()[j].getAge() + " years");
+                if (roomGuests.get(i).getGuests().get(j).getAge() == 1) {
+                    tvCount.setText(roomGuests.get(i).getGuests().get(j).getAge() + " year");
+                } else {
+                    tvCount.setText(roomGuests.get(i).getGuests().get(j).getAge() + " years");
+                }
+                ivType.setImageDrawable(res.getDrawable(R.drawable.child));
             } else {
                 tvType.setText("Adult");
-                tvCount.setText("x " + roomGuests.get(i).getGuests()[j].getAge());
+                tvCount.setText("x " + roomGuests.get(i).getGuests().get(j).getAge());
             }
             linearLayout.addView(ll);
         }
 
 
         return view;
+    }
+
+    private final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce = false;
+        }
+    };
+
+    public void onDestroy() {
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mRunnable);
+        }
     }
 
 }

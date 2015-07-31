@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
@@ -13,6 +14,8 @@ import com.todo.behtarinhotel.fragments.RoomManagementFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
+import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
 import org.json.JSONException;
@@ -29,7 +32,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
 public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
 
     MyPayPall myPayPall;
-    SearchFragment searchFragment;
+    public SearchFragment searchFragment;
     MainFragment mainFragment;
 
     @Override
@@ -154,4 +157,15 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
             Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
         }
     }
+
+    public void updateArrayListInFragment(ArrayList<RoomQueryGuestSO> guests, int position){
+
+        if(position == 9){
+            searchFragment.addRoom(new SearchRoomSO(guests));
+        }else{
+            searchFragment.addRoom(new SearchRoomSO(guests),position);
+        }
+    }
+
 }
+

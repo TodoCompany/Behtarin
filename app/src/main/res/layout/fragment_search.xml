@@ -12,7 +12,8 @@
         android:padding="16dp"
         android:id="@+id/container_search"
         android:background="#ff909090"
-        android:elevation="8dp">
+        android:elevation="8dp"
+        android:focusableInTouchMode="true">
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"

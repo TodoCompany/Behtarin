@@ -4,7 +4,6 @@ package com.todo.behtarinhotel.fragments;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,35 +12,25 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.edmodo.rangebar.RangeBar;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.RoomListAdapter;
+import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TooManyListenersException;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -54,16 +43,19 @@ public class SearchFragment extends Fragment {
     private static final String CID = "55505";
 
     ListView listView;
-    RoomListAdapter listAdapter;
-    ArrayList<SearchRoomSO> soArrayList;
+    public RoomListAdapter listAdapter;
+    public ArrayList<SearchRoomSO> soArrayList;
 
-    FloatingActionButton fabSearch,fabAddRoom;
+    FloatingActionButton fabSearch, fabAddRoom;
+    FloatingActionsMenu famMenu;
 
     MaterialEditText etCheckIn;
     MaterialEditText etCheckOut;
 
-    ImageButton ibStar1,ibStar2,ibStar3,ibStar4,ibStar5;
+    ImageButton ibStar1, ibStar2, ibStar3, ibStar4, ibStar5;
     ImageButton[] ibArray;
+
+    public RoomBuilderFragment builderFragment;
 
     EditText etLocation;
     EditText etRoom;
@@ -126,21 +118,38 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         initViewsById(rootView);
 
         listView = (ListView) rootView.findViewById(R.id.lv_room_fragment_search);
-        soArrayList = new ArrayList<SearchRoomSO>();
+        if (soArrayList == null) {
+            soArrayList = new ArrayList<SearchRoomSO>();
+            RoomQueryGuestSO guest = new RoomQueryGuestSO(false, 2);
+            ArrayList<RoomQueryGuestSO> guestSOs = new ArrayList<>();
+            guestSOs.add(guest);
+            soArrayList.add(new SearchRoomSO(guestSOs));
+        }
 
-        listAdapter = new RoomListAdapter(getActivity().getApplicationContext(),soArrayList);
+
+        if (((MaterialNavigationDrawer) getActivity()).getToolbar().findViewById(1) != null) {
+            ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(((MaterialNavigationDrawer) getActivity()).getToolbar().findViewById(1));
+        }
+
+
+        listAdapter = new RoomListAdapter(getActivity().getApplicationContext(), soArrayList,this);
         listView.setAdapter(listAdapter);
         //listView.addFooterView(rootView.findViewById(R.id.right_labels));
 
-        return rootView ;
+        return rootView;
+    }
 
-
+    @Override
+    public void onDestroy() {
+        listAdapter.onDestroy();
+        super.onDestroy();
     }
 
     private void initViewsById(View view) {
@@ -150,9 +159,19 @@ public class SearchFragment extends Fragment {
         fabAddRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(new RoomBuilderFragment(),"Complete");
+                if(soArrayList.size()<8){
+                    builderFragment = new RoomBuilderFragment();
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(builderFragment, "Complete");
+                }else{
+                    Toast.makeText(getActivity().getApplicationContext(),"Can`t be more than 8 rooms",Toast.LENGTH_SHORT).show();
+                }
+                famMenu.collapse();
+
             }
         });
+        famMenu = (FloatingActionsMenu) view.findViewById(R.id.right_labels);
+
+
 
 
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
@@ -163,7 +182,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View view) {
                 if (view.getId() == R.id.et_check_in_search_fragment) {
                     isCheckInSelected = true;
-                }else {
+                } else {
                     isCheckInSelected = false;
                 }
                 showDatePicker();
@@ -172,46 +191,46 @@ public class SearchFragment extends Fragment {
         etCheckOut.setOnClickListener(oclDatePicker);
         etCheckIn.setOnClickListener(oclDatePicker);
 
-        ibStar1 = (ImageButton)view.findViewById(R.id.ib_star_1_search_fragment);
-        ibStar2 = (ImageButton)view.findViewById(R.id.ib_star_2_search_fragment);
-        ibStar3 = (ImageButton)view.findViewById(R.id.ib_star_3_search_fragment);
-        ibStar4 = (ImageButton)view.findViewById(R.id.ib_star_4_search_fragment);
-        ibStar5 = (ImageButton)view.findViewById(R.id.ib_star_5_search_fragment);
-        ibArray = new ImageButton[]{ibStar1,ibStar2,ibStar3,ibStar4,ibStar5};
+        ibStar1 = (ImageButton) view.findViewById(R.id.ib_star_1_search_fragment);
+        ibStar2 = (ImageButton) view.findViewById(R.id.ib_star_2_search_fragment);
+        ibStar3 = (ImageButton) view.findViewById(R.id.ib_star_3_search_fragment);
+        ibStar4 = (ImageButton) view.findViewById(R.id.ib_star_4_search_fragment);
+        ibStar5 = (ImageButton) view.findViewById(R.id.ib_star_5_search_fragment);
+        ibArray = new ImageButton[]{ibStar1, ibStar2, ibStar3, ibStar4, ibStar5};
 
         View.OnClickListener oclStars = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for(int i = 0; i<5;i++){
+                for (int i = 0; i < 5; i++) {
                     ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_unselected));
                 }
-                switch (view.getId()){
-                    case R.id.ib_star_1_search_fragment:{
-                        for(int i = 0; i < 1;i++){
+                switch (view.getId()) {
+                    case R.id.ib_star_1_search_fragment: {
+                        for (int i = 0; i < 1; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         break;
                     }
-                    case R.id.ib_star_2_search_fragment:{
-                        for(int i = 0; i < 2;i++){
+                    case R.id.ib_star_2_search_fragment: {
+                        for (int i = 0; i < 2; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         break;
                     }
-                    case R.id.ib_star_3_search_fragment:{
-                        for(int i = 0; i < 3;i++){
+                    case R.id.ib_star_3_search_fragment: {
+                        for (int i = 0; i < 3; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         break;
                     }
-                    case R.id.ib_star_4_search_fragment:{
-                        for(int i = 0; i < 4;i++){
+                    case R.id.ib_star_4_search_fragment: {
+                        for (int i = 0; i < 4; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         break;
                     }
-                    case R.id.ib_star_5_search_fragment:{
-                        for(int i = 0; i < 5;i++){
+                    case R.id.ib_star_5_search_fragment: {
+                        for (int i = 0; i < 5; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         break;
@@ -219,7 +238,7 @@ public class SearchFragment extends Fragment {
                 }
             }
         };
-        for (int i = 0; i< 5 ; i++){
+        for (int i = 0; i < 5; i++) {
             ibArray[i].setOnClickListener(oclStars);
         }
 
@@ -301,7 +320,7 @@ public class SearchFragment extends Fragment {
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
         /**
-         * Set Up Current Date Into dialog
+         * Set Up Current Date Into date_picker_dialog
          */
         Calendar calender = Calendar.getInstance();
         Bundle args = new Bundle();
@@ -315,6 +334,18 @@ public class SearchFragment extends Fragment {
         date.setCallBack(ondate);
         date.show(getFragmentManager(), "Date Picker");
     }
+
+    public void addRoom(SearchRoomSO room) {
+        soArrayList.add(room);
+        listAdapter.notifyDataSetChanged();
+    }
+
+    public void addRoom(SearchRoomSO room, int position) {
+        soArrayList.get(position).setGuests(room.getGuests());
+        listAdapter.notifyDataSetChanged();
+    }
+
+
 
 
 }
