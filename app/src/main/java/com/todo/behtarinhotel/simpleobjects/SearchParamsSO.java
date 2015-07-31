@@ -11,10 +11,11 @@ public class SearchParamsSO {
     String departureDate = "10/12/2015";
     ArrayList<SearchRoomSO> rooms;
 
-    public SearchParamsSO(String city, String arrivalDate, String departureDate) {
+    public SearchParamsSO(String city, String arrivalDate, String departureDate,ArrayList<SearchRoomSO> rooms) {
         this.city = city;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
+        this.rooms = rooms;
     }
 
     public ArrayList<SearchRoomSO> getRooms() {
@@ -48,4 +49,6 @@ public class SearchParamsSO {
     public void setDepartureDate(String departureDate) {
         this.departureDate = departureDate;
     }
+
+
 }

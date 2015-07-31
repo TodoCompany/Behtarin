@@ -58,7 +58,7 @@ public class SearchFragment extends Fragment {
 
     public RoomBuilderFragment builderFragment;
 
-    EditText etLocation;
+    MaterialEditText etLocation;
     EditText etRoom;
     EditText etAdult;
     EditText etChildren;
@@ -154,16 +154,30 @@ public class SearchFragment extends Fragment {
 
     private void initViewsById(View view) {
 
+        etLocation = (MaterialEditText) view.findViewById(R.id.et_location_search_fragment);
+
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity parentActivity = (MainActivity) getActivity();
-                MainFragment mainFragment = new MainFragment();
-                parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-                SearchParamsSO searchParamsSO = new SearchParamsSO("London", "10/10/2015", "10/12/2015");
-                mainFragment.setSearchParams(searchParamsSO);
-                famMenu.collapse();
+                if(etLocation.getText().toString().equals("") ||
+                        etCheckIn.getText().toString().equals("") ||
+                        etCheckOut.getText().toString().equals("")){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please fill in all fields",Toast.LENGTH_SHORT).show();
+                }else{
+                    if(Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", ""))>
+                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))){
+                        Toast.makeText(getActivity().getApplicationContext(),"Wrong dates",Toast.LENGTH_SHORT).show();
+                    }else{
+                        MainActivity parentActivity = (MainActivity) getActivity();
+                        MainFragment mainFragment = new MainFragment();
+                        parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
+                        SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
+                                etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList);
+                        mainFragment.setSearchParams(searchParamsSO);
+                        famMenu.collapse();
+                    }
+                }
             }
         });
 

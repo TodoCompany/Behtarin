@@ -24,6 +24,7 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -120,7 +121,8 @@ public class MainFragment extends Fragment {
                     city + searchParams.getCity() +
                     arrivalDate + searchParams.getArrivalDate() +
                     departureDate + searchParams.getDepartureDate() +
-                    room + "1";
+                    makeRoomString(searchParams.getRooms())
+            ;
 
 
             gsonBuilder = new GsonBuilder();
@@ -182,6 +184,22 @@ public class MainFragment extends Fragment {
         tvError.setText("No hotels found");
         listView.setEmptyView(tvError);
         swipeContainer.setRefreshing(false);
+    }
+
+    private String makeRoomString (ArrayList<SearchRoomSO> rooms){
+        String room = "";
+        for(int a = 0; a < rooms.size(); a++){
+            room = room + "&room" + (a+1) + "=";
+            for(int b = 0; b< rooms.get(a).getGuests().size(); b++){
+                if(b == rooms.get(a).getGuests().size()-1){
+                    room = room + rooms.get(a).getGuests().get(b).getAge();
+                }else{
+                    room = room + rooms.get(a).getGuests().get(b).getAge() + ",";
+                }
+            }
+
+        }
+        return room;
     }
 
 }
