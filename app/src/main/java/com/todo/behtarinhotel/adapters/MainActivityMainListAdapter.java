@@ -173,7 +173,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         Glide.with(activity)
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
                 .fitCenter()
-                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .placeholder(R.color.base_grey)
                 .error(R.drawable.empty)
                 .into(ivPhoto);
 
