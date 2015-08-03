@@ -83,7 +83,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         }
         Glide.with(ctx)
                 .load(temp + "b.jpg")
-                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .placeholder(R.color.base_hint)
                 .error(R.drawable.empty)
                 .into(roomImage);
 

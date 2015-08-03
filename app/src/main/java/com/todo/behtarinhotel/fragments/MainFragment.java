@@ -55,7 +55,7 @@ public class MainFragment extends Fragment {
     String city = "&destinationString=";
     String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
     String minorRev = "&minorRev=30";
-    String room = "&room1=";
+    String minStar = "&minStarRating=";
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -97,20 +97,20 @@ public class MainFragment extends Fragment {
         });
 
         swipeContainer.setColorSchemeResources(R.color.base_yellow);
-        if (searchResultSOArrayList.isEmpty()){
+        if (searchResultSOArrayList.isEmpty()) {
             loadDataFromExpedia();
             progressBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             listView.setAdapter(slideExpandableListAdapter);
         }
         return rootView;
     }
 
-    public void setSearchParams(SearchParamsSO searchParams){
+    public void setSearchParams(SearchParamsSO searchParams) {
         this.searchParams = searchParams;
     }
 
-    public void loadDataFromExpedia(){
+    public void loadDataFromExpedia() {
         if (searchParams != null) {
             showLoadingScreen();
             url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
@@ -125,7 +125,8 @@ public class MainFragment extends Fragment {
                     city + searchParams.getCity() +
                     arrivalDate + searchParams.getArrivalDate() +
                     departureDate + searchParams.getDepartureDate() +
-                    makeRoomString(searchParams.getRooms())
+                    makeRoomString(searchParams.getRooms()) +
+                    minStar + searchParams.getMinStar()
             ;
 
 
@@ -137,6 +138,15 @@ public class MainFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            String cacheLocation = "";
+                            String cacheKey = "";
+                            try {
+                                cacheLocation = response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                                cacheKey = response.getJSONObject("HotelListResponse").getString("cacheKey");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                             JSONArray arr = null;
                             try {
                                 arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
@@ -154,7 +164,7 @@ public class MainFragment extends Fragment {
                             if (getActivity() != null) {
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms());
+                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation,url);
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                 listView.setAdapter(slideExpandableListAdapter);
                                 clearLoadingScreen();
@@ -175,19 +185,19 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void showError(String errorMessage){
+    private void showError(String errorMessage) {
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
         tvError.setText("Error: " + errorMessage);
         tvError.setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingScreen(){
+    private void showLoadingScreen() {
         tvError.setVisibility(View.GONE);
 
     }
 
-    private void clearLoadingScreen(){
+    private void clearLoadingScreen() {
         tvError.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         TextView tvError = new TextView(getActivity());
@@ -196,14 +206,14 @@ public class MainFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
-    private String makeRoomString (ArrayList<SearchRoomSO> rooms){
+    private String makeRoomString(ArrayList<SearchRoomSO> rooms) {
         String room = "";
-        for(int a = 0; a < rooms.size(); a++){
-            room = room + "&room" + (a+1) + "=";
-            for(int b = 0; b< rooms.get(a).getGuests().size(); b++){
-                if(b == rooms.get(a).getGuests().size()-1){
+        for (int a = 0; a < rooms.size(); a++) {
+            room = room + "&room" + (a + 1) + "=";
+            for (int b = 0; b < rooms.get(a).getGuests().size(); b++) {
+                if (b == rooms.get(a).getGuests().size() - 1) {
                     room = room + rooms.get(a).getGuests().get(b).getAge();
-                }else{
+                } else {
                     room = room + rooms.get(a).getGuests().get(b).getAge() + ",";
                 }
             }

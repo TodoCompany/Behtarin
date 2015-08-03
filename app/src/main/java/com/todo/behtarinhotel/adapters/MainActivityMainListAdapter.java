@@ -22,17 +22,23 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFlat;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -71,9 +77,17 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     String tripAdvisorApiURL;
     String arrivalDate, departureDate;
     ArrayList<SearchRoomSO> rooms;
+    String cacheKey;
+    String cacheLocation;
+
+    GsonBuilder gsonBuilder;
+    Gson gson;
+
+    String url;
+    private int posForLoading = 19;
 
 
-    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms) {
+    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
         this.arrivalDate = arrivalDate;
@@ -83,6 +97,9 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
         res = activity.getResources();
+        this.cacheKey = "&cacheKey=" + cacheKey;
+        this.cacheLocation = "&cacheLocation=" + cacheLocation;
+        this.url = url;
     }
 
     @Override
@@ -107,7 +124,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         if (view == null) {
             view = lInflater.inflate(R.layout.hotel_item, null);
         }
-
 
 
         btnReadMore = (ButtonFlat) view.findViewById(R.id.btn_read_more);
@@ -173,7 +189,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         Glide.with(activity)
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
                 .fitCenter()
-                .placeholder(R.mipmap.ic_hotel_placeholder)
+                .placeholder(R.color.base_grey)
                 .error(R.drawable.empty)
                 .into(ivPhoto);
 
@@ -182,7 +198,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 .fitCenter()
                 .error(R.mipmap.ic_launcher)
                 .into(ivTripAdvisorRate);
-
 
 
         rate = searchResultSO.getStars();
@@ -205,10 +220,10 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(tripAdvisorWebURL != null){
+                if (tripAdvisorWebURL != null) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(tripAdvisorWebURL));
                     activity.startActivity(browserIntent);
-                    Log.d("MainListAdapter","Open URL");
+                    Log.d("MainListAdapter", "Open URL");
                 }
             }
         });
@@ -240,8 +255,69 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         );
         VolleySingleton.getInstance(activity).addToRequestQueue(jsonObjectRequest);
 
+        if (position == posForLoading) {
+            loadNextHotels();
+            posForLoading += 20;
+        }
+
 
         return view;
     }
+
+    private void loadNextHotels() {
+
+        String tempUrl = url +
+                cacheKey +
+                cacheLocation;
+
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                tempUrl,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                            cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        JSONArray arr = null;
+                        try {
+                            arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                        }.getType();
+
+
+                        if (arr != null) {
+
+                            ArrayList<SearchResultSO> temp = new ArrayList<>();
+                            temp = gson.fromJson(arr.toString(), listOfTestObject);
+
+                            searchResultSOArrayList.addAll(temp);
+                            notifyDataSetChanged();
+
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+
+            }
+        }
+
+        );
+        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
 
 }

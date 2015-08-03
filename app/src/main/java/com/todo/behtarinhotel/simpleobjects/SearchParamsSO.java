@@ -10,20 +10,14 @@ public class SearchParamsSO {
     String arrivalDate = "10/10/2015";
     String departureDate = "10/12/2015";
     ArrayList<SearchRoomSO> rooms;
+    int minStar;
 
-    public SearchParamsSO(String city, String arrivalDate, String departureDate,ArrayList<SearchRoomSO> rooms) {
+    public SearchParamsSO(String city, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, int minStar) {
         this.city = city;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.rooms = rooms;
-    }
-
-    public ArrayList<SearchRoomSO> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(ArrayList<SearchRoomSO> rooms) {
-        this.rooms = rooms;
+        this.minStar = minStar;
     }
 
     public String getCity() {
@@ -50,5 +44,19 @@ public class SearchParamsSO {
         this.departureDate = departureDate;
     }
 
+    public ArrayList<SearchRoomSO> getRooms() {
+        return rooms;
+    }
 
+    public void setRooms(ArrayList<SearchRoomSO> rooms) {
+        this.rooms = rooms;
+    }
+
+    public int getMinStar() {
+        return minStar;
+    }
+
+    public void setMinStar(int minStar) {
+        this.minStar = minStar;
+    }
 }
