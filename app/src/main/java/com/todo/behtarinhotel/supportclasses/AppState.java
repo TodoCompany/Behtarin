@@ -132,5 +132,24 @@ public class AppState {
         return room;
     }
 
+    public static String getHotelImagesUrl(int hotelIdNumber){
+        String url;
+
+        String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/info?";
+        String apiKey = "&apiKey=";
+        String cid = "&cid=";
+        String sig = "&sig=" + getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
+        String hotelId = "&hotelId=" + hotelIdNumber;
+        String options = "&options=HOTEL_IMAGES";
+
+        url = endpoint
+                + cid + CID
+                + sig
+                + apiKey + API_KEY
+                + hotelId
+                + options;
+        return url;
+    }
+
 
 }

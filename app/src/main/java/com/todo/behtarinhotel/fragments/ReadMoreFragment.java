@@ -7,15 +7,27 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,13 +45,17 @@ public class ReadMoreFragment extends Fragment {
     ButtonFloat btnFloat;
     ButtonFlat btnCheckAvailability;
     View rootView;
+    LayoutInflater inflater;
+
     SearchResultSO searchResultSO;
     float rate;
     String arrival;
     String departure;
-    ArrayList<SearchRoomSO> rooms;
 
+    ArrayList<SearchRoomSO> rooms;
     ArrayList<ImageView> imageViews;
+    ArrayList<ImageView> hotelImages;
+    ArrayList<String> hotelImagesUrls;
 
 
     public ReadMoreFragment() {
@@ -51,9 +67,12 @@ public class ReadMoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_read_more, container, false);
+        hotelImages = new ArrayList<>();
+        this.inflater = inflater;
+
         initViewsById();
         fillWithData();
-
+        loadImagesUrls();
 
         return rootView;
     }
@@ -137,6 +156,92 @@ public class ReadMoreFragment extends Fragment {
             }
         }
     }
+
+    private void loadImagesUrls(){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                AppState.getHotelImagesUrl(searchResultSO.getHotelId()),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        hotelImagesUrls = new ArrayList<>();
+
+                        try {
+                            JSONArray imagesArray = response
+                                    .getJSONObject("HotelInformationResponse")
+                                    .getJSONObject("HotelImages")
+                                    .getJSONArray("HotelImage");
+                            for(int i = 0; i < imagesArray.length(); i++){
+                                hotelImagesUrls.add(imagesArray.getJSONObject(i).getString("url"));
+                            }
+                            fillHotelImages();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }
+
+        );
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void fillHotelImages(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 1;
+        params.bottomMargin = 3;
+        params.topMargin = 3;
+        params.leftMargin = 3;
+        params.rightMargin = 3;
+        LinearLayout firstRow = (LinearLayout) rootView.findViewById(R.id.firstRow);
+        LinearLayout secondRow = (LinearLayout) rootView.findViewById(R.id.secondRow);
+        firstRow.removeAllViews();
+        secondRow.removeAllViews();
+        ArrayList<View> photos = new ArrayList<>();
+        if (hotelImagesUrls.size() <= 6){
+            for (int i = 0; i < hotelImagesUrls.size(); i++){
+                ImageView imageView = new ImageView(getActivity());
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setLayoutParams(params);
+                Glide.with(getActivity())
+                        .load(hotelImagesUrls.get(i))
+                        .into(imageView);
+                photos.add(imageView);
+            }
+        }else{
+            for (int i = 0; i < 5; i++){
+                ImageView imageView = new ImageView(getActivity());
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setLayoutParams(params);
+                Glide.with(getActivity())
+                        .load(hotelImagesUrls.get(i))
+                        .into(imageView);
+                photos.add(imageView);
+            }
+            View view = inflater.inflate(R.layout.more_photos_item, null, false);
+            view.setLayoutParams(params);
+            Button btnLoadMorePhotos = (Button) view.findViewById(R.id.btnLoadMorePhotos);
+            ImageView imageLoadMore = (ImageView) view.findViewById(R.id.imageLoadMore);
+            btnLoadMorePhotos.setText("+" + (hotelImagesUrls.size() - 6));
+            Glide.with(getActivity())
+                    .load(hotelImagesUrls.get(5))
+                    .into(imageLoadMore);
+            photos.add(view);
+        }
+
+        firstRow.addView(photos.get(0));
+        firstRow.addView(photos.get(1));
+        firstRow.addView(photos.get(2));
+        secondRow.addView(photos.get(3));
+        secondRow.addView(photos.get(4));
+        secondRow.addView(photos.get(5));
+
+    }
+
+
 
 
 }
