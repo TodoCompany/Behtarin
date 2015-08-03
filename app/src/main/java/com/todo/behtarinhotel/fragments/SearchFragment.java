@@ -1,12 +1,14 @@
 package com.todo.behtarinhotel.fragments;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -87,6 +89,7 @@ public class SearchFragment extends Fragment {
     Gson gson;
 
     boolean isCheckInSelected;
+    int starCount;
 
     ArrayList<SearchResultSO> searchResultSOArrayList;
     DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
@@ -155,6 +158,14 @@ public class SearchFragment extends Fragment {
     private void initViewsById(View view) {
 
         etLocation = (MaterialEditText) view.findViewById(R.id.et_location_search_fragment);
+        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +184,7 @@ public class SearchFragment extends Fragment {
                         MainFragment mainFragment = new MainFragment();
                         parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
                         SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
-                                etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList);
+                                etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
                         mainFragment.setSearchParams(searchParamsSO);
                         famMenu.collapse();
                     }
@@ -233,12 +244,14 @@ public class SearchFragment extends Fragment {
                     case R.id.ib_star_1_search_fragment: {
                         for (int i = 0; i < 1; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
+                            starCount = 1;
                         }
                         break;
                     }
                     case R.id.ib_star_2_search_fragment: {
                         for (int i = 0; i < 2; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
+                            starCount = 2;
                         }
                         break;
                     }
@@ -246,18 +259,21 @@ public class SearchFragment extends Fragment {
                         for (int i = 0; i < 3; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
+                        starCount = 3;
                         break;
                     }
                     case R.id.ib_star_4_search_fragment: {
                         for (int i = 0; i < 4; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
+                        starCount = 4;
                         break;
                     }
                     case R.id.ib_star_5_search_fragment: {
                         for (int i = 0; i < 5; i++) {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
+                        starCount = 5;
                         break;
                     }
                 }
@@ -307,6 +323,12 @@ public class SearchFragment extends Fragment {
         soArrayList.get(position).setGuests(room.getGuests());
         listAdapter.notifyDataSetChanged();
     }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
 
 }

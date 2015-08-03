@@ -25,7 +25,7 @@ public class GlobalSearch implements SearchCallBackListener{
     public void searchingHotelsByParams(SearchParamsSO params){
 
         ExpediaSearch eSearch = new ExpediaSearch();
-        eSearch.search(new SearchParamsSO("London", "10/10/2015", "10/12/2015",new ArrayList<SearchRoomSO>()));
+        eSearch.search(new SearchParamsSO("London", "10/10/2015", "10/12/2015",new ArrayList<SearchRoomSO>(),0));
     }
 
     @Override
