@@ -127,7 +127,9 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 collectData();
+                getActivity().onBackPressed();
                 parentFragment.setFilteredResults(filterParams);
+
             }
         });
         if(filterParams!=null){

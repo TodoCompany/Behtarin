@@ -100,6 +100,8 @@ public class MainFragment extends Fragment {
     JsonObjectRequest nextPageRequest;
     View ll;
 
+    boolean isFiltersChanged = false;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -134,14 +136,12 @@ public class MainFragment extends Fragment {
         }
 
 
-
-
         return rootView;
     }
 
     public void setSearchParams(SearchParamsSO searchParams) {
         this.searchParams = searchParams;
-        filterParams = new FilterSO(0,5000,0,4,0,4);
+        filterParams = new FilterSO(0, 5000, 0, 4, 0, 4);
         filterParams.setMinStarRate(searchParams.getMinStar());
     }
 
@@ -160,8 +160,8 @@ public class MainFragment extends Fragment {
                     city + searchParams.getCity() +
                     arrivalDate + searchParams.getArrivalDate() +
                     departureDate + searchParams.getDepartureDate() +
-                    makeRoomString(searchParams.getRooms()) +                    
-                    limit + 200;
+                    makeRoomString(searchParams.getRooms()) +
+                    limit + 200 +
                     makeFilterString()
             ;
 
@@ -176,7 +176,7 @@ public class MainFragment extends Fragment {
                         public void onResponse(JSONObject response) {
                             Log.d("ExpediaRequest", "First hotels loading from: " + url);
                             try {
-                                cacheLocation =  "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                                cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
                                 cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -197,7 +197,6 @@ public class MainFragment extends Fragment {
                             }
 
                             if (getActivity() != null) {
-                                searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
                                 Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
                                 loadNextHotels();
@@ -228,7 +227,7 @@ public class MainFragment extends Fragment {
 
     private void showLoadingScreen() {
         tvError.setVisibility(View.GONE);
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     private void clearLoadingScreen() {
@@ -258,16 +257,16 @@ public class MainFragment extends Fragment {
 
     public void setFilteredResults(FilterSO filter) {
         filterParams = filter;
-        loadDataFromExpedia();
+        isFiltersChanged = true;
     }
 
-    private String makeFilterString(){
+    private String makeFilterString() {
         String filter = "";
-        if(filterParams==null){
+        if (filterParams == null) {
             return filter;
         }
-        filter = filter + "&minRate=" + filterParams.getMinPrice() + "&maxRate=" + filterParams.getMaxPrice()+
-                "&minStarRating=" + filterParams.getMinStarRate() + "&maxStarRating=" + filterParams.getMaxStarRate()+
+        filter = filter + "&minRate=" + filterParams.getMinPrice() + "&maxRate=" + filterParams.getMaxPrice() +
+                "&minStarRating=" + filterParams.getMinStarRate() + "&maxStarRating=" + filterParams.getMaxStarRate() +
                 "&minTripAdvisorRating=" + filterParams.getMinTripRate() + "&maxTripAdvisorRating=" + filterParams.getMaxTripRate();
         return filter;
     }
@@ -305,13 +304,16 @@ public class MainFragment extends Fragment {
                             loadNextHotels();
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
 
-                        }else{
+                        } else {
                             sortData();
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
-                            adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation,url);
+                            adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
                             slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                             listView.setAdapter(slideExpandableListAdapter);
                             clearLoadingScreen();
+                            isFiltersChanged = false;
+
+
                         }
 
 
@@ -328,7 +330,6 @@ public class MainFragment extends Fragment {
     }
 
 
-
     private void showPopupMenu(View v) {
         popupMenu = new PopupMenu(getActivity(), v);
         popupMenu.inflate(R.menu.filter_menu);
@@ -338,7 +339,7 @@ public class MainFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        if(adapter!=null){
+                        if (adapter != null) {
                             switch (item.getItemId()) {
 
                                 case R.id.sort_by_lowest_price:
@@ -374,8 +375,8 @@ public class MainFragment extends Fragment {
         popupMenu.show();
     }
 
-    public void sortData(){
-        switch (sortingType){
+    public void sortData() {
+        switch (sortingType) {
             case SORT_BY_LOWEST_PRICE:
                 Collections.sort(searchResultSOArrayList, new Comparator<SearchResultSO>() {
                     @Override
@@ -410,17 +411,18 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(ll);    }
+        ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(ll);
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        ll =((LayoutInflater)(getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))).inflate(R.layout.toolbar_buttons, null, false);
+        ll = ((LayoutInflater) (getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))).inflate(R.layout.toolbar_buttons, null, false);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,1);
+                LinearLayout.LayoutParams.MATCH_PARENT, 1);
         ll.setLayoutParams(params);
-        imageSort = (ImageView)ll.findViewById(R.id.iv_sort_toolbar);
-        btnFilter = (ImageView)ll.findViewById(R.id.iv_filter_toolbar);
+        imageSort = (ImageView) ll.findViewById(R.id.iv_sort_toolbar);
+        btnFilter = (ImageView) ll.findViewById(R.id.iv_filter_toolbar);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -442,5 +444,10 @@ public class MainFragment extends Fragment {
 
 
         ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(ll);
+
+        if (isFiltersChanged) {
+            showLoadingScreen();
+            loadDataFromExpedia();
+        }
     }
 }
