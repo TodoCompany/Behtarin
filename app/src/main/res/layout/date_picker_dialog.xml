@@ -7,10 +7,11 @@
         android:id="@+id/numberPicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentTop="false"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:showDividers="none" />
+        android:showDividers="none"
+        android:layout_below="@+id/editText" />
 
     <Button
         android:id="@+id/button1"
@@ -18,11 +19,11 @@
         android:layout_height="wrap_content"
         android:text="Set"
         android:layout_alignParentBottom="false"
-        android:layout_below="@+id/numberPicker1"
         android:background="@color/base_gold"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_below="@+id/numberPicker1" />
 
     <Button
         android:id="@+id/button2"
@@ -36,5 +37,17 @@
         android:background="@color/base_gold"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="0"
+        android:textColor="@color/base_black"
+        android:textSize="25sp" />
 
 </RelativeLayout>

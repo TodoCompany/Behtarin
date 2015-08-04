@@ -179,25 +179,25 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvPrice.setText("$ " + searchResultSO.getMinPrice());
 
-        String temp;
+
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {
+            String temp;
             temp = searchResultSO.getPhotoURL()
                     .substring(0, searchResultSO.getPhotoURL().length() - 5);
-        }
-        temp = searchResultSO.getPhotoURL()
-                .substring(0, searchResultSO.getPhotoURL().length() - 5);
-        Glide.with(activity)
-                .load(PHOTO_URL_START + temp + PHOTO_URL_END)
-                .fitCenter()
-                .placeholder(R.color.base_grey)
-                .error(R.drawable.empty)
-                .into(ivPhoto);
+            Glide.with(activity)
+                    .load(PHOTO_URL_START + temp + PHOTO_URL_END)
+                    .fitCenter()
+                    .placeholder(R.color.base_grey)
+                    .error(R.drawable.empty)
+                    .into(ivPhoto);
 
-        Glide.with(activity)
-                .load(searchResultSO.getTripAdvisorRatingURL())
-                .fitCenter()
-                .error(R.mipmap.ic_launcher)
-                .into(ivTripAdvisorRate);
+            Glide.with(activity)
+                    .load(searchResultSO.getTripAdvisorRatingURL())
+                    .fitCenter()
+                    .error(R.mipmap.ic_launcher)
+                    .into(ivTripAdvisorRate);
+        }
+
 
 
         rate = searchResultSO.getStars();

@@ -70,6 +70,8 @@ public class SearchFragment extends Fragment {
 
     LayoutInflater inflater;
 
+    MainFragment mainFragment;
+
     String url;
     String apiKey = "&apiKey=";
     String cid = "&cid=";
@@ -171,17 +173,17 @@ public class SearchFragment extends Fragment {
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(etLocation.getText().toString().equals("") ||
+                if (etLocation.getText().toString().equals("") ||
                         etCheckIn.getText().toString().equals("") ||
-                        etCheckOut.getText().toString().equals("")){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please fill in all fields",Toast.LENGTH_SHORT).show();
-                }else{
-                    if(Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", ""))>
-                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))){
-                        Toast.makeText(getActivity().getApplicationContext(),"Wrong dates",Toast.LENGTH_SHORT).show();
-                    }else{
+                        etCheckOut.getText().toString().equals("")) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >
+                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Wrong dates", Toast.LENGTH_SHORT).show();
+                    } else {
                         MainActivity parentActivity = (MainActivity) getActivity();
-                        MainFragment mainFragment = new MainFragment();
+                        mainFragment = new MainFragment();
                         parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
                         SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
                                 etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
@@ -203,6 +205,8 @@ public class SearchFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Can`t be more than 8 rooms", Toast.LENGTH_SHORT).show();
                 }
+
+
                 famMenu.collapse();
 
             }
@@ -325,10 +329,9 @@ public class SearchFragment extends Fragment {
     }
 
     private void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 
 
 }

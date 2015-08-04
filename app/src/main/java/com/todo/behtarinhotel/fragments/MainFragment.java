@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
+import com.todo.behtarinhotel.simpleobjects.FilterSO;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
@@ -34,6 +36,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +74,7 @@ public class MainFragment extends Fragment {
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
+    FilterSO filterParams;
 
 
     public MainFragment() {
@@ -103,11 +108,28 @@ public class MainFragment extends Fragment {
         } else {
             listView.setAdapter(slideExpandableListAdapter);
         }
+        Button btnFilter = (Button) rootView.findViewById(R.id.btn_filter_main_fragment);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterFragment filterFragment = new FilterFragment();
+                if (filterParams == null) {
+                    filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
+                } else {
+                    filterFragment.setFilterParams(filterParams, MainFragment.this);
+                }
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(filterFragment, "Filter");
+            }
+        });
+
+
         return rootView;
     }
 
     public void setSearchParams(SearchParamsSO searchParams) {
         this.searchParams = searchParams;
+        filterParams = new FilterSO(0,5000,0,4,0,4);
+        filterParams.setMinStarRate(searchParams.getMinStar());
     }
 
     public void loadDataFromExpedia() {
@@ -126,7 +148,7 @@ public class MainFragment extends Fragment {
                     arrivalDate + searchParams.getArrivalDate() +
                     departureDate + searchParams.getDepartureDate() +
                     makeRoomString(searchParams.getRooms()) +
-                    minStar + searchParams.getMinStar()
+                    makeFilterString()
             ;
 
 
@@ -164,7 +186,7 @@ public class MainFragment extends Fragment {
                             if (getActivity() != null) {
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation,url);
+                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                 listView.setAdapter(slideExpandableListAdapter);
                                 clearLoadingScreen();
@@ -220,6 +242,22 @@ public class MainFragment extends Fragment {
 
         }
         return room;
+    }
+
+    public void setFilteredResults(FilterSO filter) {
+        filterParams = filter;
+        loadDataFromExpedia();
+    }
+
+    private String makeFilterString(){
+        String filter = "";
+        if(filterParams==null){
+            return filter;
+        }
+        filter = filter + "&minRate=" + filterParams.getMinPrice() + "&maxRate=" + filterParams.getMaxPrice()+
+                "&minStarRating=" + filterParams.getMinStarRate() + "&maxStarRating=" + filterParams.getMaxStarRate()+
+                "&minTripAdvisorRating=" + filterParams.getMinTripRate() + "&maxTripAdvisorRating=" + filterParams.getMaxTripRate();
+        return filter;
     }
 
 }

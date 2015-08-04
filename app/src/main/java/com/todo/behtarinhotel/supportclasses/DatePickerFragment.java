@@ -31,7 +31,7 @@
      @Override
      public Dialog onCreateDialog(Bundle savedInstanceState) {
          DatePickerDialog dialog = new DatePickerDialog(getActivity(), ondateSet, year, month, day);
-         dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+         dialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
 
          return dialog;
      }

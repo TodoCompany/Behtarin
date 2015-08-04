@@ -27,7 +27,7 @@
             android:layout_marginBottom="10dp"
             app:met_textColor="@color/base_white"
             app:met_textColorHint="@color/base_white"
-            />
+            android:text="London" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -49,7 +49,8 @@
                 app:met_primaryColor="@color/base_white"
                 app:met_textColor="@color/base_white"
                 app:met_textColorHint="@color/base_white"
-                android:focusable="false" />
+                android:focusable="false"
+                android:text="08/06/2015" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
@@ -62,7 +63,7 @@
                 app:met_textColor="@color/base_white"
                 app:met_textColorHint="@color/base_white"
                 android:focusable="false"
-                />
+                android:text="08/07/2015" />
         </LinearLayout>
 
         <ImageButton

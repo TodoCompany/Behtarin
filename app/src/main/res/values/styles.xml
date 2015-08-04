@@ -4,10 +4,12 @@
     <style name="MyNavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">
         <item name="colorPrimary">@color/base_text</item>
         <item name="colorPrimaryDark">#FF5D5D5D</item>
-        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorAccent">@color/base_gold</item>
         <item name="android:textColor">@color/base_text</item>
         <item name="android:editTextColor">@color/base_text</item>
         <item name="android:textColorHint">@color/base_hint</item>
+        <item name="android:textColorSecondary">@color/base_black</item>
+
 
     </style>
 

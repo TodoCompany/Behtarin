@@ -15,6 +15,7 @@ import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 

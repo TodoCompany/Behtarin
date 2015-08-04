@@ -25,6 +25,12 @@
         android:background="@color/base_yellow"
         android:visibility="gone" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        android:id="@+id/btn_filter_main_fragment" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
