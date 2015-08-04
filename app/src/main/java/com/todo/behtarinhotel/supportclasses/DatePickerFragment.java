@@ -3,10 +3,8 @@
  import android.app.DatePickerDialog;
  import android.app.DatePickerDialog.OnDateSetListener;
  import android.app.Dialog;
- import android.os.Bundle;
  import android.app.DialogFragment;
-
- import java.util.Calendar;
+ import android.os.Bundle;
 
  public class DatePickerFragment extends DialogFragment {
      OnDateSetListener ondateSet;
@@ -31,8 +29,7 @@
      @Override
      public Dialog onCreateDialog(Bundle savedInstanceState) {
          DatePickerDialog dialog = new DatePickerDialog(getActivity(), ondateSet, year, month, day);
-         dialog.getDatePicker().setMinDate(System.currentTimeMillis());
-
+         dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
          return dialog;
      }
  }

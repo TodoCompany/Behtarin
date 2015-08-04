@@ -151,5 +151,14 @@ public class AppState {
         return url;
     }
 
+    public static int convertToDp(int input) {
+        // Get the screen's density scale
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+
+        // Convert the dps to pixels, based on density scale
+
+        return (int) (input * scale + 0.5f);
+    }
+
 
 }
