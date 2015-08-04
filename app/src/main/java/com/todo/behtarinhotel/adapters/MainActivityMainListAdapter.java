@@ -24,21 +24,17 @@ import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -79,13 +75,14 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     ArrayList<SearchRoomSO> rooms;
     String cacheKey;
     String cacheLocation;
+    int visibleItems = 20;
+    int visibleItemsStep = 20;
 
     GsonBuilder gsonBuilder;
     Gson gson;
 
     String url;
     private int posForLoading = 19;
-
 
     public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
         this.activity = activity;
@@ -100,11 +97,19 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         this.cacheKey = "&cacheKey=" + cacheKey;
         this.cacheLocation = "&cacheLocation=" + cacheLocation;
         this.url = url;
+
+
+
+
     }
 
     @Override
     public int getCount() {
+        if (searchResultSOArrayList.size() < visibleItems)
         return searchResultSOArrayList.size();
+        else{
+            return visibleItems;
+        }
     }
 
     @Override
@@ -266,58 +271,14 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
     private void loadNextHotels() {
 
-        String tempUrl = url +
-                cacheKey +
-                cacheLocation;
+        visibleItems += visibleItemsStep;
+        notifyDataSetChanged();
 
-        gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder.create();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                tempUrl,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
-                            cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        JSONArray arr = null;
-                        try {
-                            arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-                        }.getType();
-
-
-                        if (arr != null) {
-
-                            ArrayList<SearchResultSO> temp = new ArrayList<>();
-                            temp = gson.fromJson(arr.toString(), listOfTestObject);
-
-                            searchResultSOArrayList.addAll(temp);
-                            notifyDataSetChanged();
-
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-
-            }
-        }
-
-        );
-        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+
+    public void setVisibleElementsToDefault(){
+        visibleItems = 20;
+    }
 
 }

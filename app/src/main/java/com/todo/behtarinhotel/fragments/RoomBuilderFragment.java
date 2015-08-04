@@ -19,6 +19,7 @@ import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.ChildrenListAdapter;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class RoomBuilderFragment extends Fragment {
         btn.setBackgroundColor(0);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        params.rightMargin = convertToDp(16);
+        params.rightMargin = AppState.convertToDp(16);
         btn.setLayoutParams(params);
         btn.setText("Done");
         btn.setTextColor(getResources().getColor(R.color.base_gold));
@@ -193,13 +194,6 @@ public class RoomBuilderFragment extends Fragment {
         }
     }
 
-    public int convertToDp(int input) {
-        // Get the screen's density scale
-        final float scale = getResources().getDisplayMetrics().density;
 
-        // Convert the dps to pixels, based on density scale
-
-        return (int) (input * scale + 0.5f);
-    }
 
 }

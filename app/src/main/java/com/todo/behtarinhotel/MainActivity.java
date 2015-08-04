@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.PopupMenu;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
@@ -35,6 +35,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     MyPayPall myPayPall;
     public SearchFragment searchFragment;
     MainFragment mainFragment;
+    PopupMenu popupMenu;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
             }
         });
+
+
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
@@ -167,5 +170,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
             searchFragment.addRoom(new SearchRoomSO(guests),position);
         }
     }
+
 
 }

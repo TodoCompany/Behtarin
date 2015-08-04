@@ -4,11 +4,16 @@ package com.todo.behtarinhotel.fragments;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,6 +41,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -46,6 +53,12 @@ public class MainFragment extends Fragment {
 
     private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
     private static final String CID = "55505";
+
+    private static final int NO_SORTING = 0;
+    private static final int SORT_BY_HIGHEST_PRICE = 1;
+    private static final int SORT_BY_LOWEST_PRICE = 2;
+    private static final int SORT_BY_NAME = 3;
+    private int sortingType = NO_SORTING;
 
     String url;
     String apiKey = "&apiKey=";
@@ -60,21 +73,28 @@ public class MainFragment extends Fragment {
     String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
     String minorRev = "&minorRev=30";
     String minStar = "&minStarRating=";
+    String limit = "&numberOfResults=";
+    String cacheKey, cacheLocation;
 
     GsonBuilder gsonBuilder;
     Gson gson;
 
     View rootView;
     TextView tvError;
+    ImageView imageSort;
+    PopupMenu popupMenu;
 
     SearchParamsSO searchParams;
     ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
     ListView listView;
     SlideExpandableListAdapter slideExpandableListAdapter;
+    MainActivityMainListAdapter adapter;
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
     FilterSO filterParams;
+
+    JsonObjectRequest nextPageRequest;
 
 
     public MainFragment() {
@@ -90,6 +110,23 @@ public class MainFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                AppState.convertToDp(32), 1);
+        params.rightMargin = AppState.convertToDp(16);
+
+        imageSort = new ImageView(getActivity());
+        imageSort.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_menu_moreoverflow_mtrl_alpha));
+        imageSort.setScaleType(ImageView.ScaleType.FIT_END);
+        imageSort.setLayoutParams(params);
+        imageSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+
+        ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(imageSort);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -147,7 +184,8 @@ public class MainFragment extends Fragment {
                     city + searchParams.getCity() +
                     arrivalDate + searchParams.getArrivalDate() +
                     departureDate + searchParams.getDepartureDate() +
-                    makeRoomString(searchParams.getRooms()) +
+                    makeRoomString(searchParams.getRooms()) +                    
+                    limit + 200;
                     makeFilterString()
             ;
 
@@ -160,11 +198,10 @@ public class MainFragment extends Fragment {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            String cacheLocation = "";
-                            String cacheKey = "";
+                            Log.d("ExpediaRequest", "First hotels loading from: " + url);
                             try {
-                                cacheLocation = response.getJSONObject("HotelListResponse").getString("cacheLocation");
-                                cacheKey = response.getJSONObject("HotelListResponse").getString("cacheKey");
+                                cacheLocation =  "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                                cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -186,10 +223,9 @@ public class MainFragment extends Fragment {
                             if (getActivity() != null) {
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                MainActivityMainListAdapter adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                                slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                                listView.setAdapter(slideExpandableListAdapter);
-                                clearLoadingScreen();
+                                Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
+                                loadNextHotels();
+
                             }
 
 
@@ -260,4 +296,140 @@ public class MainFragment extends Fragment {
         return filter;
     }
 
+    private void loadNextHotels() {
+
+        String tempUrl = url +
+                cacheKey +
+                cacheLocation;
+        nextPageRequest = new JsonObjectRequest(Request.Method.GET,
+                tempUrl,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                            cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        JSONArray arr = null;
+                        try {
+                            arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                        }.getType();
+
+                        if (arr != null && arr.length() > 0) {
+                            ArrayList<SearchResultSO> temp;
+                            temp = gson.fromJson(arr.toString(), listOfTestObject);
+                            searchResultSOArrayList.addAll(temp);
+                            loadNextHotels();
+                            Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
+
+                        }else{
+                            Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
+                            adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation,url);
+                            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                            listView.setAdapter(slideExpandableListAdapter);
+                            clearLoadingScreen();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        }
+
+        );
+        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(nextPageRequest);
+    }
+
+
+
+    private void showPopupMenu(View v) {
+        popupMenu = new PopupMenu(getActivity(), v);
+        popupMenu.inflate(R.menu.filter_menu);
+        popupMenu
+                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+
+                            case R.id.sort_by_lowest_price:
+                                sortingType = SORT_BY_LOWEST_PRICE;
+                                sortData();
+                                adapter.setVisibleElementsToDefault();
+                                adapter.notifyDataSetChanged();
+                                listView.setSelection(1);
+                                return true;
+                            case R.id.sort_by_highest_price:
+                                sortingType = SORT_BY_HIGHEST_PRICE;
+                                sortData();
+                                adapter.setVisibleElementsToDefault();
+                                adapter.notifyDataSetChanged();
+                                listView.setSelection(1);
+                                return true;
+                            case R.id.sort_by_name:
+                                sortingType = SORT_BY_NAME;
+                                sortData();
+                                adapter.setVisibleElementsToDefault();
+                                adapter.notifyDataSetChanged();
+                                listView.setSelection(1);
+
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+
+        popupMenu.show();
+    }
+
+    public void sortData(){
+        switch (sortingType){
+            case SORT_BY_LOWEST_PRICE:
+                Collections.sort(searchResultSOArrayList, new Comparator<SearchResultSO>() {
+                    @Override
+                    public int compare(SearchResultSO lhs, SearchResultSO rhs) {
+                        if (lhs.getMinPrice() > rhs.getMinPrice()) return 1;
+                        if (lhs.getMinPrice() < rhs.getMinPrice()) return -1;
+                        return 0;
+                    }
+                });
+                break;
+            case SORT_BY_HIGHEST_PRICE:
+                Collections.sort(searchResultSOArrayList, new Comparator<SearchResultSO>() {
+                    @Override
+                    public int compare(SearchResultSO lhs, SearchResultSO rhs) {
+                        if (lhs.getMinPrice() < rhs.getMinPrice()) return 1;
+                        if (lhs.getMinPrice() > rhs.getMinPrice()) return -1;
+                        return 0;
+                    }
+                });
+                break;
+            case SORT_BY_NAME:
+                Collections.sort(searchResultSOArrayList, new Comparator<SearchResultSO>() {
+                    public int compare(SearchResultSO v1, SearchResultSO v2) {
+                        return v1.getHotelName().compareTo(v2.getHotelName());
+                    }
+                });
+                break;
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(imageSort);    }
 }
