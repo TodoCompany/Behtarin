@@ -2,6 +2,7 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -83,6 +85,7 @@ public class MainFragment extends Fragment {
     TextView tvError;
     ImageView imageSort;
     PopupMenu popupMenu;
+    ImageView btnFilter;
 
     SearchParamsSO searchParams;
     ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
@@ -95,6 +98,7 @@ public class MainFragment extends Fragment {
     FilterSO filterParams;
 
     JsonObjectRequest nextPageRequest;
+    View ll;
 
 
     public MainFragment() {
@@ -110,23 +114,6 @@ public class MainFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                AppState.convertToDp(32), 1);
-        params.rightMargin = AppState.convertToDp(16);
-
-        imageSort = new ImageView(getActivity());
-        imageSort.setImageDrawable(getResources().getDrawable(R.drawable.abc_ic_menu_moreoverflow_mtrl_alpha));
-        imageSort.setScaleType(ImageView.ScaleType.FIT_END);
-        imageSort.setLayoutParams(params);
-        imageSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopupMenu(v);
-            }
-        });
-
-        ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(imageSort);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -145,19 +132,8 @@ public class MainFragment extends Fragment {
         } else {
             listView.setAdapter(slideExpandableListAdapter);
         }
-        Button btnFilter = (Button) rootView.findViewById(R.id.btn_filter_main_fragment);
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FilterFragment filterFragment = new FilterFragment();
-                if (filterParams == null) {
-                    filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
-                } else {
-                    filterFragment.setFilterParams(filterParams, MainFragment.this);
-                }
-                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(filterFragment, "Filter");
-            }
-        });
+
+
 
 
         return rootView;
@@ -330,6 +306,7 @@ public class MainFragment extends Fragment {
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
 
                         }else{
+                            sortData();
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
                             adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation,url);
                             slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
@@ -361,33 +338,35 @@ public class MainFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        switch (item.getItemId()) {
+                        if(adapter!=null){
+                            switch (item.getItemId()) {
 
-                            case R.id.sort_by_lowest_price:
-                                sortingType = SORT_BY_LOWEST_PRICE;
-                                sortData();
-                                adapter.setVisibleElementsToDefault();
-                                adapter.notifyDataSetChanged();
-                                listView.setSelection(1);
-                                return true;
-                            case R.id.sort_by_highest_price:
-                                sortingType = SORT_BY_HIGHEST_PRICE;
-                                sortData();
-                                adapter.setVisibleElementsToDefault();
-                                adapter.notifyDataSetChanged();
-                                listView.setSelection(1);
-                                return true;
-                            case R.id.sort_by_name:
-                                sortingType = SORT_BY_NAME;
-                                sortData();
-                                adapter.setVisibleElementsToDefault();
-                                adapter.notifyDataSetChanged();
-                                listView.setSelection(1);
-
-                                return true;
-                            default:
-                                return false;
+                                case R.id.sort_by_lowest_price:
+                                    sortingType = SORT_BY_LOWEST_PRICE;
+                                    sortData();
+                                    adapter.setVisibleElementsToDefault();
+                                    adapter.notifyDataSetChanged();
+                                    listView.setSelection(0);
+                                    return true;
+                                case R.id.sort_by_highest_price:
+                                    sortingType = SORT_BY_HIGHEST_PRICE;
+                                    sortData();
+                                    adapter.setVisibleElementsToDefault();
+                                    adapter.notifyDataSetChanged();
+                                    listView.setSelection(0);
+                                    return true;
+                                case R.id.sort_by_name:
+                                    sortingType = SORT_BY_NAME;
+                                    sortData();
+                                    adapter.setVisibleElementsToDefault();
+                                    adapter.notifyDataSetChanged();
+                                    listView.setSelection(0);
+                                    return true;
+                                default:
+                                    return false;
+                            }
                         }
+                        return false;
                     }
                 });
 
@@ -431,5 +410,37 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(imageSort);    }
+        ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(ll);    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ll =((LayoutInflater)(getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))).inflate(R.layout.toolbar_buttons, null, false);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,1);
+        ll.setLayoutParams(params);
+        imageSort = (ImageView)ll.findViewById(R.id.iv_sort_toolbar);
+        btnFilter = (ImageView)ll.findViewById(R.id.iv_filter_toolbar);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterFragment filterFragment = new FilterFragment();
+                if (filterParams == null) {
+                    filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
+                } else {
+                    filterFragment.setFilterParams(filterParams, MainFragment.this);
+                }
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(filterFragment, "Filter");
+            }
+        });
+        imageSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+
+
+        ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(ll);
+    }
 }
