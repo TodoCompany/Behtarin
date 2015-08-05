@@ -152,23 +152,6 @@ public class AvailableRoomsSO {
             }
         }
 
-//        private class BedTypes{
-//            @SerializedName("BedType")
-//            private ArrayList<BedType> bedType;
-//
-//            public ArrayList<BedType> getBedType() {
-//                return bedType;
-//            }
-//
-//            private class BedType{
-//                @SerializedName("description")
-//                private String description;
-//
-//                public String getDescription() {
-//                    return description;
-//                }
-//            }
-//        }
     }
 
 

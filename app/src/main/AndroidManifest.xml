@@ -9,10 +9,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyNavigationDrawerTheme" >
+        android:theme="@style/MyNavigationDrawerTheme"
+        >
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            >
         </activity>
         <activity
             android:name=".devices.phone.PhoneMainActivity"
@@ -40,6 +42,7 @@
             android:name=".MainActivity"
             android:label="MainActivity"
             android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
            >
         </activity>
         <activity
