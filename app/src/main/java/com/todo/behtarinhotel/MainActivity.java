@@ -12,6 +12,7 @@ import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.RoomManagementFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
+import com.todo.behtarinhotel.fragments.WishListFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
@@ -71,6 +72,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new RoomManagementFragment()));
+        addSection(newSection("Wish list", new WishListFragment()));
         addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
             public void onClick(MaterialSection materialSection) {

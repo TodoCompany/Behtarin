@@ -165,34 +165,68 @@ public class AppState {
         return (int) (input * scale + 0.5f);
     }
 
-    public static void addToWishList(SearchResultSO hotel) {
-        ArrayList<SearchResultSO> wishList = getWishList();
+    public static void addToWishList(Integer hotel) {
+
+        ArrayList<Integer> wishList = getWishList();
+        if(wishList == null){
+            wishList = new ArrayList<>();
+        }
         wishList.add(hotel);
         logEditor = sPrefLog.edit();
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-        }.getType();
-        String wishListString = gson.toJson(wishList,listOfTestObject);
-        logEditor.putString("wishList",wishListString);
+        String wishListString = gson.toJson(wishList);
+        logEditor.putString("wishlist",wishListString);
         logEditor.apply();
     }
 
-    public static ArrayList<SearchResultSO> getWishList() {
+    public static ArrayList<Integer> getWishList() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+        Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
         }.getType();
-        if (sPrefLog.getString("wishList", "").equals("")) {
-            return new ArrayList<>();
-        } else {
-            return gson.fromJson(sPrefLog.getString("wishList", ""), listOfTestObject);
+        if(sPrefLog.getString("wishlist", "").length()==0){
+            return null;
+        }else{
+            return gson.fromJson(sPrefLog.getString("wishlist", ""), listOfTestObject);
         }
     }
 
-    public static boolean isInWishList(SearchResultSO hotel){
-        ArrayList<SearchResultSO> wishList = getWishList();
-        return wishList.contains(hotel);
+    public static boolean isInWishList(int hotelID){
+        boolean is = false;
+        ArrayList<Integer> wishList = getWishList();
+        if(wishList==null){
+            is=false;
+        }else{
+            for(Integer item : wishList){
+                if(item==hotelID){
+                    is = true;
+                    break;
+                }
+            }
+        }
+        return is;
+    }
+
+    public static void removeFromWishList(int hotelID){
+        ArrayList<Integer> wishList = getWishList();
+        for (int i = 0; i<wishList.size(); i++){
+            if(wishList.get(i)==hotelID){
+                wishList.remove(i);
+                break;
+            }
+        }
+        logEditor = sPrefLog.edit();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String wishListString;
+        if(wishList.isEmpty()){
+            wishListString = "";
+        }else{
+            wishListString = gson.toJson(wishList);
+        }
+        logEditor.putString("wishlist",wishListString);
+        logEditor.apply();
     }
 
 

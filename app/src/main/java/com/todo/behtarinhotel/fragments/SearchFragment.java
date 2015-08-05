@@ -45,6 +45,10 @@ public class SearchFragment extends Fragment {
     private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
     private static final String CID = "55505";
 
+    private boolean isSearchWithHotelId = false;
+    private int hotelID;
+
+
     ListView listView;
     public RoomListAdapter listAdapter;
     public ArrayList<SearchRoomSO> soArrayList;
@@ -88,6 +92,7 @@ public class SearchFragment extends Fragment {
     String room = "&room1=";
 
     GsonBuilder gsonBuilder;
+    private String hotelName;
     Gson gson;
 
     boolean isCheckInSelected;
@@ -114,6 +119,7 @@ public class SearchFragment extends Fragment {
             }
         }
     };
+
 
 
     public SearchFragment() {
@@ -286,18 +292,12 @@ public class SearchFragment extends Fragment {
         for (int i = 0; i < 5; i++) {
             ibArray[i].setOnClickListener(oclStars);
         }
+        if(isSearchWithHotelId){
+            changeSearchType();
+        }
     }
 
-//
-//        etLocation = (EditText) view.findViewById(R.id.et_location_search_fragment);
-//        etRoom = (EditText) view.findViewById(R.id.et_room_search_activity);
-//        etAdult = (EditText) view.findViewById(R.id.et_adult_search_activity);
-//        etChildren = (EditText) view.findViewById(R.id.et_children_search_activity);
-//
-//        rbStars = (RangeBar) view.findViewById(R.id.rb_stars);
-//        rbStars.setTickCount(5);
-//
-//
+
 
 
     private void showDatePicker() {
@@ -331,6 +331,18 @@ public class SearchFragment extends Fragment {
     private void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void setParameters(int holelId,String hotelName){
+        this.hotelID = holelId;
+        isSearchWithHotelId = true;
+        this.hotelName = hotelName;
+    }
+
+    private void changeSearchType(){
+        etLocation.setText(hotelName);
+        etLocation.setEnabled(false);
+
     }
 
 

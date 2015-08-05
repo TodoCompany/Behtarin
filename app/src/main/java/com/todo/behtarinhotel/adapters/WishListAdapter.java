@@ -28,6 +28,7 @@ import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
+import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
@@ -46,7 +47,8 @@ import roboguice.inject.ContentView;
  * Created by dmytro on 7/8/15.
  */
 @ContentView(R.layout.main_activity_main_list_item)
-public class MainActivityMainListAdapter extends BaseAdapter {
+
+public class WishListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
     public static final String PHOTO_URL_END = "b.jpg";
@@ -56,7 +58,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     ImageView ivTripAdvisorRate;
     ButtonFlat btnReadMore, btnCheckAvailability;
     TextView tvHotelName;
-    //  TextView tvCity;
+
     TextView tvAddress;
     TextView tvPrice;
     TextView tvLocationDescription;
@@ -64,19 +66,15 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     float rate;
     Resources res;
     TextView tvLikeCounter;
-    //    @InjectView(R.id.btn_read_more_main_activity_main_list)
-//    Button btnReadMore;
-//    @InjectView(R.id.btn_check_availability_main_activity_main_list)
-//    Button btnCheckAvailability;
+
     Activity activity;
     LayoutInflater lInflater;
     ArrayList<SearchResultSO> searchResultSOArrayList;
     String tripAdvisorWebURL;
     String tripAdvisorApiURL;
     String arrivalDate, departureDate;
-    ArrayList<SearchRoomSO> rooms;
-    String cacheKey;
-    String cacheLocation;
+
+
     int visibleItems = 20;
     int visibleItemsStep = 20;
 
@@ -87,22 +85,19 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     private int posForLoading = 19;
     CheckBox chbWishList;
 
-    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
+    public WishListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
-
-        this.rooms = rooms;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
         res = activity.getResources();
-
     }
 
     @Override
     public int getCount() {
         if (searchResultSOArrayList.size() < visibleItems)
-        return searchResultSOArrayList.size();
+            return searchResultSOArrayList.size();
         else{
             return visibleItems;
         }
@@ -133,17 +128,17 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 ReadMoreFragment readMoreFragment = new ReadMoreFragment();
                 ((MaterialNavigationDrawer) activity).setFragmentChild(readMoreFragment, "About Hotel");
-                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate, rooms);
+                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate, null);
             }
         });
         btnCheckAvailability = (ButtonFlat) view.findViewById(R.id.btn_check_availability);
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
-                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
-                ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
-                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate, rooms);
+                SearchFragment searchFragment = new SearchFragment();
+                searchFragment.setParameters(((SearchResultSO) getItem(position)).getHotelId(),((SearchResultSO) getItem(position)).getHotelName());
+                ((MaterialNavigationDrawer) activity).setFragmentChild(searchFragment, activity.getString(R.string.fragment_checkavailablerooms));
+
             }
         });
 
@@ -221,7 +216,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         chbWishList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    if(!AppState.isInWishList(searchResultSO.getHotelId())){
+                if(!AppState.isInWishList(searchResultSO.getHotelId())){
                     AppState.addToWishList(searchResultSO.getHotelId());
                 }else{
                     AppState.removeFromWishList(searchResultSO.getHotelId());
@@ -233,7 +228,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         }else{
             chbWishList.setChecked(false);
         }
-
 
 
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
@@ -279,20 +273,13 @@ public class MainActivityMainListAdapter extends BaseAdapter {
             posForLoading += 20;
         }
 
-
         return view;
     }
 
     private void loadNextHotels() {
-
         visibleItems += visibleItemsStep;
         notifyDataSetChanged();
 
-    }
-
-
-    public void setVisibleElementsToDefault(){
-        visibleItems = 20;
     }
 
 }
