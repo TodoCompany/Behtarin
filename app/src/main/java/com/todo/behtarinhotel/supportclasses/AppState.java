@@ -4,9 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -132,7 +137,7 @@ public class AppState {
         return room;
     }
 
-    public static String getHotelImagesUrl(int hotelIdNumber){
+    public static String getHotelImagesUrl(int hotelIdNumber) {
         String url;
 
         String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/info?";
@@ -158,6 +163,36 @@ public class AppState {
         // Convert the dps to pixels, based on density scale
 
         return (int) (input * scale + 0.5f);
+    }
+
+    public static void addToWishList(SearchResultSO hotel) {
+        ArrayList<SearchResultSO> wishList = getWishList();
+        wishList.add(hotel);
+        logEditor = sPrefLog.edit();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+        }.getType();
+        String wishListString = gson.toJson(wishList,listOfTestObject);
+        logEditor.putString("wishList",wishListString);
+        logEditor.apply();
+    }
+
+    public static ArrayList<SearchResultSO> getWishList() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+        }.getType();
+        if (sPrefLog.getString("wishList", "").equals("")) {
+            return new ArrayList<>();
+        } else {
+            return gson.fromJson(sPrefLog.getString("wishList", ""), listOfTestObject);
+        }
+    }
+
+    public static boolean isInWishList(SearchResultSO hotel){
+        ArrayList<SearchResultSO> wishList = getWishList();
+        return wishList.contains(hotel);
     }
 
 

@@ -29,7 +29,7 @@
                 android:scaleType="fitXY" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/chb_wish_main_activity_main_list"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="right"

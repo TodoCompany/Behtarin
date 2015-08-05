@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -83,6 +85,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
     String url;
     private int posForLoading = 19;
+    CheckBox chbWishList;
 
     public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
         this.activity = activity;
@@ -97,10 +100,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         this.cacheKey = "&cacheKey=" + cacheKey;
         this.cacheLocation = "&cacheLocation=" + cacheLocation;
         this.url = url;
-
-
-
-
     }
 
     @Override
@@ -177,7 +176,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         tvLocationDescription = (TextView) view.findViewById(R.id.tv_location_description_main_activity_main_list);
 
 
-        SearchResultSO searchResultSO = searchResultSOArrayList.get(position);
+        final SearchResultSO searchResultSO = searchResultSOArrayList.get(position);
         tvHotelName.setText(searchResultSO.getHotelName());
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSO.getAddress());
@@ -220,6 +219,25 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
         tvLikeCounter = (TextView) view.findViewById(R.id.tv_like_counter_activity_main_main_list);
         tvLikeCounter.setText("" + searchResultSO.getLikeCounter());
+
+        chbWishList = (CheckBox) view.findViewById(R.id.chb_wish_main_activity_main_list);
+        chbWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(chbWishList.isChecked()){
+                    AppState.addToWishList(searchResultSO);
+                }else{
+
+                }
+
+            }
+        });
+        if(AppState.isInWishList(searchResultSO)){
+            chbWishList.setChecked(true);
+        }else{
+            chbWishList.setChecked(false);
+        }
+
 
 
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
