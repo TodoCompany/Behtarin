@@ -244,54 +244,6 @@ public class FilterFragment extends Fragment {
         }
     }
 
-    public ArrayList<SearchResultSO> applyFilter(String url) {
-        gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder.create();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        String cacheLocation = "";
-                        String cacheKey = "";
-                        try {
-                            cacheLocation = response.getJSONObject("HotelListResponse").getString("cacheLocation");
-                            cacheKey = response.getJSONObject("HotelListResponse").getString("cacheKey");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        JSONArray arr = null;
-                        try {
-                            arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-                        }.getType();
-
-
-                        searchResultSOArrayList = new ArrayList<>();
-                        searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-
-            }
-        }
-
-        );
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
-
-        return searchResultSOArrayList;
-    }
-
 
     public void setFilterParams(FilterSO filterParams,MainFragment fragment){
         this.filterParams = filterParams;
@@ -307,6 +259,7 @@ public class FilterFragment extends Fragment {
             if(!isMinStarSet){
                 if(arrStar[i].isChecked()){
                     filterParams.setMinStarRate(i);
+                    filterParams.setMaxStarRate(i);
                     isMinStarSet = true;
                 }
             }else{
@@ -319,6 +272,7 @@ public class FilterFragment extends Fragment {
             if(!isMinTripSet){
                 if(arrTrip[i].isChecked()){
                     filterParams.setMinTripRate(i);
+                    filterParams.setMaxTripRate(i);
                     isMinTripSet = true;
                 }
             }else{
@@ -332,15 +286,11 @@ public class FilterFragment extends Fragment {
     private void setArr(){
         for(int i = 0; i < 5; i++){
             if(i>=filterParams.getMinStarRate()&&i<=filterParams.getMaxStarRate()){
-                if(filterParams.getMinStarRate()==filterParams.getMaxStarRate()&&filterParams.getMinStarRate()==i){
-                    arrStar[i].setChecked(false);
-                }else{
                     arrStar[i].setChecked(true);
-                }
             }
         }
         for(int i = 0; i < 5; i++){
-            if(i>= filterParams.getMinTripRate()&&i<= filterParams.getMaxTripRate()){
+            if(i >= filterParams.getMinTripRate()&& i <= filterParams.getMaxTripRate()){
                 arrTrip[i].setChecked(true);
             }
         }

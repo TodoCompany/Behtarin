@@ -49,6 +49,7 @@ public class CheckAvailabilityFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
 
+
     public CheckAvailabilityFragment() {
     }
 
@@ -87,7 +88,7 @@ public class CheckAvailabilityFragment extends Fragment {
         this.departureDate = dateDeparture;
         this.rooms = rooms;
         showLoadingScreen();
-        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
+       final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {

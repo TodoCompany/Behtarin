@@ -7,215 +7,232 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/container"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From"
-            android:id="@+id/textView9"
-            android:layout_marginRight="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From"
-            android:id="@+id/tv_from_filter_fragment"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textSize="20sp"
-            android:layout_marginRight="60dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To"
-            android:id="@+id/textView10"
-            android:layout_marginRight="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To"
-            android:id="@+id/tv_to_filter_fragment"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <ImageView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:id="@+id/imageView15"
-        android:layout_below="@+id/container"
-        android:background="@color/base_grey"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Star rating"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/imageView15"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/scrollView2"
+        android:layout_above="@+id/btn_apply_filter_fragment"
+        android:layout_alignParentTop="true">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        android:id="@+id/chb_star_rate_1_filter_fragment"
-        android:checked="false"
-        android:layout_below="@+id/textView6"
-        android:textColor="@color/base_black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2"
-        android:id="@+id/chb_star_rate_2_filter_fragment"
-        android:layout_below="@+id/chb_star_rate_1_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/container"
+                android:layout_centerHorizontal="true">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3"
-        android:id="@+id/chb_star_rate_3_filter_fragment"
-        android:layout_below="@+id/chb_star_rate_2_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:id="@+id/textView9"
+                    android:layout_marginRight="10dp" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4"
-        android:id="@+id/chb_star_rate_4_filter_fragment"
-        android:layout_below="@+id/chb_star_rate_3_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:id="@+id/tv_from_filter_fragment"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textSize="20sp"
+                    android:layout_marginRight="60dp" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5"
-        android:id="@+id/chb_star_rate_5_filter_fragment"
-        android:layout_below="@+id/chb_star_rate_4_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To"
+                    android:id="@+id/textView10"
+                    android:layout_marginRight="10dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:id="@+id/imageView16"
-        android:layout_below="@+id/chb_star_rate_5_filter_fragment"
-        android:background="@color/base_grey"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To"
+                    android:id="@+id/tv_to_filter_fragment"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Review score"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/imageView16"
-        android:layout_centerHorizontal="true" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:id="@+id/imageView15"
+                android:layout_below="@+id/container"
+                android:background="@color/base_grey"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chb_trip_rate_1_filter_fragment"
-        android:layout_below="@+id/textView8"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Star rating"
+                android:id="@+id/textView6"
+                android:layout_below="@+id/imageView15"
+                android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView10"
-        android:layout_alignTop="@+id/chb_trip_rate_1_filter_fragment"
-        android:layout_alignBottom="@+id/chb_trip_rate_1_filter_fragment"
-        android:layout_toRightOf="@+id/chb_trip_rate_1_filter_fragment"
-        android:src="@drawable/trip1" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:id="@+id/chb_star_rate_1_filter_fragment"
+                android:checked="false"
+                android:layout_below="@+id/textView6"
+                android:textColor="@color/base_black" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:id="@+id/chb_star_rate_2_filter_fragment"
+                android:layout_below="@+id/chb_star_rate_1_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-        android:id="@+id/chb_trip_rate_2_filter_fragment"
-        android:layout_below="@+id/chb_trip_rate_1_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:id="@+id/chb_star_rate_3_filter_fragment"
+                android:layout_below="@+id/chb_star_rate_2_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView11"
-        android:layout_alignTop="@+id/chb_trip_rate_2_filter_fragment"
-        android:layout_alignBottom="@+id/chb_trip_rate_2_filter_fragment"
-        android:layout_toRightOf="@+id/chb_trip_rate_2_filter_fragment"
-        android:src="@drawable/trip2" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:id="@+id/chb_star_rate_4_filter_fragment"
+                android:layout_below="@+id/chb_star_rate_3_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:id="@+id/chb_star_rate_5_filter_fragment"
+                android:layout_below="@+id/chb_star_rate_4_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-        android:id="@+id/chb_trip_rate_3_filter_fragment"
-        android:layout_below="@+id/chb_trip_rate_2_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:id="@+id/imageView16"
+                android:layout_below="@+id/chb_star_rate_5_filter_fragment"
+                android:background="@color/base_grey"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView12"
-        android:layout_alignTop="@+id/chb_trip_rate_3_filter_fragment"
-        android:layout_alignBottom="@+id/chb_trip_rate_3_filter_fragment"
-        android:layout_toRightOf="@+id/chb_trip_rate_3_filter_fragment"
-        android:src="@drawable/trip3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Review score"
+                android:id="@+id/textView8"
+                android:layout_below="@+id/imageView16"
+                android:layout_centerHorizontal="true" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chb_trip_rate_1_filter_fragment"
+                android:layout_below="@+id/textView8"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-        android:id="@+id/chb_trip_rate_4_filter_fragment"
-        android:layout_below="@+id/chb_trip_rate_3_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView10"
+                android:layout_alignTop="@+id/chb_trip_rate_1_filter_fragment"
+                android:layout_alignBottom="@+id/chb_trip_rate_1_filter_fragment"
+                android:layout_toRightOf="@+id/chb_trip_rate_1_filter_fragment"
+                android:src="@drawable/trip1" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView13"
-        android:layout_alignTop="@+id/chb_trip_rate_4_filter_fragment"
-        android:layout_alignBottom="@+id/chb_trip_rate_4_filter_fragment"
-        android:layout_toRightOf="@+id/chb_trip_rate_4_filter_fragment"
-        android:src="@drawable/trip4" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chb_trip_rate_5_filter_fragment"
-        android:layout_below="@+id/chb_trip_rate_4_filter_fragment"
-        android:checked="false"
-        android:textColor="@color/base_black" />
+                android:id="@+id/chb_trip_rate_2_filter_fragment"
+                android:layout_below="@+id/chb_trip_rate_1_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView14"
-        android:layout_alignTop="@+id/chb_trip_rate_5_filter_fragment"
-        android:layout_alignBottom="@+id/chb_trip_rate_5_filter_fragment"
-        android:layout_toRightOf="@+id/chb_trip_rate_5_filter_fragment"
-        android:src="@drawable/trip5" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView11"
+                android:layout_alignTop="@+id/chb_trip_rate_2_filter_fragment"
+                android:layout_alignBottom="@+id/chb_trip_rate_2_filter_fragment"
+                android:layout_toRightOf="@+id/chb_trip_rate_2_filter_fragment"
+                android:src="@drawable/trip2" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/chb_trip_rate_3_filter_fragment"
+                android:layout_below="@+id/chb_trip_rate_2_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView12"
+                android:layout_alignTop="@+id/chb_trip_rate_3_filter_fragment"
+                android:layout_alignBottom="@+id/chb_trip_rate_3_filter_fragment"
+                android:layout_toRightOf="@+id/chb_trip_rate_3_filter_fragment"
+                android:src="@drawable/trip3" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/chb_trip_rate_4_filter_fragment"
+                android:layout_below="@+id/chb_trip_rate_3_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView13"
+                android:layout_alignTop="@+id/chb_trip_rate_4_filter_fragment"
+                android:layout_alignBottom="@+id/chb_trip_rate_4_filter_fragment"
+                android:layout_toRightOf="@+id/chb_trip_rate_4_filter_fragment"
+                android:src="@drawable/trip4" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chb_trip_rate_5_filter_fragment"
+                android:layout_below="@+id/chb_trip_rate_4_filter_fragment"
+                android:checked="false"
+                android:textColor="@color/base_black"
+                android:layout_marginBottom="16dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView14"
+                android:layout_alignTop="@+id/chb_trip_rate_5_filter_fragment"
+                android:layout_alignBottom="@+id/chb_trip_rate_5_filter_fragment"
+                android:layout_toRightOf="@+id/chb_trip_rate_5_filter_fragment"
+                android:src="@drawable/trip5" />
+
+
+
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
         android:layout_width="match_parent"
@@ -225,4 +242,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/base_gold" />
+
+
+
 </RelativeLayout>

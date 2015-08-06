@@ -128,7 +128,7 @@ public class WishListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 ReadMoreFragment readMoreFragment = new ReadMoreFragment();
                 ((MaterialNavigationDrawer) activity).setFragmentChild(readMoreFragment, "About Hotel");
-                readMoreFragment.setHotelData(searchResultSOArrayList.get(position), arrivalDate, departureDate, null);
+                readMoreFragment.setHotelData(searchResultSOArrayList.get(position));
             }
         });
         btnCheckAvailability = (ButtonFlat) view.findViewById(R.id.btn_check_availability);
@@ -137,7 +137,7 @@ public class WishListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 SearchFragment searchFragment = new SearchFragment();
                 searchFragment.setParameters(((SearchResultSO) getItem(position)).getHotelId(),((SearchResultSO) getItem(position)).getHotelName());
-                ((MaterialNavigationDrawer) activity).setFragmentChild(searchFragment, activity.getString(R.string.fragment_checkavailablerooms));
+                ((MaterialNavigationDrawer) activity).setFragmentChild(searchFragment, "Search");
 
             }
         });

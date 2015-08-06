@@ -193,7 +193,8 @@ public class SearchFragment extends Fragment {
                         parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
                         SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
                                 etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
-                        mainFragment.setSearchParams(searchParamsSO);
+
+                        mainFragment.setSearchParams(searchParamsSO,isSearchWithHotelId,hotelID);
                         famMenu.collapse();
                     }
                 }
@@ -342,7 +343,6 @@ public class SearchFragment extends Fragment {
     private void changeSearchType(){
         etLocation.setText(hotelName);
         etLocation.setEnabled(false);
-
     }
 
 

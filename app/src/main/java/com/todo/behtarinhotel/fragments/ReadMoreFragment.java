@@ -102,6 +102,10 @@ public class ReadMoreFragment extends Fragment {
 
     }
 
+    public void setHotelData(SearchResultSO searchResultSO){
+        this.searchResultSO = searchResultSO;
+    }
+
     private void fillWithData() {
         imageViews = new ArrayList<>();
         imageViews.add(hotelStar1);
@@ -120,10 +124,15 @@ public class ReadMoreFragment extends Fragment {
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
-                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(checkAvailabilityFragment, getActivity().getString(R.string.fragment_checkavailablerooms));
-                checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure, rooms);
-
+                if(rooms!=null){
+                    CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(checkAvailabilityFragment, getActivity().getString(R.string.fragment_checkavailablerooms));
+                    checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure, rooms);
+                }else{
+                    SearchFragment searchFragment = new SearchFragment();
+                    searchFragment.setParameters(searchResultSO.getHotelId(),searchResultSO.getHotelName());
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(searchFragment, "Search");
+                }
             }
         });
 

@@ -74,9 +74,11 @@ public class MainFragment extends Fragment {
     String city = "&destinationString=";
     String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
     String minorRev = "&minorRev=30";
+    String hotelIdList = "&hotelIdList=";
     String minStar = "&minStarRating=";
     String limit = "&numberOfResults=";
     String cacheKey, cacheLocation;
+    int hotelId;
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -101,6 +103,7 @@ public class MainFragment extends Fragment {
     View ll;
 
     boolean isFiltersChanged = false;
+    private boolean isWishListSearch;
 
 
     public MainFragment() {
@@ -139,33 +142,52 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    public void setSearchParams(SearchParamsSO searchParams) {
+    public void setSearchParams(SearchParamsSO searchParams, boolean isWishListSearch, int hotelId) {
         this.searchParams = searchParams;
         filterParams = new FilterSO(0, 5000, 0, 4, 0, 4);
         filterParams.setMinStarRate(searchParams.getMinStar());
+        this.isWishListSearch = isWishListSearch;
+        this.hotelId = hotelId;
     }
+
 
     public void loadDataFromExpedia() {
         if (searchParams != null) {
             showLoadingScreen();
-            url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-                    apiKey + API_KEY +
-                    cid + CID +
-                    sig +
-                    customerIpAddress +
-                    currencyCode +
-                    customerSessionID +
-                    minorRev +
-                    locale +
-                    city + searchParams.getCity() +
-                    arrivalDate + searchParams.getArrivalDate() +
-                    departureDate + searchParams.getDepartureDate() +
-                    makeRoomString(searchParams.getRooms()) +
-                    limit + 200 +
-                    makeFilterString()
-            ;
+            if (isWishListSearch) {
+                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
+                        apiKey + API_KEY +
+                        cid + CID +
+                        sig +
+                        customerIpAddress +
+                        currencyCode +
+                        customerSessionID +
+                        minorRev +
+                        locale +
+                        hotelIdList + hotelId +
+                        arrivalDate + searchParams.getArrivalDate() +
+                        departureDate + searchParams.getDepartureDate() +
+                        makeRoomString(searchParams.getRooms())
+                ;
 
-
+            } else {
+                url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
+                        apiKey + API_KEY +
+                        cid + CID +
+                        sig +
+                        customerIpAddress +
+                        currencyCode +
+                        customerSessionID +
+                        minorRev +
+                        locale +
+                        city + searchParams.getCity() +
+                        arrivalDate + searchParams.getArrivalDate() +
+                        departureDate + searchParams.getDepartureDate() +
+                        makeRoomString(searchParams.getRooms()) +
+                        limit + 200 +
+                        makeFilterString()
+                ;
+            }
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
 
@@ -183,24 +205,40 @@ public class MainFragment extends Fragment {
                             }
 
                             JSONArray arr = null;
+                            JSONObject obj = null;
                             try {
                                 arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
                             } catch (JSONException e) {
+                                try {
+                                    obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
                                 e.printStackTrace();
                             }
                             Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
                             }.getType();
 
-                            if (arr == null || arr.length() == 0) {
-                                showError("No hotels");
-                                return;
-                            }
+                            if(isWishListSearch){
+                                SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
+                                searchResultSOArrayList = new ArrayList<>();
+                                searchResultSOArrayList.add(so);
+                                adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                                slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                                listView.setAdapter(slideExpandableListAdapter);
+                                clearLoadingScreen();
+                            }else{
+                                if (arr == null || arr.length() == 0) {
+                                    showError("No hotels");
+                                    return;
+                                }
 
-                            if (getActivity() != null) {
-                                searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
-                                loadNextHotels();
+                                if (getActivity() != null) {
+                                    searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
+                                    Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
+                                    loadNextHotels();
 
+                                }
                             }
 
 
@@ -216,6 +254,7 @@ public class MainFragment extends Fragment {
             );
             VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
         }
+
     }
 
     private void showError(String errorMessage) {
@@ -266,8 +305,8 @@ public class MainFragment extends Fragment {
             return filter;
         }
         filter = filter + "&minRate=" + filterParams.getMinPrice() + "&maxRate=" + filterParams.getMaxPrice() +
-                "&minStarRating=" + filterParams.getMinStarRate() + "&maxStarRating=" + filterParams.getMaxStarRate() +
-                "&minTripAdvisorRating=" + filterParams.getMinTripRate() + "&maxTripAdvisorRating=" + filterParams.getMaxTripRate();
+                "&minStarRating=" + (filterParams.getMinStarRate()+1) + "&maxStarRating=" + (filterParams.getMaxStarRate()+1) +
+                "&minTripAdvisorRating=" + (filterParams.getMinTripRate()+1) + "&maxTripAdvisorRating=" + (filterParams.getMaxTripRate()+1);
         return filter;
     }
 

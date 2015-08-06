@@ -90,13 +90,16 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
-
+    this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
         this.rooms = rooms;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
         res = activity.getResources();
-
+        this.cacheKey = cacheKey;
+        this.cacheLocation = cacheLocation;
+        this.url = url;
     }
 
     @Override
