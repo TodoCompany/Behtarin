@@ -56,6 +56,7 @@ public class ReadMoreFragment extends Fragment {
     ArrayList<ImageView> imageViews;
     ArrayList<ImageView> hotelImages;
     ArrayList<String> hotelImagesUrls;
+    int checkedImageNumber;
 
 
     public ReadMoreFragment() {
@@ -214,6 +215,7 @@ public class ReadMoreFragment extends Fragment {
             for (int i = 0; i < hotelImagesUrls.size(); i++){
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setId(i);
                 imageView.setLayoutParams(params);
                 Glide.with(getActivity())
                         .load(hotelImagesUrls.get(i))
@@ -225,6 +227,7 @@ public class ReadMoreFragment extends Fragment {
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setLayoutParams(params);
+                imageView.setId(i);
                 Glide.with(getActivity())
                         .load(hotelImagesUrls.get(i))
                         .into(imageView);
@@ -232,7 +235,16 @@ public class ReadMoreFragment extends Fragment {
             }
             View view = inflater.inflate(R.layout.more_photos_item, null, false);
             view.setLayoutParams(params);
+            view.setId(6);
             Button btnLoadMorePhotos = (Button) view.findViewById(R.id.btnLoadMorePhotos);
+            btnLoadMorePhotos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HotelPhotosFragment hotelPhotosFragment = new HotelPhotosFragment();
+                    hotelPhotosFragment.setHotelId(hotelImagesUrls, -1);
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(hotelPhotosFragment, "Hotel photos");
+                }
+            });
             ImageView imageLoadMore = (ImageView) view.findViewById(R.id.imageLoadMore);
             btnLoadMorePhotos.setText("+" + (hotelImagesUrls.size() - 6));
             Glide.with(getActivity())
@@ -241,12 +253,25 @@ public class ReadMoreFragment extends Fragment {
             photos.add(view);
         }
 
+
         firstRow.addView(photos.get(0));
         firstRow.addView(photos.get(1));
         firstRow.addView(photos.get(2));
         secondRow.addView(photos.get(3));
         secondRow.addView(photos.get(4));
         secondRow.addView(photos.get(5));
+
+        for (View view : photos){
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HotelPhotosFragment hotelPhotosFragment = new HotelPhotosFragment();
+                    hotelPhotosFragment.setHotelId(hotelImagesUrls, v.getId());
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(hotelPhotosFragment, "Hotel photos");
+                }
+            });
+        }
 
     }
 
