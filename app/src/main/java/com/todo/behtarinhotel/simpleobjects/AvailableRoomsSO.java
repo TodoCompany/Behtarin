@@ -20,8 +20,13 @@ public class AvailableRoomsSO {
     private String hotelCountry;
     @SerializedName("HotelRoomResponse")
     private ArrayList<RoomSO> roomSO;
+    @SerializedName("checkInInstructions")
+    private String checkInInstruction;
 
 
+    public String getCheckInInstruction() {
+        return checkInInstruction;
+    }
 
     public int getHotelId() {
         return hotelId;
@@ -57,6 +62,12 @@ public class AvailableRoomsSO {
         private String description;
         @SerializedName("RoomImages")
         private RoomImages roomImages;
+        @SerializedName("smokingPreferences")
+        private String smokingPreference;
+        @SerializedName("cancellationPolicy")
+        private String cancellationPolicy;
+
+
         private String bedDescription;
         private int bedsQuantity;
 
@@ -87,6 +98,7 @@ public class AvailableRoomsSO {
         public void setBedsQuantity(int bedsQuantity) {
             this.bedsQuantity = bedsQuantity;
         }
+
 
         public String getDescription() {
             return description;
@@ -154,6 +166,21 @@ public class AvailableRoomsSO {
             }
         }
 
+        public String getSmokingPreference() {
+            return smokingPreference;
+        }
+
+        public void setSmokingPreference(String smokingPreference) {
+            this.smokingPreference = smokingPreference;
+        }
+
+        public String getCancellationPolicy() {
+            return cancellationPolicy;
+        }
+
+        public void setCancellationPolicy(String cancellationPolicy) {
+            this.cancellationPolicy = cancellationPolicy;
+        }
     }
 
 

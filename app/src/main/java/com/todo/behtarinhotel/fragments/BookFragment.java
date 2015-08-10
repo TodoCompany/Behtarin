@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
@@ -36,6 +37,9 @@ public class BookFragment extends Fragment {
     EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
     EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode;
     ArrayList<EditText> requiredEditTexts = new ArrayList<>();
+    TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
+    TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCrediCardExpiration;
+    TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
     int roomType;
     int roomNumber;
 
@@ -53,6 +57,7 @@ public class BookFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_book, container, false);
 
         initViews();
+        setRequiredEditTexts();
 
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +79,23 @@ public class BookFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    private void setRequiredEditTexts() {
+        requiredEditTexts.add(etWizardEmail);
+        requiredEditTexts.add(etWizardFirstName);
+        requiredEditTexts.add(etWizardLastName);
+        requiredEditTexts.add(etWizardPhone);
+
+        requiredEditTexts.add(etWizardCreditCardNumber);
+        requiredEditTexts.add(etWizardCreditCardIdentifier);
+        requiredEditTexts.add(etWizardCreditCardExMonth);
+        requiredEditTexts.add(etWizardCreditCardExYear);
+
+        requiredEditTexts.add(etWizardCity);
+        requiredEditTexts.add(etWizardAddress);
+        requiredEditTexts.add(etWizardPostalCode);
+        requiredEditTexts.add(etWizardCountryCode);
     }
 
     private void payWithCardIo() {
@@ -106,6 +128,20 @@ public class BookFragment extends Fragment {
         etWizardAddress = (EditText) rootView.findViewById(R.id.etWizardAddress);
         etWizardCountryCode = (EditText) rootView.findViewById(R.id.etWizardCountryCode);
         etWizardPostalCode = (EditText) rootView.findViewById(R.id.etWizardPostalCode);
+
+        tvWizardEmail = (TextView) rootView.findViewById(R.id.tvWizardEmail);
+        tvWizardFirstName = (TextView) rootView.findViewById(R.id.tvWizardFirstName);
+        tvWizardLastName = (TextView) rootView.findViewById(R.id.tvWizardLastName);
+        tvWizardPhone = (TextView) rootView.findViewById(R.id.tvWizardPhone);
+
+        tvWizardCreditCardNumber = (TextView) rootView.findViewById(R.id.tvWizardCreditCardNumber);
+        tvWizardCreditCardIdentifier = (TextView) rootView.findViewById(R.id.tvWizardCreditCardIdentifier);
+        tvWizardCrediCardExpiration = (TextView) rootView.findViewById(R.id.tvWizardCrediCardExpiration);
+
+        tvWizardCity = (TextView) rootView.findViewById(R.id.tvWizardCity);
+        tvWizardAddress = (TextView) rootView.findViewById(R.id.tvWizardAddress);
+        tvWizardCountryCode = (TextView) rootView.findViewById(R.id.tvWizardCountryCode);
+        tvWizardPostalCode = (TextView) rootView.findViewById(R.id.tvWizardPostalCode);
 
         wizardRoomsList = (ListView) rootView.findViewById(R.id.wizardRoomsList);
     }
