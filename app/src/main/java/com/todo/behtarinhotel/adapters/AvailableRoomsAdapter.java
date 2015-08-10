@@ -14,6 +14,9 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.BookFragment;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+
+import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -30,13 +33,18 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     MaterialNavigationDrawer activity;
     LayoutInflater lInflater;
     AvailableRoomsSO availableRooms;
+    ArrayList<SearchRoomSO> searchRoomSO;
+
+    BookFragment bookFragment;
 
 
-    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms) {
+    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO) {
         this.activity = activity;
         this.availableRooms = availableRooms;
+        this.searchRoomSO = searchRoomSO;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        bookFragment = new BookFragment();
 
 
     }
@@ -89,7 +97,8 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.setFragmentChild(new BookFragment(), "Book");
+                bookFragment.setRooms(room.getRoomTypeCode(), searchRoomSO);
+                activity.setFragmentChild(bookFragment, "Book");
             }
         });
 

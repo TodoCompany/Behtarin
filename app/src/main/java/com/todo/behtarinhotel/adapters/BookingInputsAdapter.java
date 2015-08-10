@@ -1,15 +1,17 @@
 package com.todo.behtarinhotel.adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
-import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 
 import java.util.ArrayList;
 
@@ -21,41 +23,27 @@ public class BookingInputsAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater inflater;
 
-    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardPhone,
-    etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExpirationMonth, etWizardCreditCardExpirationYear,
-    etWizardAddress, etWizardCity, etWizardCountryCode, etWizardPostalCode;
-    ButtonFlat btnPersonalInfo, btnCreditCardInfo, btnLocationInfo;
 
-    private ArrayList<AvailableRoomsSO> rooms;
-    View.OnClickListener headerButtonListener;
+    private ArrayList<SearchRoomSO> rooms;
 
 
-    public BookingInputsAdapter(Context context, ArrayList<AvailableRoomsSO> rooms){
+
+    public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms){
         ctx = context;
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.rooms = rooms;
 
-        headerButtonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                btnPersonalInfo.setBackgroundColor(ctx.getResources().getColor(R.color.base_hint));
-                btnCreditCardInfo.setBackgroundColor(ctx.getResources().getColor(R.color.base_hint));
-                btnLocationInfo.setBackgroundColor(ctx.getResources().getColor(R.color.base_hint));
-
-                v.setBackgroundColor(ctx.getResources().getColor(R.color.base_yellow));
-            }
-        };
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return rooms.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return rooms.get(position);
     }
 
     @Override
@@ -64,49 +52,79 @@ public class BookingInputsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view;
-        switch (position){
-            case 0:
-                view = inflater.inflate(R.layout.wizard_page_1, null, false);
-                btnPersonalInfo = (ButtonFlat) view.findViewById(R.id.wizardExpandButton);
-                btnPersonalInfo.setOnClickListener(headerButtonListener);
-                etWizardEmail = (EditText) view.findViewById(R.id.etWizardEmail);
-                etWizardFirstName = (EditText) view.findViewById(R.id.etWizardFirstName);
-                etWizardLastName = (EditText) view.findViewById(R.id.etWizardLastName);
-                etWizardPhone = (EditText) view.findViewById(R.id.etWizardPhone);
-
-
-                break;
-            case 1:
-                view = inflater.inflate(R.layout.wizard_page_2, null, false);
-                btnCreditCardInfo= (ButtonFlat) view.findViewById(R.id.wizardExpandButton);
-                btnCreditCardInfo.setOnClickListener(headerButtonListener);
-                etWizardCreditCardNumber = (EditText) view.findViewById(R.id.etWizardCreditCardNumber);
-                etWizardCreditCardIdentifier = (EditText) view.findViewById(R.id.etWizardCreditCardIdentifier);
-                etWizardCreditCardExpirationMonth = (EditText) view.findViewById(R.id.etWizardCreditCardExpirationMonth);
-                etWizardCreditCardExpirationYear = (EditText) view.findViewById(R.id.etWizardCreditCardExpirationYear);
-                break;
-            case 2:
-                view = inflater.inflate(R.layout.wizard_page_3, null, false);
-                btnLocationInfo = (ButtonFlat) view.findViewById(R.id.wizardExpandButton);
-                btnLocationInfo.setOnClickListener(headerButtonListener);
-                etWizardAddress = (EditText) view.findViewById(R.id.etWizardAddress);
-                etWizardCity = (EditText) view.findViewById(R.id.etWizardCity);
-                etWizardCountryCode = (EditText) view.findViewById(R.id.etWizardCountryCode);
-                etWizardPostalCode = (EditText) view.findViewById(R.id.etWizardPostalCode);
-                break;
-            default:
-                view = inflater.inflate(R.layout.wizard_room_page, null, false);
-
-
-
+        if (convertView != null){
+            view = convertView;
+        }else{
+            view = inflater.inflate(R.layout.wizard_room_page, null, false);
         }
+
+        final EditText etWizardRoomFirstName = (EditText) view.findViewById(R.id.etWizardRoomFirstName);
+        final EditText etWizardRoomLastName = (EditText) view.findViewById(R.id.etWizardRoomLastName);
+        etWizardRoomFirstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                rooms.get(position).setFirstName(etWizardRoomFirstName.getText().toString());
+            }
+        });
+        etWizardRoomLastName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                rooms.get(position).setLastName(etWizardRoomLastName.getText().toString());
+            }
+        });
+
+
+        RadioGroup radioGroupSmoking = (RadioGroup) view.findViewById(R.id.radioGroupSmoking);
+        radioGroupSmoking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rbSmoking:
+                        //TODO change to code from api
+                        rooms.get(position).setSmokingPreference("NS");
+                        break;
+                    case R.id.rbNotSmoking:
+                        //TODO change to code from api
+                        rooms.get(position).setSmokingPreference("NS");
+                        break;
+                    case R.id.rbEither:
+                        //TODO change to code from api
+                        rooms.get(position).setSmokingPreference("NS");
+                        break;
+                }
+            }
+        });
+
+
+
+
         return view;
     }
 
 
-
-
-
+    public ArrayList<SearchRoomSO> getRooms() {
+        return rooms;
+    }
 }

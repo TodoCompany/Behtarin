@@ -84,7 +84,7 @@ public class CheckAvailabilityFragment extends Fragment {
         return rootView;
     }
 
-    public void getData(int hotelId, String dateArrival, String dateDeparture, ArrayList<SearchRoomSO> rooms) {
+    public void getData(int hotelId, String dateArrival, String dateDeparture, final ArrayList<SearchRoomSO> rooms) {
         this.hotelId = hotelId;
         this.arrivalDate = dateArrival;
         this.departureDate = dateDeparture;
@@ -126,7 +126,7 @@ public class CheckAvailabilityFragment extends Fragment {
                         }
 
 
-                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(),availableRoomsSO, rooms);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0){
                             showError("There are no free rooms in this hotel for that days");

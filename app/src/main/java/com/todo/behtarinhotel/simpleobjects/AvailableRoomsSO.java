@@ -21,6 +21,8 @@ public class AvailableRoomsSO {
     @SerializedName("HotelRoomResponse")
     private ArrayList<RoomSO> roomSO;
 
+
+
     public int getHotelId() {
         return hotelId;
     }

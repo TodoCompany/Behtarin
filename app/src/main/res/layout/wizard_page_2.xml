@@ -18,6 +18,15 @@
             android:text="Enter your credit card info"
             android:id="@+id/wizardExpandButton" />
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use camera"
+            android:id="@+id/btnCardIo"
+            android:layout_gravity="right"
+            android:textColor="@color/base_white" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

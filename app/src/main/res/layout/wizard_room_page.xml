@@ -48,6 +48,37 @@
                 android:layout_gravity="center_horizontal"
                 android:hint="Last name" />
 
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/radioGroupSmoking">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Smoking"
+                    android:id="@+id/rbSmoking"
+                    android:textColor="@color/base_text"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Not smoking"
+                    android:id="@+id/rbNotSmoking"
+                    android:textColor="@color/base_text"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Either"
+                    android:id="@+id/rbEither"
+                    android:textColor="@color/base_text"
+                    android:checked="false" />
+            </RadioGroup>
+
         </LinearLayout>
 
     </LinearLayout>

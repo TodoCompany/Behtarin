@@ -1,11 +1,9 @@
 package com.todo.behtarinhotel.supportclasses;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -15,8 +13,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.todo.behtarinhotel.MainActivity;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
@@ -29,12 +25,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Created by maxvitruk on 07.07.15.
  */
 public class AppState {
+
+    public static final int MY_SCAN_REQUEST_CODE = 1;
 
     private static final String LOG_STATUS = "LogStatus";
     //API data
