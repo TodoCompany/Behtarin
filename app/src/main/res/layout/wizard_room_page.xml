@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/base_white"
+        android:padding="16dp"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter room data"
+                android:id="@+id/wizardExpandButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/wizardExpandableContainer"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etWizardRoomFirstName"
+                android:textColor="@color/base_text"
+                android:layout_gravity="center_horizontal"
+                android:hint="First Name" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/base_text"
+                android:id="@+id/etWizardRoomLastName"
+                android:layout_gravity="center_horizontal"
+                android:hint="Last name" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

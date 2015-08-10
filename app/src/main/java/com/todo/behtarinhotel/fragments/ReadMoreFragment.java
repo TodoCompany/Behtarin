@@ -59,6 +59,7 @@ public class ReadMoreFragment extends Fragment {
     int checkedImageNumber;
 
 
+
     public ReadMoreFragment() {
         // Required empty public constructor
     }
@@ -121,6 +122,7 @@ public class ReadMoreFragment extends Fragment {
         tvHotelDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvHotelPrice.setText(searchResultSO.getMinPrice() + " $");
         tvHotelLikes.setText("" + searchResultSO.getLikeCounter());
+
 
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -56,6 +56,11 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     // Horizontal ListView
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
+    // Material button
+    compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+
+
+
 
 
 

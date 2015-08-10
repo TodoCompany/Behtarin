@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.fragments.BookFragment;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * Created by Andriy on 13.07.2015.
@@ -24,15 +27,15 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     ButtonRectangle btnBook;
     AvailableRoomsSO.RoomSO room;
 
-    Context ctx;
+    MaterialNavigationDrawer activity;
     LayoutInflater lInflater;
     AvailableRoomsSO availableRooms;
 
 
-    public AvailableRoomsAdapter(Context ctx, AvailableRoomsSO availableRooms) {
-        this.ctx = ctx;
+    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms) {
+        this.activity = activity;
         this.availableRooms = availableRooms;
-        lInflater = (LayoutInflater) ctx
+        lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -63,10 +66,6 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
         initViewsById(view);
 
-//        ImageView roomImage;
-//        TextView tvRoomDescription, tvLocation, tvOldPrice, tvNewPrice, tvMaxGuests, tvBedsQuantity, tvBedsTypes;
-//        Button btnBook;
-
         room = availableRooms.getRoomSO().get(position);
         tvRoomDescription.setText(room.getDescription());
         tvLocation.setText(availableRooms.getHotelAddress());
@@ -81,12 +80,18 @@ public class AvailableRoomsAdapter extends BaseAdapter {
             temp = room.getRoomImage()
                     .substring(0, room.getRoomImage().length() - 5);
         }
-        Glide.with(ctx)
+        Glide.with(activity)
                 .load(temp + "b.jpg")
                 .placeholder(R.color.base_hint)
                 .error(R.drawable.empty)
                 .into(roomImage);
 
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.setFragmentChild(new BookFragment(), "Book");
+            }
+        });
 
 
         if(availableRooms.getRoomSO().get(position).getAverageRate() == availableRooms.getRoomSO().get(position).getOldPrice()){

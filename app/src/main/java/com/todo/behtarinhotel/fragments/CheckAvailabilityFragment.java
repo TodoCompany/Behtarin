@@ -30,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -124,7 +126,7 @@ public class CheckAvailabilityFragment extends Fragment {
                         }
 
 
-                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter(getActivity(), availableRoomsSO);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0){
                             showError("There are no free rooms in this hotel for that days");

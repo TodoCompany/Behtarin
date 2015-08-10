@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/base_white"
+        android:padding="16dp"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter your location info"
+                android:id="@+id/wizardExpandButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/wizardExpandableContainer"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etWizardAddress"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_text"
+                android:hint="Address" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etWizardCity"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_text"
+                android:hint="City" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etWizardCountryCode"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_text"
+                android:hint="Country code" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:id="@+id/etWizardPostalCode"
+                android:textColor="@color/base_text"
+                android:hint="Postal code" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
