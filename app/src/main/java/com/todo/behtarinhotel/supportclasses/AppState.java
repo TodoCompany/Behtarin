@@ -1,21 +1,35 @@
 package com.todo.behtarinhotel.supportclasses;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created by maxvitruk on 07.07.15.
@@ -176,8 +190,44 @@ public class AppState {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         String wishListString = gson.toJson(wishList);
-        logEditor.putString("wishlist",wishListString);
+        logEditor.putString("wishlist", wishListString);
         logEditor.apply();
+
+        HashMap<String, Object> params = new HashMap<>();
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("userID", 10);
+        values.put("hotelID", 10);
+        params.put("deleteWishList",values);
+
+        JSONObject obj = new JSONObject(params);
+        String str = obj.toString();
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://behtarinhotel.com/wp/api/user/booking/",
+                new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // response :"status":200,"success":"Yep"
+
+                            Log.i("Response :", response.toString());
+
+                            if(response.getInt("status") == 200){
+
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+        VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
+
     }
 
     public static ArrayList<Integer> getWishList() {
@@ -227,6 +277,40 @@ public class AppState {
         }
         logEditor.putString("wishlist",wishListString);
         logEditor.apply();
+
+        HashMap<String, Object> params = new HashMap<>();
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("userID", 10);
+
+        params.put("getWishList",values);
+
+        JSONObject obj = new JSONObject(params);
+        String str = obj.toString();
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://behtarinhotel.com/wp/api/user/booking/",
+                new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // response :"status":200,"success":"Yep"
+
+                            Log.i("Response :", response.toString());
+
+                            if(response.getInt("status") == 200){
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+        VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
     }
 
 

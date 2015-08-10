@@ -50,7 +50,7 @@ public class PhotoListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         final ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);

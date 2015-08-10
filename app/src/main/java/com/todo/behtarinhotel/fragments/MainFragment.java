@@ -191,7 +191,7 @@ public class MainFragment extends Fragment {
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
                     new Response.Listener<JSONObject>() {
                         @Override

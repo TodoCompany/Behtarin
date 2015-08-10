@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.edmodo.rangebar.RangeBar;
@@ -25,12 +26,14 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.RoomListAdapter;
+import com.todo.behtarinhotel.adapters.SearchCityAdapter;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
+import com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,7 +67,7 @@ public class SearchFragment extends Fragment {
 
     public RoomBuilderFragment builderFragment;
 
-    MaterialEditText etLocation;
+    DelayAutoCompleteTextView etLocation;
     EditText etRoom;
     EditText etAdult;
     EditText etChildren;
@@ -165,7 +168,7 @@ public class SearchFragment extends Fragment {
 
     private void initViewsById(View view) {
 
-        etLocation = (MaterialEditText) view.findViewById(R.id.et_location_search_fragment);
+        etLocation = (DelayAutoCompleteTextView) view.findViewById(R.id.et_location_search_fragment);
         etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -174,6 +177,9 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
+        etLocation.setThreshold(4);
+        etLocation.setAdapter(new SearchCityAdapter(getActivity()));
+        etLocation.setLoadingIndicator((ProgressBar) view.findViewById(R.id.progress_bar));
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
