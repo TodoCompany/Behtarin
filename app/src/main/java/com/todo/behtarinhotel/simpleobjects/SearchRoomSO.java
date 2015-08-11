@@ -7,11 +7,16 @@ import java.util.ArrayList;
  */
 public class SearchRoomSO {
 
+    public static final int SMOKING = 1, NOT_SMOKING = 2, EITHER = 3;
+
     ArrayList<RoomQueryGuestSO> guests;
-    private String firstName, lastName, smokingPreference;
+    private String firstName = "", lastName = "";
+    private int smokingPreference = NOT_SMOKING;
 
     public SearchRoomSO(ArrayList<RoomQueryGuestSO> guests) {
         this.guests = guests;
+    }
+    public SearchRoomSO() {
     }
 
     public ArrayList<RoomQueryGuestSO> getGuests() {
@@ -22,11 +27,11 @@ public class SearchRoomSO {
         this.guests = guests;
     }
 
-    public String getSmokingPreference() {
+    public int getSmokingPreference() {
         return smokingPreference;
     }
 
-    public void setSmokingPreference(String smokingPreference) {
+    public void setSmokingPreference(int smokingPreference) {
         this.smokingPreference = smokingPreference;
     }
 

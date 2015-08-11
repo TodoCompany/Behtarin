@@ -38,7 +38,8 @@
                 android:id="@+id/etWizardAddress"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
-                android:hint="Address" />
+                android:hint="Address"
+                android:text="some street 13s/23" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -46,7 +47,8 @@
                 android:id="@+id/etWizardCity"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
-                android:hint="City" />
+                android:hint="City"
+                android:text="L&apos;viv" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -54,7 +56,8 @@
                 android:id="@+id/etWizardCountryCode"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
-                android:hint="Country code" />
+                android:hint="Country code"
+                android:text="UA" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -63,7 +66,8 @@
                 android:ems="10"
                 android:id="@+id/etWizardPostalCode"
                 android:textColor="@color/base_text"
-                android:hint="Postal code" />
+                android:hint="Postal code"
+                android:text="12345" />
         </LinearLayout>
 
     </LinearLayout>

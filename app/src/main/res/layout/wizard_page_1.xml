@@ -33,7 +33,8 @@
                 android:textColor="@color/base_text"
                 android:ems="10"
                 android:id="@+id/etWizardEmail"
-                android:hint="Email" />
+                android:hint="Email"
+                android:text="someNiceEmail@gmail.com" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                 android:ems="10"
                 android:id="@+id/etWizardFirstName"
                 android:layout_marginTop="8dp"
-                android:hint="First name" />
+                android:hint="First name"
+                android:text="SomeName" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -53,7 +55,8 @@
                 android:ems="10"
                 android:id="@+id/etWizardLastName"
                 android:layout_marginTop="8dp"
-                android:hint="Last name" />
+                android:hint="Last name"
+                android:text="SomeSurname" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -63,7 +66,8 @@
                 android:ems="10"
                 android:id="@+id/etWizardPhone"
                 android:layout_marginTop="8dp"
-                android:hint="Phone" />
+                android:hint="Phone"
+                android:text="380999999999" />
         </LinearLayout>
 
     </LinearLayout>

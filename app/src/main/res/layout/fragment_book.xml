@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     tools:context="com.todo.behtarinhotel.fragments.BookFragment"
     android:orientation="vertical"
-    android:background="@color/base_white">
+    android:background="@color/base_background">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -59,9 +59,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp"
                 android:visibility="gone"
-                android:id="@+id/confirmPayScreen">
+                android:id="@+id/confirmPayScreen"
+                android:layout_margin="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +75,10 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp">
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -114,7 +117,10 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp">
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,7 +152,10 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp">
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -181,11 +190,10 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/confirmRoomParametersContainer"></LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/confirmRoomInfoList" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -196,7 +204,7 @@
                 <com.gc.materialdesign.views.ButtonRectangle
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Data wrong, edit"
+                    android:text="Data wrong. Edit"
                     android:textSize="8sp"
                     android:id="@+id/btnCancelPay"
                     android:background="#ffdc4000"
