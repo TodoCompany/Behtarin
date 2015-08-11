@@ -65,7 +65,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
         if (view == null) {
@@ -97,8 +97,9 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bookFragment.setRooms(room.getRoomTypeCode(), searchRoomSO);
+                bookFragment.setRooms(position,availableRooms, searchRoomSO);
                 activity.setFragmentChild(bookFragment, "Book");
+
             }
         });
 
