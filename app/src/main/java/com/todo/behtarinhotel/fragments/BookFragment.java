@@ -220,11 +220,11 @@ public class BookFragment extends Fragment {
         tvWizardEmail.setText(Html.fromHtml("Email: " + "<b>" + etWizardEmail.getText().toString() + "</b>"));
         tvWizardFirstName.setText(Html.fromHtml("First name: " + "<b>" + etWizardFirstName.getText().toString() + "</b>"));
         tvWizardLastName.setText(Html.fromHtml("Last name: " + "<b>" + etWizardLastName.getText().toString() + "</b>"));
-        tvWizardPhone.setText(Html.fromHtml("Phone: " + "<b>" + etWizardPhone.getText().toString() + "</b>"));
+        tvWizardPhone.setText(Html.fromHtml("Phone: " + "<b>" + etWizardHomePhone.getText().toString() + "</b>"));
 
         tvWizardCreditCardNumber.setText(Html.fromHtml("Credit card number: " + "<b>" + etWizardCreditCardNumber.getText().toString() + "</b>"));
         tvWizardCreditCardIdentifier.setText(Html.fromHtml("Credit card identifier: " + "<b>" + etWizardCreditCardIdentifier.getText().toString() + "</b>"));
-        tvWizardCrediCardExpiration.setText(Html.fromHtml("Credit card expiration: " + "<b>" + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString() + "</b>"));
+        tvWizardCreditCardExpiration.setText(Html.fromHtml("Credit card expiration: " + "<b>" + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString() + "</b>"));
 
         tvWizardCity.setText(Html.fromHtml("City: " + "<b>" + etWizardCity.getText().toString() + "</b>"));
         tvWizardAddress.setText(Html.fromHtml("Address: " + "<b>" + etWizardAddress.getText().toString() + "</b>"));
