@@ -96,7 +96,7 @@ public class AppState {
     }
 
     public static String generateUrlForHotelAvailability(int hotelIdNumber, String arrDate, String depDate, ArrayList<SearchRoomSO> rooms) {
-        String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/avail?";
+        String endpoint = "http://api.ean.com/ean-services/rs/hotel/v3/avail?minorRev=30";
         String apiKey = "&apiKey=";
         String cid = "&cid=";
         String arrivalDate = "&arrivalDate=";
@@ -112,6 +112,7 @@ public class AppState {
                 + arrivalDate + arrDate
                 + departureDate + depDate
                 + "&includeRoomImages=true"
+                +"&includeDetails=true"
                 + makeRoomString(rooms);
 
     }

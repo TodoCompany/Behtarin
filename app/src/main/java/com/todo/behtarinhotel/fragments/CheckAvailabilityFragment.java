@@ -104,9 +104,9 @@ public class CheckAvailabilityFragment extends Fragment {
                         JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
                         for (int i = 0; i < hotelRoomsResponse.length(); i++) {
                             JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
+                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
                             String bedDescription = "";
                             try {
-
                                 JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
                                 availableRoomsSO.getRoomSO().get(i).setBedsQuantity(bedTypesArray.length());
                                 for (int n = 0; n < bedTypesArray.length(); n++) {
@@ -117,8 +117,6 @@ public class CheckAvailabilityFragment extends Fragment {
                                 JSONObject bedType = bedTypesObject.getJSONObject("BedType");
                                 bedDescription = bedDescription + bedType.getString("description") + "\n";
                                 availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
-
-
                             }
 
                             availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);

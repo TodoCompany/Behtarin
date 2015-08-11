@@ -27,13 +27,10 @@ public class BookingInputsAdapter extends BaseAdapter {
     private ArrayList<SearchRoomSO> rooms;
 
 
-
-    public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms){
+    public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms) {
         ctx = context;
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.rooms = rooms;
-
-
     }
 
     @Override
@@ -54,9 +51,9 @@ public class BookingInputsAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view;
-        if (convertView != null){
+        if (convertView != null) {
             view = convertView;
-        }else{
+        } else {
             view = inflater.inflate(R.layout.wizard_room_page, null, false);
         }
 
@@ -100,7 +97,7 @@ public class BookingInputsAdapter extends BaseAdapter {
         radioGroupSmoking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rbSmoking:
                         //TODO change to code from api
                         rooms.get(position).setSmokingPreference("NS");
@@ -116,8 +113,6 @@ public class BookingInputsAdapter extends BaseAdapter {
                 }
             }
         });
-
-
 
 
         return view;

@@ -22,7 +22,14 @@ public class AvailableRoomsSO {
     private ArrayList<RoomSO> roomSO;
     @SerializedName("checkInInstructions")
     private String checkInInstruction;
+    private String rateKey;
 
+    public String getRateKey() {
+        return rateKey;
+    }
+    public void setRateKey(String rateKey) {
+        this.rateKey = rateKey;
+    }
 
     public String getCheckInInstruction() {
         return checkInInstruction;
@@ -50,14 +57,16 @@ public class AvailableRoomsSO {
 
     // This inner classes used to parse their fucking response
     public class RoomSO {
+        @SerializedName("rateCode")
+        private int rateCode;
         @SerializedName("roomTypeCode")
         private int roomTypeCode;
         @SerializedName("rateOccupancyPerRoom")
         private int rateOccupancyPerRoom;
         @SerializedName("quotedOccupancy")
         private int maxGuests;
-        @SerializedName("RateInfo")
-        private RateInfo rateInfo;
+        @SerializedName("RateInfos")
+        private RateInfos rateInfos;
         @SerializedName("roomTypeDescription")
         private String description;
         @SerializedName("RoomImages")
@@ -71,6 +80,15 @@ public class AvailableRoomsSO {
         private String bedDescription;
         private int bedsQuantity;
 
+
+        public int getRateCode() {
+            return rateCode;
+        }
+
+        public void setRateCode(int rateCode) {
+            this.rateCode = rateCode;
+        }
+
         public int getRoomTypeCode() {
             return roomTypeCode;
         }
@@ -79,8 +97,8 @@ public class AvailableRoomsSO {
             return rateOccupancyPerRoom;
         }
 
-        public RateInfo getRateInfo() {
-            return rateInfo;
+        public RateInfos getRateInfos() {
+            return rateInfos;
         }
 
         public String getBedDescription() {
@@ -116,11 +134,11 @@ public class AvailableRoomsSO {
         }
 
         public float getAverageRate() {
-            return rateInfo.getChargeableRateInfo().getAverageRate();
+            return rateInfos.getRateInfo().getChargeableRateInfo().getAverageRate();
         }
 
         public float getOldPrice() {
-            return rateInfo.getChargeableRateInfo().getOldPrice();
+            return rateInfos.getRateInfo().getChargeableRateInfo().getOldPrice();
         }
 
         private class RoomImages {
@@ -141,28 +159,59 @@ public class AvailableRoomsSO {
             }
         }
 
-        private class RateInfo {
-            @SerializedName("ChargeableRateInfo")
-            private ChargeableRateInfo chargeableRateInfo;
-
-            private ChargeableRateInfo getChargeableRateInfo() {
-                return chargeableRateInfo;
+        private class RateInfos {
+            @SerializedName("RateInfo")
+            private RateInfo rateInfo;
+            private RateInfo getRateInfo() {
+                return rateInfo;
             }
+            private class RateInfo {
+                @SerializedName("ChargeableRateInfo")
+                private ChargeableRateInfo chargeableRateInfo;
+                @SerializedName("RoomGroup")
+                private RoomGroup roomGroup;
 
-            private class ChargeableRateInfo {
-                @SerializedName("@averageRate")
-                private float averageRate;
-                @SerializedName("@averageBaseRate")
-                private float oldPrice;
-
-                private float getAverageRate() {
-                    return averageRate;
+                private ChargeableRateInfo getChargeableRateInfo() {
+                    return chargeableRateInfo;
                 }
 
-                private float getOldPrice() {
-                    return oldPrice;
+                private RoomGroup getRoomGroup() {
+                    return roomGroup;
                 }
 
+                private class ChargeableRateInfo {
+                    @SerializedName("@averageRate")
+                    private float averageRate;
+                    @SerializedName("@averageBaseRate")
+                    private float oldPrice;
+
+                    private float getAverageRate() {
+                        return averageRate;
+                    }
+
+                    private float getOldPrice() {
+                        return oldPrice;
+                    }
+
+                }
+
+                private class RoomGroup{
+                    @SerializedName("Room")
+                    private Room room;
+
+                    private Room getRoom(){
+                        return room;
+                    }
+
+                    private class Room{
+                        @SerializedName("rateKey")
+                        private String rateKey;
+
+                        private String getRateKey(){
+                            return rateKey;
+                        }
+                    }
+                }
             }
         }
 
