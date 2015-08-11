@@ -64,8 +64,19 @@
                 android:textColor="@color/base_text"
                 android:inputType="phone"
                 android:ems="10"
-                android:id="@+id/etWizardPhone"
+                android:id="@+id/etWizardHomePhone"
                 android:layout_marginTop="8dp"
+                android:hint="Home phone" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/base_text"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/etWizardWorkPhone"
+                android:layout_marginTop="8dp"
+                android:hint="Work phone" />
                 android:hint="Phone"
                 android:text="380999999999" />
         </LinearLayout>

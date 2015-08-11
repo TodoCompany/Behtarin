@@ -53,6 +53,14 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/etStateProvinceCode"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/base_text"
+                android:hint="State province code" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/etWizardCountryCode"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"

@@ -36,17 +36,19 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     ArrayList<SearchRoomSO> searchRoomSO;
 
     BookFragment bookFragment;
+    String arrivalDate;
+    String departureDate;
 
 
-    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO) {
+    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO,String arrivalDate,String departureDate) {
         this.activity = activity;
         this.availableRooms = availableRooms;
         this.searchRoomSO = searchRoomSO;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         bookFragment = new BookFragment();
-
-
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
     @Override
@@ -97,7 +99,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bookFragment.setRooms(position,availableRooms, searchRoomSO);
+                bookFragment.setRooms(position,availableRooms, searchRoomSO,arrivalDate,departureDate);
                 activity.setFragmentChild(bookFragment, "Book");
 
             }
