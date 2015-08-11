@@ -41,7 +41,8 @@
                 android:ems="10"
                 android:id="@+id/etWizardCreditCardNumber"
                 android:textColor="@color/base_text"
-                android:hint="Credit card number" />
+                android:hint="Credit card number"
+                android:text="5401999999999999" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -51,7 +52,8 @@
                 android:id="@+id/etWizardCreditCardIdentifier"
                 android:textColor="@color/base_text"
                 android:layout_marginTop="8dp"
-                android:hint="Credit card identifier" />
+                android:hint="Credit card identifier"
+                android:text="123" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -61,7 +63,8 @@
                 android:id="@+id/etWizardCreditCardExpirationMonth"
                 android:textColor="@color/base_text"
                 android:layout_marginTop="8dp"
-                android:hint="Credit card expiration month" />
+                android:hint="Credit card expiration month"
+                android:text="11" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -71,7 +74,8 @@
                 android:id="@+id/etWizardCreditCardExpirationYear"
                 android:textColor="@color/base_text"
                 android:layout_marginTop="8dp"
-                android:hint="Credit card expiration year" />
+                android:hint="Credit card expiration year"
+                android:text="2015" />
         </LinearLayout>
 
     </LinearLayout>

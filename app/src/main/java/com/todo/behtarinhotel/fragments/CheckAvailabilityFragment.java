@@ -90,7 +90,7 @@ public class CheckAvailabilityFragment extends Fragment {
         this.departureDate = dateDeparture;
         this.rooms = rooms;
         showLoadingScreen();
-       final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
+        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
@@ -119,16 +119,28 @@ public class CheckAvailabilityFragment extends Fragment {
                                 availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
                             }
 
+                            try {
+                                String rateKey = rateInfos.getJSONObject("RateInfo")
+                                        .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
+                                availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+                            } catch (Exception isNotObject) {
+                                JSONArray arr = rateInfos.getJSONObject("RateInfo")
+                                        .getJSONObject("RoomGroup").getJSONArray("Room");
+                                    String rateKey = arr.getJSONObject(0).getString("rateKey");
+                                    availableRoomsSO.getRoomSO().get(i).setRateKey(rateKey);
+
+                            }
+
                             availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
 
                         }
 
 
-                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(),availableRoomsSO, rooms,arrivalDate,departureDate);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
                         roomsListView.setAdapter(adapter);
-                        if (availableRoomsSO.getRoomSO().size() == 0){
+                        if (availableRoomsSO.getRoomSO().size() == 0) {
                             showError("There are no free rooms in this hotel for that days");
-                        }else{
+                        } else {
                             clearLoadingScreen();
                         }
                     }
@@ -149,7 +161,7 @@ public class CheckAvailabilityFragment extends Fragment {
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void showError(String errorMessage){
+    private void showError(String errorMessage) {
 
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
@@ -159,13 +171,13 @@ public class CheckAvailabilityFragment extends Fragment {
         }
     }
 
-    private void showLoadingScreen(){
+    private void showLoadingScreen() {
         if (tvError != null) {
             tvError.setVisibility(View.GONE);
         }
     }
 
-    private void clearLoadingScreen(){
+    private void clearLoadingScreen() {
         if (tvError != null) {
             tvError.setVisibility(View.GONE);
         }
