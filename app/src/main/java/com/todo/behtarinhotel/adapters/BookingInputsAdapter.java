@@ -99,16 +99,13 @@ public class BookingInputsAdapter extends BaseAdapter {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rbSmoking:
-                        //TODO change to code from api
-                        rooms.get(position).setSmokingPreference("NS");
+                        rooms.get(position).setSmokingPreference(SearchRoomSO.SMOKING);
                         break;
                     case R.id.rbNotSmoking:
-                        //TODO change to code from api
-                        rooms.get(position).setSmokingPreference("NS");
+                        rooms.get(position).setSmokingPreference(SearchRoomSO.NOT_SMOKING);
                         break;
                     case R.id.rbEither:
-                        //TODO change to code from api
-                        rooms.get(position).setSmokingPreference("NS");
+                        rooms.get(position).setSmokingPreference(SearchRoomSO.EITHER);
                         break;
                 }
             }

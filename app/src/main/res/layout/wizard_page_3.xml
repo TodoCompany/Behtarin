@@ -48,7 +48,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
                 android:hint="City"
-                android:text="Bellevue" />
+                android:text="L&apos;viv" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
                 android:hint="Country code"
-                android:text="US" />
+                android:text="UA" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 android:id="@+id/etWizardPostalCode"
                 android:textColor="@color/base_text"
                 android:hint="Postal code"
-                android:text="98004" />
+                android:text="79000" />
         </LinearLayout>
 
     </LinearLayout>

@@ -34,7 +34,7 @@
                 android:ems="10"
                 android:id="@+id/etWizardEmail"
                 android:hint="Email"
-                android:text="test@mail.test" />
+                android:text="someNiceEmail@gmail.com" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:id="@+id/etWizardFirstName"
                 android:layout_marginTop="8dp"
                 android:hint="First name"
-                android:text="test" />
+                android:text="SomeName" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                 android:id="@+id/etWizardLastName"
                 android:layout_marginTop="8dp"
                 android:hint="Last name"
-                android:text="tester" />
+                android:text="SomeSurname" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -66,8 +66,7 @@
                 android:ems="10"
                 android:id="@+id/etWizardHomePhone"
                 android:layout_marginTop="8dp"
-                android:hint="Home phone"
-                android:text="123123123" />
+                android:hint="Home phone" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -77,8 +76,9 @@
                 android:ems="10"
                 android:id="@+id/etWizardWorkPhone"
                 android:layout_marginTop="8dp"
-                android:hint="Work phone"
-                android:text="123456777" />
+                android:hint="Work phone" />
+                android:hint="Phone"
+                android:text="380999999999" />
         </LinearLayout>
 
     </LinearLayout>

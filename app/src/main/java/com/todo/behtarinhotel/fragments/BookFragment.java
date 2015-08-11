@@ -4,6 +4,7 @@ package com.todo.behtarinhotel.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.BookingInputsAdapter;
+import com.todo.behtarinhotel.adapters.ConfirmRoomsInfoAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
@@ -63,6 +66,7 @@ public class BookFragment extends Fragment {
 
 
     ListView wizardRoomsList;
+    ListView confirmRoomInfoList;
     BookingInputsAdapter bookingInputsAdapter;
     private String arrivalDate;
     private String departureDate;
@@ -91,6 +95,7 @@ public class BookFragment extends Fragment {
         return rootView;
     }
 
+  
     private void setRequiredEditTexts() {
         requiredEditTexts.add(etWizardEmail);
         requiredEditTexts.add(etWizardFirstName);
@@ -159,6 +164,7 @@ public class BookFragment extends Fragment {
         tvWizardPostalCode = (TextView) rootView.findViewById(R.id.tvWizardPostalCode);
 
         wizardRoomsList = (ListView) rootView.findViewById(R.id.wizardRoomsList);
+        confirmRoomInfoList = (ListView) rootView.findViewById(R.id.confirmRoomInfoList);
 
         payParametersScreen = (LinearLayout) rootView.findViewById(R.id.payParametersScreen);
         confirmPayScreen = (LinearLayout) rootView.findViewById(R.id.confirmPayScreen);
@@ -197,8 +203,9 @@ public class BookFragment extends Fragment {
     }
 
 
-    private void switchToConfirmPayPage(boolean isConfirmPay) {
-        if (isConfirmPay) {
+    
+    private void switchToConfirmPayPage(boolean isConfirmPay){
+        if (isConfirmPay){
             initInfoOnConfirmPage();
             confirmPayScreen.setVisibility(View.VISIBLE);
             payParametersScreen.setVisibility(View.GONE);
@@ -208,21 +215,23 @@ public class BookFragment extends Fragment {
         }
     }
 
-    private void initInfoOnConfirmPage() {
-        tvWizardEmail.setText("Email: " + etWizardEmail.getText().toString());
-        tvWizardFirstName.setText("First name: " + etWizardFirstName.getText().toString());
-        tvWizardLastName.setText("Last name: " + etWizardLastName.getText().toString());
-        tvWizardPhone.setText("Phone: " + etWizardHomePhone.getText().toString());
+    
+    private void initInfoOnConfirmPage(){
+        tvWizardEmail.setText(Html.fromHtml("Email: " + "<b>" + etWizardEmail.getText().toString() + "</b>"));
+        tvWizardFirstName.setText(Html.fromHtml("First name: " + "<b>" + etWizardFirstName.getText().toString() + "</b>"));
+        tvWizardLastName.setText(Html.fromHtml("Last name: " + "<b>" + etWizardLastName.getText().toString() + "</b>"));
+        tvWizardPhone.setText(Html.fromHtml("Phone: " + "<b>" + etWizardPhone.getText().toString() + "</b>"));
 
-        tvWizardCreditCardNumber.setText("Credit card number: " + etWizardCreditCardNumber.getText().toString());
-        tvWizardCreditCardIdentifier.setText("Credit card identifier: " + etWizardCreditCardIdentifier.getText().toString());
-        tvWizardCreditCardExpiration.setText("Credit card expiration: " + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString());
+        tvWizardCreditCardNumber.setText(Html.fromHtml("Credit card number: " + "<b>" + etWizardCreditCardNumber.getText().toString() + "</b>"));
+        tvWizardCreditCardIdentifier.setText(Html.fromHtml("Credit card identifier: " + "<b>" + etWizardCreditCardIdentifier.getText().toString() + "</b>"));
+        tvWizardCrediCardExpiration.setText(Html.fromHtml("Credit card expiration: " + "<b>" + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString() + "</b>"));
 
-        tvWizardCity.setText("City: " + etWizardCity.getText().toString());
-        tvWizardAddress.setText("Address: " + etWizardAddress.getText().toString());
-        tvWizardCountryCode.setText("Country code: " + etWizardCountryCode.getText().toString());
-        tvWizardPostalCode.setText("Postal code: " + etWizardPostalCode.getText().toString());
+        tvWizardCity.setText(Html.fromHtml("City: " + "<b>" + etWizardCity.getText().toString() + "</b>"));
+        tvWizardAddress.setText(Html.fromHtml("Address: " + "<b>" + etWizardAddress.getText().toString() + "</b>"));
+        tvWizardCountryCode.setText(Html.fromHtml("Country code: " + "<b>" + etWizardCountryCode.getText().toString() + "</b>"));
+        tvWizardPostalCode.setText(Html.fromHtml("Postal code: " + "<b>" + etWizardPostalCode.getText().toString() + "</b>"));
 
+        addRoomsInfoToConfirmPage();
 
     }
 
@@ -230,8 +239,12 @@ public class BookFragment extends Fragment {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                rooms = bookingInputsAdapter.getRooms();
-//                switchToConfirmPayPage(true);
+//                if (isAllRequiredInputsFilled()) {
+//                    rooms = bookingInputsAdapter.getRooms();
+//                    switchToConfirmPayPage(true);
+//                }else{
+//                    Toast.makeText(getActivity(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
+//                }
                 makeBookingRequest();
             }
         });
@@ -249,8 +262,16 @@ public class BookFragment extends Fragment {
         });
 
     }
+    private void addRoomsInfoToConfirmPage(){
+        SearchRoomSO defaultRoomData = new SearchRoomSO();
+        defaultRoomData.setFirstName(etWizardFirstName.getText().toString());
+        defaultRoomData.setLastName(etWizardLastName.getText().toString());
+        ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
+        confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
+        setListViewHeightBasedOnChildren(wizardRoomsList);
+    }  
 
-    private void makeBookingRequest() {
+    private void makeBookingRequest(){
         url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?" +
                 "&cid=55505" +
                 sig +
@@ -324,6 +345,15 @@ public class BookFragment extends Fragment {
             roomsString = roomsString + "&room" + (i + 1) + "SmokingPreference=" + rooms.get(i).getSmokingPreference();
         }
         return roomsString;
+    }
+
+    private boolean isAllRequiredInputsFilled(){
+        for (EditText editText : requiredEditTexts){
+            if (editText.getText().toString().length() == 0){
+                return false;
+            }
+        }
+        return true;
     }
 
 
