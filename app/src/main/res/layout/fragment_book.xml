@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.todo.behtarinhotel.fragments.BookFragment"
-    android:background="@color/base_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/base_white">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,7 +21,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:visibility="visible"
+                android:id="@+id/payParametersScreen"
+                android:background="@color/base_background">
 
                 <include
                     android:layout_width="match_parent"
@@ -58,7 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp"
-                android:visibility="visible">
+                android:visibility="gone"
+                android:id="@+id/confirmPayScreen">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -184,14 +187,32 @@
                     android:layout_height="match_parent"
                     android:id="@+id/confirmRoomParametersContainer"></LinearLayout>
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                <com.gc.materialdesign.views.ButtonRectangle
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Data wrong, edit"
+                    android:textSize="8sp"
+                    android:id="@+id/btnCancelPay"
+                    android:background="#ffdc4000"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1" />
+
                 <com.gc.materialdesign.views.ButtonRectangle
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="All data correct. Pay"
-                    android:textSize="10sp"
+                    android:textSize="8sp"
                     android:id="@+id/btnConfirmPay"
                     android:background="@color/base_yellow"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

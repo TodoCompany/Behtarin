@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,9 +31,12 @@ public class BookFragment extends Fragment {
 
 
     ArrayList<SearchRoomSO> rooms;
-    ButtonRectangle btnPay;
+    ButtonRectangle btnPay, btnCancelPay, btnConfirmPay;
     Button btnCardIo;
     View rootView;
+    LinearLayout payParametersScreen, confirmPayScreen;
+
+
     EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardPhone;
     EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
     EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode;
@@ -57,20 +61,11 @@ public class BookFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_book, container, false);
 
         initViews();
+        setOnClickListeners();
         setRequiredEditTexts();
+        switchToConfirmPayPage(false);
 
-        btnPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rooms = bookingInputsAdapter.getRooms();
-            }
-        });
-        btnCardIo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                payWithCardIo();
-            }
-        });
+
 
         bookingInputsAdapter  = new BookingInputsAdapter(getActivity(), rooms);
         wizardRoomsList.setAdapter(bookingInputsAdapter);
@@ -112,6 +107,8 @@ public class BookFragment extends Fragment {
 
     private void initViews() {
         btnPay = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
+        btnCancelPay = (ButtonRectangle) rootView.findViewById(R.id.btnCancelPay);
+        btnConfirmPay = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
         btnCardIo = (Button) rootView.findViewById(R.id.btnCardIo);
 
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
@@ -144,6 +141,11 @@ public class BookFragment extends Fragment {
         tvWizardPostalCode = (TextView) rootView.findViewById(R.id.tvWizardPostalCode);
 
         wizardRoomsList = (ListView) rootView.findViewById(R.id.wizardRoomsList);
+
+        payParametersScreen = (LinearLayout) rootView.findViewById(R.id.payParametersScreen);
+        confirmPayScreen = (LinearLayout) rootView.findViewById(R.id.confirmPayScreen);
+
+
     }
 
     public void setRooms(int roomType, ArrayList<SearchRoomSO> rooms){
@@ -172,6 +174,60 @@ public class BookFragment extends Fragment {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+
+    private void switchToConfirmPayPage(boolean isConfirmPay){
+        if (isConfirmPay){
+            initInfoOnConfirmPage();
+            confirmPayScreen.setVisibility(View.VISIBLE);
+            payParametersScreen.setVisibility(View.GONE);
+        }else{
+            confirmPayScreen.setVisibility(View.GONE);
+            payParametersScreen.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void initInfoOnConfirmPage(){
+        tvWizardEmail.setText("Email: " + etWizardEmail.getText().toString());
+        tvWizardFirstName.setText("First name: " + etWizardFirstName.getText().toString());
+        tvWizardLastName.setText("Last name: " + etWizardLastName.getText().toString());
+        tvWizardPhone.setText("Phone: " + etWizardPhone.getText().toString());
+
+        tvWizardCreditCardNumber.setText("Credit card number: " + etWizardCreditCardNumber.getText().toString());
+        tvWizardCreditCardIdentifier.setText("Credit card identifier: " + etWizardCreditCardIdentifier.getText().toString());
+        tvWizardCrediCardExpiration.setText("Credit card expiration: " + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString());
+
+        tvWizardCity.setText("City: " + etWizardCity.getText().toString());
+        tvWizardAddress.setText("Address: " + etWizardAddress.getText().toString());
+        tvWizardCountryCode.setText("Country code: " + etWizardCountryCode.getText().toString());
+        tvWizardPostalCode.setText("Postal code: " + etWizardPostalCode.getText().toString());
+
+
+
+    }
+
+    private void setOnClickListeners(){
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rooms = bookingInputsAdapter.getRooms();
+                switchToConfirmPayPage(true);
+            }
+        });
+        btnCardIo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payWithCardIo();
+            }
+        });
+        btnCancelPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToConfirmPayPage(false);
+            }
+        });
+
     }
 
 
