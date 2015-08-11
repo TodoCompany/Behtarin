@@ -124,7 +124,7 @@ public class CheckAvailabilityFragment extends Fragment {
                         }
 
 
-                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(),availableRoomsSO, rooms);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(),availableRoomsSO, rooms,arrivalDate,departureDate);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0){
                             showError("There are no free rooms in this hotel for that days");

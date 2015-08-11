@@ -22,14 +22,7 @@ public class AvailableRoomsSO {
     private ArrayList<RoomSO> roomSO;
     @SerializedName("checkInInstructions")
     private String checkInInstruction;
-    private String rateKey;
 
-    public String getRateKey() {
-        return rateKey;
-    }
-    public void setRateKey(String rateKey) {
-        this.rateKey = rateKey;
-    }
 
     public String getCheckInInstruction() {
         return checkInInstruction;
@@ -139,6 +132,10 @@ public class AvailableRoomsSO {
 
         public float getOldPrice() {
             return rateInfos.getRateInfo().getChargeableRateInfo().getOldPrice();
+        }
+
+        public String getRateKey(){
+            return rateInfos.getRateInfo().getRoomGroup().getRoom().getRateKey();
         }
 
         private class RoomImages {

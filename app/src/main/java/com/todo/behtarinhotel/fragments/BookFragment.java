@@ -47,12 +47,12 @@ public class BookFragment extends Fragment {
     LinearLayout payParametersScreen, confirmPayScreen;
 
 
-    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardPhone;
+    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone,etWizardWorkPhone;
     EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
-    EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode;
+    EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode,etStateProvinceCode;
     ArrayList<EditText> requiredEditTexts = new ArrayList<>();
     TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
-    TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCrediCardExpiration;
+    TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
     TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
     AvailableRoomsSO availableRooms;
     int position;
@@ -64,6 +64,8 @@ public class BookFragment extends Fragment {
 
     ListView wizardRoomsList;
     BookingInputsAdapter bookingInputsAdapter;
+    private String arrivalDate;
+    private String departureDate;
 
 
     public BookFragment() {
@@ -95,7 +97,7 @@ public class BookFragment extends Fragment {
         requiredEditTexts.add(etWizardEmail);
         requiredEditTexts.add(etWizardFirstName);
         requiredEditTexts.add(etWizardLastName);
-        requiredEditTexts.add(etWizardPhone);
+        requiredEditTexts.add(etWizardHomePhone);
 
         requiredEditTexts.add(etWizardCreditCardNumber);
         requiredEditTexts.add(etWizardCreditCardIdentifier);
@@ -105,6 +107,7 @@ public class BookFragment extends Fragment {
         requiredEditTexts.add(etWizardCity);
         requiredEditTexts.add(etWizardAddress);
         requiredEditTexts.add(etWizardPostalCode);
+        requiredEditTexts.add(etStateProvinceCode);
         requiredEditTexts.add(etWizardCountryCode);
     }
 
@@ -129,7 +132,8 @@ public class BookFragment extends Fragment {
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
         etWizardFirstName = (EditText) rootView.findViewById(R.id.etWizardFirstName);
         etWizardLastName = (EditText) rootView.findViewById(R.id.etWizardLastName);
-        etWizardPhone = (EditText) rootView.findViewById(R.id.etWizardPhone);
+        etWizardHomePhone = (EditText) rootView.findViewById(R.id.etWizardHomePhone);
+        etWizardWorkPhone = (EditText) rootView.findViewById(R.id.etWizardWorkPhone);
 
         etWizardCreditCardNumber = (EditText) rootView.findViewById(R.id.etWizardCreditCardNumber);
         etWizardCreditCardIdentifier = (EditText) rootView.findViewById(R.id.etWizardCreditCardIdentifier);
@@ -140,6 +144,7 @@ public class BookFragment extends Fragment {
         etWizardAddress = (EditText) rootView.findViewById(R.id.etWizardAddress);
         etWizardCountryCode = (EditText) rootView.findViewById(R.id.etWizardCountryCode);
         etWizardPostalCode = (EditText) rootView.findViewById(R.id.etWizardPostalCode);
+        etStateProvinceCode = (EditText) rootView.findViewById(R.id.etStateProvinceCode);
 
         tvWizardEmail = (TextView) rootView.findViewById(R.id.tvWizardEmail);
         tvWizardFirstName = (TextView) rootView.findViewById(R.id.tvWizardFirstName);
@@ -148,7 +153,7 @@ public class BookFragment extends Fragment {
 
         tvWizardCreditCardNumber = (TextView) rootView.findViewById(R.id.tvWizardCreditCardNumber);
         tvWizardCreditCardIdentifier = (TextView) rootView.findViewById(R.id.tvWizardCreditCardIdentifier);
-        tvWizardCrediCardExpiration = (TextView) rootView.findViewById(R.id.tvWizardCrediCardExpiration);
+        tvWizardCreditCardExpiration = (TextView) rootView.findViewById(R.id.tvWizardCrediCardExpiration);
 
         tvWizardCity = (TextView) rootView.findViewById(R.id.tvWizardCity);
         tvWizardAddress = (TextView) rootView.findViewById(R.id.tvWizardAddress);
@@ -163,10 +168,12 @@ public class BookFragment extends Fragment {
 
     }
 
-    public void setRooms(int position,AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms){
+    public void setRooms(int position,AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms,String arrivalDate,String departureDate){
         this.rooms = rooms;
         this.position = position;
         this.availableRooms = availableRooms;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -207,11 +214,11 @@ public class BookFragment extends Fragment {
         tvWizardEmail.setText("Email: " + etWizardEmail.getText().toString());
         tvWizardFirstName.setText("First name: " + etWizardFirstName.getText().toString());
         tvWizardLastName.setText("Last name: " + etWizardLastName.getText().toString());
-        tvWizardPhone.setText("Phone: " + etWizardPhone.getText().toString());
+        tvWizardPhone.setText("Phone: " + etWizardHomePhone.getText().toString());
 
         tvWizardCreditCardNumber.setText("Credit card number: " + etWizardCreditCardNumber.getText().toString());
         tvWizardCreditCardIdentifier.setText("Credit card identifier: " + etWizardCreditCardIdentifier.getText().toString());
-        tvWizardCrediCardExpiration.setText("Credit card expiration: " + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString());
+        tvWizardCreditCardExpiration.setText("Credit card expiration: " + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString());
 
         tvWizardCity.setText("City: " + etWizardCity.getText().toString());
         tvWizardAddress.setText("Address: " + etWizardAddress.getText().toString());
@@ -256,33 +263,33 @@ public class BookFragment extends Fragment {
                 "&minorRev=30" +
                 "&currencyCode=USD" +
                 "&hotelId=" + availableRooms.getHotelId()+
-                "&arrivalDate=09/05/2015" +
-                "&departureDate=09/07/2015" +
+                "&arrivalDate=" + arrivalDate+
+                "&departureDate=" + departureDate+
                 "&supplierType=E" +
-                "&rateKey=af00b688-acf4-409e-8bdc-fcfc3d1cb80c" +
-                "&roomTypeCode=198058" +
-                "&rateCode=484072" +
-                "&chargeableRate=257.20" +
+                "&rateKey=" + availableRooms.getRoomSO().get(position).getRateKey()+
+                "&roomTypeCode=" + availableRooms.getRoomSO().get(position).getRoomTypeCode()+
+                "&rateCode=" + availableRooms.getRoomSO().get(position).getRateCode()+
+                "&chargeableRate=" + availableRooms.getRoomSO().get(position).getAverageRate()+
                 "&room1=2,5,7" +
                 "&room1FirstName=test" +
                 "&room1LastName=testers" +
                 "&room1BedTypeId=23" +
                 "&room1SmokingPreference=NS" +
-                "&email=test@yourSite.com" +
-                "&firstName=tester" +
-                "&lastName=testing" +
-                "&homePhone=123123" +
-                "&workPhone=123123" +
+                "&email=" + etWizardEmail.getText().toString()+
+                "&firstName=" + etWizardFirstName.getText().toString()+
+                "&lastName=" + etWizardFirstName.getText().toString()+
+                "&homePhone=" + etWizardHomePhone.getText().toString()+
+                "&workPhone=" + etWizardWorkPhone.getText().toString()+
                 "&creditCardType=CA" +
-                "&creditCardNumber=5401999999999999" +
-                "&creditCardIdentifier=123" +
-                "&creditCardExpirationMonth=11" +
-                "&creditCardExpirationYear=2017" +
-                "&address1=travelnow" +
-                "&city=Seattle" +
-                "&stateProvinceCode=WA" +
-                "&countryCode=US" +
-                "&postalCode=98004";
+                "&creditCardNumber=" + etWizardCreditCardNumber.getText().toString()+
+                "&creditCardIdentifier=" + etWizardCreditCardIdentifier.getText().toString()+
+                "&creditCardExpirationMonth=" + etWizardCreditCardExMonth.getText().toString()+
+                "&creditCardExpirationYear=" + etWizardCreditCardExYear.getText().toString()+
+                "&address1=" + etWizardAddress.getText().toString()+
+                "&city=" + etWizardCity.getText().toString()+
+                "&stateProvinceCode=" + etStateProvinceCode.getText().toString()+
+                "&countryCode=" + etWizardCountryCode.getText().toString()+
+                "&postalCode=" + etWizardPostalCode.getText().toString();
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"https://book.api.ean.com/ean-services/rs/hotel/v3/res?cid=55505&apiKey=7tuermyqnaf66ujk2dk3rkfk&minorRev=26&customerSessionId=7916870766fac2d71c1d740919589836&customerIpAddress=193.93.218.85&customerUserAgent=Mozilla%2F5.0+%28Windows+NT+6.3%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36¤cyCode=USD&hotelId=463538&arrivalDate=08%2F13%2F2015&departureDate=08%2F14%2F2015&supplierType=E&rateKey=0ce2e36d-4514-4656-b890-945520ce1b49&roomTypeCode=200719009&rateCode=203567761&chargeableRate=65.38&email=kryvun.roman%40gmail.com&firstName=Roman&lastName=Kryvun&homePhone=1234234&creditCardType=CA&creditCardNumber=5401999999999999&creditCardIdentifier=123&creditCardExpirationMonth=11&creditCardExpirationYear=2015&address1=Zelena+53&city=Lviv&stateProvinceCode=123&countryCode=UA&postalCode=123&affiliateConfirmationId=d0e779996556b3b62e17d2361a9a01d6&specialInformation=&room1=2&room1FirstName=zxvc&room1LastName=Last&room1BedTypeId=43&room1SmokingPreference=NS",
 
