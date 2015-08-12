@@ -66,8 +66,7 @@ public class AvailableRoomsSO {
         private RoomImages roomImages;
         @SerializedName("smokingPreferences")
         private String smokingPreference;
-        @SerializedName("cancellationPolicy")
-        private String cancellationPolicy;
+
         private String rateKey;
         private ArrayList<Bed> beds;
 
@@ -182,9 +181,15 @@ public class AvailableRoomsSO {
             private class RateInfo {
                 @SerializedName("ChargeableRateInfo")
                 private ChargeableRateInfo chargeableRateInfo;
+                @SerializedName("cancellationPolicy")
+                private String cancellationPolicy;
 
                 private ChargeableRateInfo getChargeableRateInfo() {
                     return chargeableRateInfo;
+                }
+
+                public String getCancellationPolicy() {
+                    return cancellationPolicy;
                 }
 
                 private class ChargeableRateInfo {
@@ -213,12 +218,10 @@ public class AvailableRoomsSO {
         }
 
         public String getCancellationPolicy() {
-            return cancellationPolicy;
+            return rateInfos.getRateInfo().getCancellationPolicy();
         }
 
-        public void setCancellationPolicy(String cancellationPolicy) {
-            this.cancellationPolicy = cancellationPolicy;
-        }
+
     }
 
     public class Bed{

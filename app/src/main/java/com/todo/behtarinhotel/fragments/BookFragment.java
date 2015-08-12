@@ -57,6 +57,7 @@ public class BookFragment extends Fragment {
     TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
     TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
     TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
+    TextView tvCheckInInstructions, tvCancellationPolicy;
     AvailableRoomsSO availableRooms;
     int position;
 
@@ -70,6 +71,7 @@ public class BookFragment extends Fragment {
     BookingInputsAdapter bookingInputsAdapter;
     private String arrivalDate;
     private String departureDate;
+
 
 
     public BookFragment() {
@@ -163,6 +165,9 @@ public class BookFragment extends Fragment {
         tvWizardCountryCode = (TextView) rootView.findViewById(R.id.tvWizardCountryCode);
         tvWizardPostalCode = (TextView) rootView.findViewById(R.id.tvWizardPostalCode);
 
+        tvCheckInInstructions = (TextView) rootView.findViewById(R.id.tvCheckInInstructions);
+        tvCancellationPolicy = (TextView) rootView.findViewById(R.id.tvCancellationPolicy);
+
         wizardRoomsList = (ListView) rootView.findViewById(R.id.wizardRoomsList);
         confirmRoomInfoList = (ListView) rootView.findViewById(R.id.confirmRoomInfoList);
 
@@ -228,6 +233,9 @@ public class BookFragment extends Fragment {
         tvWizardCountryCode.setText(Html.fromHtml("Country code: " + "<b>" + etWizardCountryCode.getText().toString() + "</b>"));
         tvWizardPostalCode.setText(Html.fromHtml("Postal code: " + "<b>" + etWizardPostalCode.getText().toString() + "</b>"));
 
+        tvCheckInInstructions.setText(Html.fromHtml(availableRooms.getCheckInInstruction()));
+        tvCancellationPolicy.setText(availableRooms.getRoomSO().get(position).getCancellationPolicy());
+
         addRoomsInfoToConfirmPage();
 
     }
@@ -254,6 +262,10 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 switchToConfirmPayPage(false);
+                for(SearchRoomSO room :rooms) {
+                    room.setFirstName("");
+                    room.setLastName("");
+                }
             }
         });
         btnConfirmPay.setOnClickListener(new View.OnClickListener() {
@@ -272,6 +284,7 @@ public class BookFragment extends Fragment {
         defaultRoomData.setLastName(etWizardLastName.getText().toString());
         defaultRoomData.setBedType(availableRooms.getRoomSO().get(position).getBeds().get(0).getBedDescript());
         defaultRoomData.setBedTypeId(availableRooms.getRoomSO().get(position).getBeds().get(0).getId());
+
 
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
         confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
@@ -349,7 +362,7 @@ public class BookFragment extends Fragment {
             roomsString = roomsString + "&room" + (i + 1) + "FirstName=" + rooms.get(i).getFirstName();
             roomsString = roomsString + "&room" + (i + 1) + "LastName=" + rooms.get(i).getLastName();
             roomsString = roomsString + "&room" + (i + 1) + "BedTypeId=" + rooms.get(i).getBedTypeId();
-            roomsString = roomsString + "&room" + (i + 1) + "SmokingPreference=" + rooms.get(i).getSmokingPreference();
+            roomsString = roomsString + "&room" + (i + 1) + "SmokingPreference=" + rooms.get(i).getSmokingPreferenceApiCode();
         }
         return roomsString;
     }

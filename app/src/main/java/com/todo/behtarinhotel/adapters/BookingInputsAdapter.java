@@ -63,6 +63,7 @@ public class BookingInputsAdapter extends BaseAdapter {
 
         final EditText etWizardRoomFirstName = (EditText) view.findViewById(R.id.etWizardRoomFirstName);
         final EditText etWizardRoomLastName = (EditText) view.findViewById(R.id.etWizardRoomLastName);
+
         etWizardRoomFirstName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -139,6 +140,7 @@ public class BookingInputsAdapter extends BaseAdapter {
 
 
     public ArrayList<SearchRoomSO> getRooms() {
+
         return rooms;
     }
 }

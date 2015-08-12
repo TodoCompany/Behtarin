@@ -33,6 +33,19 @@ public class SearchRoomSO {
         return smokingPreference;
     }
 
+    public String getSmokingPreferenceApiCode() {
+        switch (smokingPreference){
+            case SMOKING:
+                return "S";
+            case NOT_SMOKING:
+                return "NS";
+            case EITHER:
+                return "E";
+            default:
+                return "NS";
+        }
+    }
+
     public void setSmokingPreference(int smokingPreference) {
         this.smokingPreference = smokingPreference;
     }

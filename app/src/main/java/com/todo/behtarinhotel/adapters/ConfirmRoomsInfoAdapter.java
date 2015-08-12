@@ -62,8 +62,8 @@ public class ConfirmRoomsInfoAdapter extends BaseAdapter {
         RadioButton rbSmokingState = (RadioButton) view.findViewById(R.id.rbSmokingState);
         RadioButton rbBedType = (RadioButton) view.findViewById(R.id.rbBedType);
 
-        if (rooms.get(position).getFirstName().equals("")) rooms.get(position).setFirstName(defaultRoomData.getFirstName());
-        if (rooms.get(position).getLastName().equals("")) rooms.get(position).setLastName(defaultRoomData.getLastName());
+        if (rooms.get(position).getFirstName().equals("") & !rooms.get(position).getFirstName().equals(defaultRoomData.getFirstName())) rooms.get(position).setFirstName(defaultRoomData.getFirstName());
+        if (rooms.get(position).getLastName().equals("") & !rooms.get(position).getLastName().equals(defaultRoomData.getLastName())) rooms.get(position).setLastName(defaultRoomData.getLastName());
         tvRoomInfoFirstName.setText(Html.fromHtml("First name: " + "<b>" + rooms.get(position).getFirstName() + "</b>"));
         tvRoomInfoLastName.setText(Html.fromHtml("Last name: "+ "<b>" + rooms.get(position).getLastName() + "</b>"));
         tvAdultCount.setText("x" + rooms.get(position).getGuests().get(0).getAge());
