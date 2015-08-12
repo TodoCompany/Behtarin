@@ -104,6 +104,8 @@ public class CheckAvailabilityFragment extends Fragment {
                         JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
                         for (int i = 0; i < hotelRoomsResponse.length(); i++) {
                             JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
+                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
+
                             String bedDescription = "";
                             ArrayList<AvailableRoomsSO.Bed> beds = new ArrayList<>();
                             try {

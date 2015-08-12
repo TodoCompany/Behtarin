@@ -268,7 +268,7 @@ public class BookFragment extends Fragment {
 
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
         confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
-        setListViewHeightBasedOnChildren(wizardRoomsList);
+        setListViewHeightBasedOnChildren(confirmRoomInfoList);
     }  
 
     private void makeBookingRequest(){

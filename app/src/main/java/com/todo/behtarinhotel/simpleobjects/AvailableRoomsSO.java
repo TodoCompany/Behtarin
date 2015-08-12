@@ -142,9 +142,7 @@ public class AvailableRoomsSO {
             return rateInfos.getRateInfo().getChargeableRateInfo().getOldPrice();
         }
 
-        public String getRateKey(){
-            return rateInfos.getRateInfo().getRoomGroup().getRoom().getRateKey();
-        }
+
         public ArrayList<Bed> getBeds() {
             return beds;
         }
