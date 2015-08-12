@@ -27,6 +27,7 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.BookingInputsAdapter;
 import com.todo.behtarinhotel.adapters.ConfirmRoomsInfoAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.card.payment.CardIOActivity;
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +50,6 @@ public class BookFragment extends Fragment {
     Button btnCardIo;
     View rootView;
     LinearLayout payParametersScreen, confirmPayScreen;
-
 
     EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone, etWizardWorkPhone;
     EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
@@ -87,8 +88,6 @@ public class BookFragment extends Fragment {
         setOnClickListeners();
         setRequiredEditTexts();
         switchToConfirmPayPage(false);
-
-
 
         bookingInputsAdapter  = new BookingInputsAdapter(getActivity(), rooms, availableRooms.getRoomSO().get(position));
         wizardRoomsList.setAdapter(bookingInputsAdapter);
@@ -262,7 +261,7 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 switchToConfirmPayPage(false);
-                for(SearchRoomSO room :rooms) {
+                for (SearchRoomSO room : rooms) {
                     room.setFirstName("");
                     room.setLastName("");
                 }
@@ -309,7 +308,7 @@ public class BookFragment extends Fragment {
                 "&roomTypeCode=" + availableRooms.getRoomSO().get(position).getRoomTypeCode() +
                 "&rateCode=" + availableRooms.getRoomSO().get(position).getRateCode() +
                 "&chargeableRate=" + availableRooms.getRoomSO().get(position).getAverageRate() +
-                makeRoomstring() +
+                makeRoomString() +
                 "&email=" + etWizardEmail.getText().toString() +
                 "&firstName=" + etWizardFirstName.getText().toString() +
                 "&lastName=" + etWizardLastName.getText().toString() +
@@ -331,15 +330,19 @@ public class BookFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
+
                             // response :"status":200,"success":"Yep"
 
                             Log.i("Response :", response.toString());
-
-                            if (response.getInt("status") == 200) {
-
+                        try {
+                            if (getActivity() != null) {
+                                BookedRoomSO bookedRoomSO = null;
+                                bookedRoomSO = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
+                                BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
+                                bookedRoomFragment.initFragment(bookedRoomSO);
+                                ((MaterialNavigationDrawer) getActivity()).setFragment(bookedRoomFragment, "Booked Room");
                             }
-                        } catch (JSONException e) {
+                            } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -352,7 +355,18 @@ public class BookFragment extends Fragment {
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(req);
     }
 
-    private String makeRoomstring() {
+    private BookedRoomSO parseResponseIntoSO(JSONObject response) throws JSONException{
+        BookedRoomSO bookedRoomSO = new BookedRoomSO();
+        bookedRoomSO.setPhotoUrl(availableRooms.getRoomSO().get(position).getRoomImage());
+        bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
+        bookedRoomSO.setDepartureDate(response.getString("departureDate"));
+        bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
+        bookedRoomSO.setHotelName(response.getString("hotelName"));
+        bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
+        return bookedRoomSO;
+    }
+
+    private String makeRoomString() {
         String roomsString = "";
         for (int i = 0; i < rooms.size(); i++) {
             roomsString = "&room" + (i + 1) + "=";
