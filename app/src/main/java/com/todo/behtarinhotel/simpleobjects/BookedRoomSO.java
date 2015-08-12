@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class BookedRoomSO {
 
-    public static final String PHOTO_URL_END = "b.jpg";
+    private final String PHOTO_URL_END = "b.jpg";
 
     String arrivalDate;
     String departureDate;
@@ -16,7 +16,9 @@ public class BookedRoomSO {
     String roomDescription;
     String cancellationPolicy;
     String photoUrl;
+    String roomPrice;
     ArrayList<String> valueAdds;
+    boolean isCancellable;
 
     public String getArrivalDate() {
         return arrivalDate;
@@ -83,5 +85,21 @@ public class BookedRoomSO {
                 .substring(0, photoUrl.length() - 5);
         this.photoUrl = temp + PHOTO_URL_END;
 
+    }
+
+    public String getRoomPrice() {
+        return roomPrice;
+    }
+
+    public void setRoomPrice(String roomPrice) {
+        this.roomPrice = roomPrice;
+    }
+
+    public boolean isCancellable() {
+        return isCancellable;
+    }
+
+    public void setIsCancellable(boolean isCancellable) {
+        this.isCancellable = isCancellable;
     }
 }

@@ -363,6 +363,8 @@ public class BookFragment extends Fragment {
         bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
         bookedRoomSO.setHotelName(response.getString("hotelName"));
         bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
+        bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
+        bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
         return bookedRoomSO;
     }
 
