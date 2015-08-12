@@ -42,7 +42,7 @@
                 android:id="@+id/etWizardCreditCardNumber"
                 android:textColor="@color/base_text"
                 android:hint="Credit card number"
-                android:text="1111222233334444"
+                android:text="5401999999999999"
                 android:maxLength="16" />
 
             <LinearLayout

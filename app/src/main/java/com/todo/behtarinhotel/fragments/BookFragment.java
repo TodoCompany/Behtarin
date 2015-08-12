@@ -44,7 +44,7 @@ import io.card.payment.CardIOActivity;
 public class BookFragment extends Fragment {
 
     ArrayList<SearchRoomSO> rooms;
-    ButtonRectangle btnPay, btnCancelPay, btnConfirmPay;
+    ButtonRectangle btnToConfirmPage, btnCancelPay, btnConfirmPay;
     Button btnCardIo;
     View rootView;
     LinearLayout payParametersScreen, confirmPayScreen;
@@ -127,7 +127,7 @@ public class BookFragment extends Fragment {
     }
 
     private void initViews() {
-        btnPay = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
+        btnToConfirmPage = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
         btnCancelPay = (ButtonRectangle) rootView.findViewById(R.id.btnCancelPay);
         btnConfirmPay = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
         btnCardIo = (Button) rootView.findViewById(R.id.btnCardIo);
@@ -233,13 +233,13 @@ public class BookFragment extends Fragment {
     }
 
     private void setOnClickListeners() {
-        btnPay.setOnClickListener(new View.OnClickListener() {
+        btnToConfirmPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isAllRequiredInputsFilled()) {
                     rooms = bookingInputsAdapter.getRooms();
                     switchToConfirmPayPage(true);
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -256,6 +256,13 @@ public class BookFragment extends Fragment {
                 switchToConfirmPayPage(false);
             }
         });
+        btnConfirmPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeBookingRequest();
+            }
+        });
+
 
     }
     
@@ -263,8 +270,8 @@ public class BookFragment extends Fragment {
         SearchRoomSO defaultRoomData = new SearchRoomSO();
         defaultRoomData.setFirstName(etWizardFirstName.getText().toString());
         defaultRoomData.setLastName(etWizardLastName.getText().toString());
-        defaultRoomData.setBedType(availableRooms.getRoomSO().get(0).getBeds().get(0).getBedDescript());
-        defaultRoomData.setBedTypeId(availableRooms.getRoomSO().get(0).getBeds().get(0).getId());
+        defaultRoomData.setBedType(availableRooms.getRoomSO().get(position).getBeds().get(0).getBedDescript());
+        defaultRoomData.setBedTypeId(availableRooms.getRoomSO().get(position).getBeds().get(0).getId());
 
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
         confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
@@ -292,14 +299,14 @@ public class BookFragment extends Fragment {
                 makeRoomstring() +
                 "&email=" + etWizardEmail.getText().toString() +
                 "&firstName=" + etWizardFirstName.getText().toString() +
-                "&lastName=" + etWizardFirstName.getText().toString() +
+                "&lastName=" + etWizardLastName.getText().toString() +
                 "&homePhone=" + etWizardHomePhone.getText().toString() +
                 "&workPhone=" + etWizardWorkPhone.getText().toString() +
                 "&creditCardType=CA" +
                 "&creditCardNumber=" + etWizardCreditCardNumber.getText().toString() +
                 "&creditCardIdentifier=" + etWizardCreditCardIdentifier.getText().toString() +
                 "&creditCardExpirationMonth=" + etWizardCreditCardExMonth.getText().toString() +
-                "&creditCardExpirationYear=" + etWizardCreditCardExYear.getText().toString() +
+                "&creditCardExpirationYear=20" + etWizardCreditCardExYear.getText().toString() +
                 "&address1=" + etWizardAddress.getText().toString() +
                 "&city=" + etWizardCity.getText().toString() +
                 //"&stateProvinceCode=" + etStateProvinceCode.getText().toString() +
@@ -341,7 +348,7 @@ public class BookFragment extends Fragment {
             }
             roomsString = roomsString + "&room" + (i + 1) + "FirstName=" + rooms.get(i).getFirstName();
             roomsString = roomsString + "&room" + (i + 1) + "LastName=" + rooms.get(i).getLastName();
-            roomsString = roomsString + "&room" + (i + 1) + "BedTypeId=";
+            roomsString = roomsString + "&room" + (i + 1) + "BedTypeId=" + rooms.get(i).getBedTypeId();
             roomsString = roomsString + "&room" + (i + 1) + "SmokingPreference=" + rooms.get(i).getSmokingPreference();
         }
         return roomsString;
