@@ -39,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
                 android:hint="Address"
-                android:text="some street 13s/23" />
+                android:text="travelnow" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -56,7 +56,8 @@
                 android:id="@+id/etStateProvinceCode"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/base_text"
-                android:hint="State province code" />
+                android:hint="State province code"
+                android:text="WA" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                 android:id="@+id/etWizardPostalCode"
                 android:textColor="@color/base_text"
                 android:hint="Postal code"
-                android:text="12345" />
+                android:text="79000" />
         </LinearLayout>
 
     </LinearLayout>

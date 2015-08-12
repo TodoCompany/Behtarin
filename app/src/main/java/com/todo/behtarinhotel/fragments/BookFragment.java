@@ -50,9 +50,9 @@ public class BookFragment extends Fragment {
     LinearLayout payParametersScreen, confirmPayScreen;
 
 
-    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone,etWizardWorkPhone;
+    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone, etWizardWorkPhone;
     EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
-    EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode,etStateProvinceCode;
+    EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode, etStateProvinceCode;
     ArrayList<EditText> requiredEditTexts = new ArrayList<>();
     TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
     TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
@@ -91,7 +91,6 @@ public class BookFragment extends Fragment {
         bookingInputsAdapter  = new BookingInputsAdapter(getActivity(), rooms, availableRooms.getRoomSO().get(position));
         wizardRoomsList.setAdapter(bookingInputsAdapter);
         setListViewHeightBasedOnChildren(wizardRoomsList);
-
 
 
         return rootView;
@@ -173,7 +172,7 @@ public class BookFragment extends Fragment {
 
     }
 
-    public void setRooms(int position,AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms,String arrivalDate,String departureDate){
+    public void setRooms(int position, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms, String arrivalDate, String departureDate) {
         this.rooms = rooms;
         this.position = position;
         this.availableRooms = availableRooms;
@@ -233,7 +232,7 @@ public class BookFragment extends Fragment {
 
     }
 
-    private void setOnClickListeners(){
+    private void setOnClickListeners() {
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,7 +258,7 @@ public class BookFragment extends Fragment {
         });
 
     }
-
+    
     private void addRoomsInfoToConfirmPage(){
         SearchRoomSO defaultRoomData = new SearchRoomSO();
         defaultRoomData.setFirstName(etWizardFirstName.getText().toString());
@@ -270,7 +269,7 @@ public class BookFragment extends Fragment {
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
         confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
         setListViewHeightBasedOnChildren(wizardRoomsList);
-    }
+    }  
 
     private void makeBookingRequest(){
         url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?" +
@@ -282,36 +281,32 @@ public class BookFragment extends Fragment {
                 "&locale=en_US" +
                 "&minorRev=30" +
                 "&currencyCode=USD" +
-                "&hotelId=" + availableRooms.getHotelId()+
-                "&arrivalDate=" + arrivalDate+
-                "&departureDate=" + departureDate+
+                "&hotelId=" + availableRooms.getHotelId() +
+                "&arrivalDate=" + arrivalDate +
+                "&departureDate=" + departureDate +
                 "&supplierType=E" +
-                "&rateKey=" + availableRooms.getRoomSO().get(position).getRateKey()+
-                "&roomTypeCode=" + availableRooms.getRoomSO().get(position).getRoomTypeCode()+
-                "&rateCode=" + availableRooms.getRoomSO().get(position).getRateCode()+
-                "&chargeableRate=" + availableRooms.getRoomSO().get(position).getAverageRate()+
-                "&room1=2,5,7" +
-                "&room1FirstName=test" +
-                "&room1LastName=testers" +
-                "&room1BedTypeId=23" +
-                "&room1SmokingPreference=NS" +
-                "&email=" + etWizardEmail.getText().toString()+
-                "&firstName=" + etWizardFirstName.getText().toString()+
-                "&lastName=" + etWizardFirstName.getText().toString()+
-                "&homePhone=" + etWizardHomePhone.getText().toString()+
-                "&workPhone=" + etWizardWorkPhone.getText().toString()+
+                "&rateKey=" + availableRooms.getRoomSO().get(position).getRateKey() +
+                "&roomTypeCode=" + availableRooms.getRoomSO().get(position).getRoomTypeCode() +
+                "&rateCode=" + availableRooms.getRoomSO().get(position).getRateCode() +
+                "&chargeableRate=" + availableRooms.getRoomSO().get(position).getAverageRate() +
+                makeRoomstring() +
+                "&email=" + etWizardEmail.getText().toString() +
+                "&firstName=" + etWizardFirstName.getText().toString() +
+                "&lastName=" + etWizardFirstName.getText().toString() +
+                "&homePhone=" + etWizardHomePhone.getText().toString() +
+                "&workPhone=" + etWizardWorkPhone.getText().toString() +
                 "&creditCardType=CA" +
-                "&creditCardNumber=" + etWizardCreditCardNumber.getText().toString()+
-                "&creditCardIdentifier=" + etWizardCreditCardIdentifier.getText().toString()+
-                "&creditCardExpirationMonth=" + etWizardCreditCardExMonth.getText().toString()+
-                "&creditCardExpirationYear=" + etWizardCreditCardExYear.getText().toString()+
-                "&address1=" + etWizardAddress.getText().toString()+
-                "&city=" + etWizardCity.getText().toString()+
-                "&stateProvinceCode=" + etStateProvinceCode.getText().toString()+
-                "&countryCode=" + etWizardCountryCode.getText().toString()+
+                "&creditCardNumber=" + etWizardCreditCardNumber.getText().toString() +
+                "&creditCardIdentifier=" + etWizardCreditCardIdentifier.getText().toString() +
+                "&creditCardExpirationMonth=" + etWizardCreditCardExMonth.getText().toString() +
+                "&creditCardExpirationYear=" + etWizardCreditCardExYear.getText().toString() +
+                "&address1=" + etWizardAddress.getText().toString() +
+                "&city=" + etWizardCity.getText().toString() +
+                //"&stateProvinceCode=" + etStateProvinceCode.getText().toString() +
+                "&countryCode=" + etWizardCountryCode.getText().toString() +
                 "&postalCode=" + etWizardPostalCode.getText().toString();
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"https://book.api.ean.com/ean-services/rs/hotel/v3/res?cid=55505&apiKey=7tuermyqnaf66ujk2dk3rkfk&minorRev=26&customerSessionId=7916870766fac2d71c1d740919589836&customerIpAddress=193.93.218.85&customerUserAgent=Mozilla%2F5.0+%28Windows+NT+6.3%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36¤cyCode=USD&hotelId=463538&arrivalDate=08%2F13%2F2015&departureDate=08%2F14%2F2015&supplierType=E&rateKey=0ce2e36d-4514-4656-b890-945520ce1b49&roomTypeCode=200719009&rateCode=203567761&chargeableRate=65.38&email=kryvun.roman%40gmail.com&firstName=Roman&lastName=Kryvun&homePhone=1234234&creditCardType=CA&creditCardNumber=5401999999999999&creditCardIdentifier=123&creditCardExpirationMonth=11&creditCardExpirationYear=2015&address1=Zelena+53&city=Lviv&stateProvinceCode=123&countryCode=UA&postalCode=123&affiliateConfirmationId=d0e779996556b3b62e17d2361a9a01d6&specialInformation=&room1=2&room1FirstName=zxvc&room1LastName=Last&room1BedTypeId=43&room1SmokingPreference=NS",
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,
 
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -321,7 +316,7 @@ public class BookFragment extends Fragment {
 
                             Log.i("Response :", response.toString());
 
-                            if(response.getInt("status") == 200){
+                            if (response.getInt("status") == 200) {
 
                             }
                         } catch (JSONException e) {
@@ -335,6 +330,21 @@ public class BookFragment extends Fragment {
             }
         });
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(req);
+    }
+
+    private String makeRoomstring() {
+        String roomsString = "";
+        for (int i = 0; i < rooms.size(); i++) {
+            roomsString = "&room" + (i + 1) + "=";
+            for (int j = 0; j < rooms.get(i).getGuests().size(); j++) {
+                roomsString = roomsString + rooms.get(i).getGuests().get(j).getAge() + ",";
+            }
+            roomsString = roomsString + "&room" + (i + 1) + "FirstName=" + rooms.get(i).getFirstName();
+            roomsString = roomsString + "&room" + (i + 1) + "LastName=" + rooms.get(i).getLastName();
+            roomsString = roomsString + "&room" + (i + 1) + "BedTypeId=";
+            roomsString = roomsString + "&room" + (i + 1) + "SmokingPreference=" + rooms.get(i).getSmokingPreference();
+        }
+        return roomsString;
     }
 
     private boolean isAllRequiredInputsFilled(){

@@ -24,7 +24,6 @@ public class AvailableRoomsSO {
     private String checkInInstruction;
 
 
-
     public String getCheckInInstruction() {
         return checkInInstruction;
     }
@@ -69,8 +68,15 @@ public class AvailableRoomsSO {
         private String smokingPreference;
         @SerializedName("cancellationPolicy")
         private String cancellationPolicy;
+        private String rateKey;
         private ArrayList<Bed> beds;
 
+        public String getRateKey() {
+            return rateKey;
+        }
+        public void setRateKey(String rateKey) {
+            this.rateKey = rateKey;
+        }
 
         private String bedDescription;
         private int bedsQuantity;
@@ -170,23 +176,17 @@ public class AvailableRoomsSO {
         private class RateInfos {
             @SerializedName("RateInfo")
             private RateInfo rateInfo;
+
             private RateInfo getRateInfo() {
                 return rateInfo;
             }
+
             private class RateInfo {
                 @SerializedName("ChargeableRateInfo")
                 private ChargeableRateInfo chargeableRateInfo;
-                @SerializedName("RoomGroup")
-                private RoomGroup roomGroup;
-
-
 
                 private ChargeableRateInfo getChargeableRateInfo() {
                     return chargeableRateInfo;
-                }
-
-                private RoomGroup getRoomGroup() {
-                    return roomGroup;
                 }
 
                 private class ChargeableRateInfo {
@@ -201,25 +201,6 @@ public class AvailableRoomsSO {
 
                     private float getOldPrice() {
                         return oldPrice;
-                    }
-
-                }
-
-                private class RoomGroup{
-                    @SerializedName("Room")
-                    private Room room;
-
-                    private Room getRoom(){
-                        return room;
-                    }
-
-                    private class Room{
-                        @SerializedName("rateKey")
-                        private String rateKey;
-
-                        private String getRateKey(){
-                            return rateKey;
-                        }
                     }
                 }
             }
