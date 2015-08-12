@@ -98,17 +98,36 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RadioButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Not smoking"
-            android:textColor="@color/base_text"
-            android:checked="true"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:enabled="true"
-            android:textSize="12sp"
-            android:id="@+id/rbSmokingState" />
+            android:layout_weight="1">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not smoking"
+                android:textColor="@color/base_text"
+                android:checked="true"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:enabled="true"
+                android:textSize="12sp"
+                android:id="@+id/rbSmokingState" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not smoking"
+                android:textColor="@color/base_text"
+                android:checked="true"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:enabled="true"
+                android:textSize="12sp"
+                android:id="@+id/rbBedType" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -60,13 +60,15 @@ public class ConfirmRoomsInfoAdapter extends BaseAdapter {
         TextView tvAdultCount = (TextView) view.findViewById(R.id.tvWizardAdultCount);
         TextView tvChildCount = (TextView) view.findViewById(R.id.tvWizardChildCount);
         RadioButton rbSmokingState = (RadioButton) view.findViewById(R.id.rbSmokingState);
+        RadioButton rbBedType = (RadioButton) view.findViewById(R.id.rbBedType);
 
         if (rooms.get(position).getFirstName().equals("")) rooms.get(position).setFirstName(defaultRoomData.getFirstName());
         if (rooms.get(position).getLastName().equals("")) rooms.get(position).setLastName(defaultRoomData.getLastName());
         tvRoomInfoFirstName.setText(Html.fromHtml("First name: " + "<b>" + rooms.get(position).getFirstName() + "</b>"));
         tvRoomInfoLastName.setText(Html.fromHtml("Last name: "+ "<b>" + rooms.get(position).getLastName() + "</b>"));
-        tvAdultCount.setText("- " + rooms.get(position).getGuests().get(0).getAge());
-        tvChildCount.setText("- " + (rooms.get(position).getGuests().size() - 1));
+        tvAdultCount.setText("x" + rooms.get(position).getGuests().get(0).getAge());
+        tvChildCount.setText("x" + (rooms.get(position).getGuests().size() - 1));
+        rbBedType.setText(rooms.get(position).getBedType());
 
         switch (rooms.get(position).getSmokingPreference()){
             case SearchRoomSO.SMOKING:
@@ -79,6 +81,7 @@ public class ConfirmRoomsInfoAdapter extends BaseAdapter {
                 rbSmokingState.setText("Either");
                 break;
         }
+
 
         return view;
     }

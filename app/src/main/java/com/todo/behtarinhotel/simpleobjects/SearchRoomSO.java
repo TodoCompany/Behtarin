@@ -12,6 +12,8 @@ public class SearchRoomSO {
     ArrayList<RoomQueryGuestSO> guests;
     private String firstName = "", lastName = "";
     private int smokingPreference = NOT_SMOKING;
+    private String bedType;
+    private int bedTypeId;
 
     public SearchRoomSO(ArrayList<RoomQueryGuestSO> guests) {
         this.guests = guests;
@@ -49,5 +51,21 @@ public class SearchRoomSO {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getBedType() {
+        return bedType;
+    }
+
+    public void setBedType(String bedType) {
+        this.bedType = bedType;
+    }
+
+    public int getBedTypeId() {
+        return bedTypeId;
+    }
+
+    public void setBedTypeId(int bedTypeId) {
+        this.bedTypeId = bedTypeId;
     }
 }

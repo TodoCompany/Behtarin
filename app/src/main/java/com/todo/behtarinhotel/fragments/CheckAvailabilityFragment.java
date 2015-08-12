@@ -104,22 +104,33 @@ public class CheckAvailabilityFragment extends Fragment {
                         JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
                         for (int i = 0; i < hotelRoomsResponse.length(); i++) {
                             JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
-                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
                             String bedDescription = "";
+                            ArrayList<AvailableRoomsSO.Bed> beds = new ArrayList<>();
                             try {
                                 JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
                                 availableRoomsSO.getRoomSO().get(i).setBedsQuantity(bedTypesArray.length());
                                 for (int n = 0; n < bedTypesArray.length(); n++) {
                                     JSONObject object = bedTypesArray.getJSONObject(n);
                                     bedDescription = bedDescription + object.getString("description") + "\n";
+                                    AvailableRoomsSO.Bed bed = availableRoomsSO.buildBedObject();
+                                    bed.setBedDescript(object.getString("description"));
+                                    bed.setId(object.getInt("@id"));
+                                    beds.add(bed);
                                 }
                             } catch (Exception itIsNotAnArray) {
+
                                 JSONObject bedType = bedTypesObject.getJSONObject("BedType");
                                 bedDescription = bedDescription + bedType.getString("description") + "\n";
                                 availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
+                                AvailableRoomsSO.Bed bed = availableRoomsSO.buildBedObject();
+                                bed.setBedDescript(bedType.getString("description"));
+                                bed.setId(bedType.getInt("@id"));
+                                beds.add(bed);
                             }
 
                             availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
+                            availableRoomsSO.getRoomSO().get(i).setBed(beds);
+
 
                         }
 

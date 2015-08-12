@@ -24,6 +24,7 @@ public class AvailableRoomsSO {
     private String checkInInstruction;
 
 
+
     public String getCheckInInstruction() {
         return checkInInstruction;
     }
@@ -68,6 +69,7 @@ public class AvailableRoomsSO {
         private String smokingPreference;
         @SerializedName("cancellationPolicy")
         private String cancellationPolicy;
+        private ArrayList<Bed> beds;
 
 
         private String bedDescription;
@@ -137,6 +139,15 @@ public class AvailableRoomsSO {
         public String getRateKey(){
             return rateInfos.getRateInfo().getRoomGroup().getRoom().getRateKey();
         }
+        public ArrayList<Bed> getBeds() {
+            return beds;
+        }
+
+        public void setBed(ArrayList<Bed> beds) {
+            this.beds = beds;
+        }
+
+
 
         private class RoomImages {
             @SerializedName("RoomImage")
@@ -167,6 +178,8 @@ public class AvailableRoomsSO {
                 private ChargeableRateInfo chargeableRateInfo;
                 @SerializedName("RoomGroup")
                 private RoomGroup roomGroup;
+
+
 
                 private ChargeableRateInfo getChargeableRateInfo() {
                     return chargeableRateInfo;
@@ -227,6 +240,34 @@ public class AvailableRoomsSO {
         public void setCancellationPolicy(String cancellationPolicy) {
             this.cancellationPolicy = cancellationPolicy;
         }
+    }
+
+    public class Bed{
+        private String bedDescript;
+        private int id;
+
+        public Bed() {
+        }
+
+        public String getBedDescript() {
+            return bedDescript;
+        }
+
+        public void setBedDescript(String bedDescript) {
+            this.bedDescript = bedDescript;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
+
+    public Bed buildBedObject(){
+        return new Bed();
     }
 
 

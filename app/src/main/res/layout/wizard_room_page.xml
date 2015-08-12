@@ -48,36 +48,53 @@
                 android:layout_gravity="center_horizontal"
                 android:hint="Last name" />
 
-            <RadioGroup
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/radioGroupSmoking">
+                android:layout_height="match_parent">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Smoking"
-                    android:id="@+id/rbSmoking"
-                    android:textColor="@color/base_text"
-                    android:checked="false" />
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/radioGroupSmoking"
+                    android:layout_weight="1">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Not smoking"
-                    android:id="@+id/rbNotSmoking"
-                    android:textColor="@color/base_text"
-                    android:checked="false" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Smoking"
+                        android:id="@+id/rbSmoking"
+                        android:textColor="@color/base_text"
+                        android:checked="false" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not smoking"
+                        android:id="@+id/rbNotSmoking"
+                        android:textColor="@color/base_text"
+                        android:checked="false" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Either"
+                        android:id="@+id/rbEither"
+                        android:textColor="@color/base_text"
+                        android:checked="false" />
+
+                </RadioGroup>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Either"
-                    android:id="@+id/rbEither"
-                    android:textColor="@color/base_text"
-                    android:checked="false" />
-            </RadioGroup>
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/radioGroupBeds"
+                    android:layout_weight="1">
+
+                </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 

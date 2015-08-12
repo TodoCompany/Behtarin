@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 
 import java.util.ArrayList;
@@ -25,12 +27,14 @@ public class BookingInputsAdapter extends BaseAdapter {
 
 
     private ArrayList<SearchRoomSO> rooms;
+    AvailableRoomsSO.RoomSO roomInfo;
 
 
-    public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms) {
+    public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms, AvailableRoomsSO.RoomSO roomInfo) {
         ctx = context;
         inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.rooms = rooms;
+        this.roomInfo = roomInfo;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class BookingInputsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View view;
+        final View view;
         if (convertView != null) {
             view = convertView;
         } else {
@@ -108,6 +112,24 @@ public class BookingInputsAdapter extends BaseAdapter {
                         rooms.get(position).setSmokingPreference(SearchRoomSO.EITHER);
                         break;
                 }
+            }
+        });
+
+        RadioGroup radioGroupBeds = (RadioGroup) view.findViewById(R.id.radioGroupBeds);
+
+        for(AvailableRoomsSO.Bed bed : roomInfo.getBeds()){
+            RadioButton rb = new RadioButton(ctx);
+            rb.setText(bed.getBedDescript());
+            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            rb.setId(bed.getId());
+            radioGroupBeds.addView(rb);
+        }
+        radioGroupBeds.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton checkedRadioButton = (RadioButton) view.findViewById(checkedId);
+                rooms.get(position).setBedTypeId(checkedId);
+                rooms.get(position).setBedType(checkedRadioButton.getText().toString());
             }
         });
 
