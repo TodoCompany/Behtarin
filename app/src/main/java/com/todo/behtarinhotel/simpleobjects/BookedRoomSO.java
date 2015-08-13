@@ -85,10 +85,11 @@ public class BookedRoomSO {
     }
 
     public void setPhotoUrl(String photoUrl) {
-        String temp = photoUrl
-                .substring(0, photoUrl.length() - 5);
-        this.photoUrl = temp + PHOTO_URL_END;
-
+        if(photoUrl!=null){
+            String temp = photoUrl
+                    .substring(0, photoUrl.length() - 5);
+            this.photoUrl = temp + PHOTO_URL_END;
+        }
     }
 
     public String getRoomPrice() {

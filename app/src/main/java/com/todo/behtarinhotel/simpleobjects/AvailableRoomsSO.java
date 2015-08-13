@@ -18,7 +18,7 @@ public class AvailableRoomsSO {
     private String hotelAddress;
     @SerializedName("hotelCountry")
     private String hotelCountry;
-    @SerializedName("HotelRoomResponse")
+    //@SerializedName("HotelRoomResponse")
     private ArrayList<RoomSO> roomSO;
     @SerializedName("checkInInstructions")
     private String checkInInstruction;
@@ -46,6 +46,10 @@ public class AvailableRoomsSO {
 
     public ArrayList<RoomSO> getRoomSO() {
         return roomSO;
+    }
+
+    public void setRoomSO(ArrayList<RoomSO> roomSO) {
+        this.roomSO = roomSO;
     }
 
     // This inner classes used to parse their fucking response

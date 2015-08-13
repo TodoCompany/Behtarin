@@ -17,9 +17,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.AvailableRoomsAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
@@ -28,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -107,8 +110,16 @@ public class CheckAvailabilityFragment extends Fragment {
                     if (getActivity() != null) {
                         response = response.getJSONObject("HotelRoomAvailabilityResponse");
                         availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
+
+
                         try {
                             JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
+                            Type roomArray = new TypeToken<ArrayList<AvailableRoomsSO.RoomSO>>() {
+                            }.getType();
+                            ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
+                            rooms = gson.fromJson(hotelRoomsResponse.toString(),roomArray);
+                            availableRoomsSO.setRoomSO(rooms);
+
                             for (int i = 0; i < hotelRoomsResponse.length(); i++) {
                                 JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
                                 JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
@@ -156,6 +167,10 @@ public class CheckAvailabilityFragment extends Fragment {
                             }
                         }catch (Exception isNotArray) {
                             JSONObject hotelRoomsResponse = response.getJSONObject("HotelRoomResponse");
+                            ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
+                            AvailableRoomsSO.RoomSO room = gson.fromJson(hotelRoomsResponse.toString(), AvailableRoomsSO.RoomSO.class);
+                            rooms.add(room);
+                            availableRoomsSO.setRoomSO(rooms);
                             JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject("BedTypes");
                             JSONObject rateInfos = hotelRoomsResponse.getJSONObject("RateInfos");
 
@@ -182,6 +197,21 @@ public class CheckAvailabilityFragment extends Fragment {
                                 bed.setId(bedType.getInt("@id"));
                                 beds.add(bed);
                             }
+
+                            try {
+                                String rateKey = rateInfos.getJSONObject("RateInfo")
+                                        .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
+                                availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+                            } catch (Exception isNotObject) {
+                                JSONArray arr = rateInfos.getJSONObject("RateInfo")
+                                        .getJSONObject("RoomGroup").getJSONArray("Room");
+                                String rateKey = arr.getJSONObject(0).getString("rateKey");
+                                availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+
+                            }
+
+                            availableRoomsSO.getRoomSO().get(0).setBedDescription(bedDescription);
+                            availableRoomsSO.getRoomSO().get(0).setBed(beds);
                         }
 
 
