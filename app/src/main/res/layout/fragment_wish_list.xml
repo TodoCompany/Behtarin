@@ -19,7 +19,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:id="@+id/tab_one_container"
+                    android:id="@+id/tab_wishlist"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -32,7 +32,7 @@
                         android:cacheColorHint="@color/transparent"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/tab_two_container"
+                    android:id="@+id/tab_booked_rooms"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -44,6 +44,20 @@
                         android:id="@+id/bookedRoomsList"
                         android:listSelector="@color/transparent"
                         android:cacheColorHint="@color/transparent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab_history"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/historyList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

@@ -84,6 +84,12 @@ public class CheckAvailabilityFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData(hotelId, arrivalDate, departureDate, rooms);
+    }
+
     public void getData(int hotelId, String dateArrival, String dateDeparture, final ArrayList<SearchRoomSO> rooms) {
         this.hotelId = hotelId;
         this.arrivalDate = dateArrival;
@@ -198,5 +204,7 @@ public class CheckAvailabilityFragment extends Fragment {
         swipeContainer.setRefreshing(false);
 
     }
+
+
 
 }

@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView3">
+        android:id="@+id/bookingScroll">
 
         <LinearLayout
             android:orientation="vertical"
@@ -21,7 +21,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/payParametersScreen"
                 android:background="@color/base_background">
 
@@ -52,7 +52,8 @@
                     android:id="@+id/btnPay"
                     android:background="@color/base_yellow"
                     android:text="Pay"
-                    android:textSize="14sp" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +79,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +122,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,7 +158,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -202,7 +206,8 @@
                     android:padding="16dp"
                     android:background="@color/base_white"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -226,7 +231,8 @@
                     android:padding="16dp"
                     android:background="@color/base_white"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -253,7 +259,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="Data wrong. Edit"
-                    android:textSize="8sp"
                     android:id="@+id/btnCancelPay"
                     android:background="#ffdc4000"
                     android:layout_marginTop="16dp"
@@ -263,7 +268,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="All data correct. Pay"
-                    android:textSize="8sp"
                     android:id="@+id/btnConfirmPay"
                     android:background="@color/base_yellow"
                     android:layout_marginTop="16dp"

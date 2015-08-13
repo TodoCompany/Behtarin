@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public class BookedRoomSO {
 
+    public static final int BOOKED = 1, ACTIVE = 2, OUT_OF_DATE = 3, CANCELLED = 4;
+
     private final String PHOTO_URL_END = "b.jpg";
 
     String arrivalDate;
@@ -20,6 +22,7 @@ public class BookedRoomSO {
     int itineraryId;
     ArrayList<String> valueAdds;
     boolean isCancellable;
+    int orderState = BOOKED;
 
     public String getArrivalDate() {
         return arrivalDate;
@@ -109,5 +112,13 @@ public class BookedRoomSO {
     }
     public void setItineraryId(int itineraryId) {
         this.itineraryId = itineraryId;
+    }
+
+    public int getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(int orderState) {
+        this.orderState = orderState;
     }
 }

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:id="@+id/bookedRoomsList"
         android:background="@color/base_white"
         android:elevation="6dp">
 
@@ -17,7 +16,7 @@
             android:layout_height="wrap_content" >
 
             <ImageView
-                android:id="@+id/bookedRoomImage"
+                android:id="@+id/imageRoom"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/hotel_images_height"
                 android:layout_gravity="right|top"
@@ -28,7 +27,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="16dp">
 
             <LinearLayout
@@ -36,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
-                android:paddingRight="8dp">
+                android:paddingRight="8dp" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="99/99/9999"
-                android:id="@+id/tvArrivalDate"
+                android:id="@+id/tvArrival"
                 android:layout_weight="1"
                 android:textSize="14sp" />
 
@@ -107,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="-"
-                android:id="@+id/textView19"
+                android:id="@+id/textView20"
                 android:textSize="14sp" />
 
             <TextView
@@ -115,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="99/99/9999"
-                android:id="@+id/tvDepartureDate"
+                android:id="@+id/tvDeparture"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textSize="14sp" />
@@ -128,16 +127,19 @@
             android:background="#EBEBEB"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp" >
+
+        </FrameLayout>
 
         <com.gc.materialdesign.views.ButtonFlat
-            android:id="@+id/btnReadMore"
+            android:id="@+id/btnState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/base_yellow"
-            android:text="READ MORE"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
-
+            android:text="State"
+            android:layout_gravity="right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp" />
     </LinearLayout>
+
 </LinearLayout>

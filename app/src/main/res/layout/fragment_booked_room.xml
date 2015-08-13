@@ -165,7 +165,6 @@
                 android:layout_height="56dp"
                 android:id="@+id/btnCancelBooking"
                 android:text="Cancel booking..."
-                android:textSize="8sp"
                 android:background="@color/base_yellow"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp" />
