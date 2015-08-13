@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.adapters.BookedRoomsAdapter;
 import com.todo.behtarinhotel.adapters.WishListAdapter;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
@@ -30,6 +31,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +80,7 @@ public class WishListFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_wish_list, container, false);
         listView = (ListView) rootView.findViewById(R.id.wishList);
         bookedRoomsList = (ListView) rootView.findViewById(R.id.bookedRoomsList);
+        bookedRoomsList.setAdapter(new BookedRoomsAdapter((MaterialNavigationDrawer) getActivity(), AppState.getBookedRooms()));
 
         initTabs();
 
@@ -84,7 +88,6 @@ public class WishListFragment extends Fragment {
         if(wishListItems!=null){
             loadHotelsFromExpedia();
         }
-
         return rootView;
     }
 

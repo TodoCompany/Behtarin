@@ -46,7 +46,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 public class BookFragment extends Fragment {
 
     ArrayList<SearchRoomSO> rooms;
-    ButtonRectangle btnToConfirmPage, btnCancelPay, btnConfirmPay;
+    ButtonRectangle btnToConfirmPage, btnCancelPay, btnPayForRoom;
     Button btnCardIo;
     View rootView;
     LinearLayout payParametersScreen, confirmPayScreen;
@@ -130,7 +130,7 @@ public class BookFragment extends Fragment {
     private void initViews() {
         btnToConfirmPage = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
         btnCancelPay = (ButtonRectangle) rootView.findViewById(R.id.btnCancelPay);
-        btnConfirmPay = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
+        btnPayForRoom = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
         btnCardIo = (Button) rootView.findViewById(R.id.btnCardIo);
 
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
@@ -267,10 +267,11 @@ public class BookFragment extends Fragment {
                 }
             }
         });
-        btnConfirmPay.setOnClickListener(new View.OnClickListener() {
+        btnPayForRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 makeBookingRequest();
+
             }
         });
 
@@ -338,9 +339,10 @@ public class BookFragment extends Fragment {
                             if (getActivity() != null) {
                                 BookedRoomSO bookedRoomSO = null;
                                 bookedRoomSO = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
+                                AppState.saveBookedRoom(bookedRoomSO);
                                 BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
                                 bookedRoomFragment.initFragment(bookedRoomSO);
-                                ((MaterialNavigationDrawer) getActivity()).setFragment(bookedRoomFragment, "Booked Room");
+                                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(bookedRoomFragment, "Booked Room");
                             }
                             } catch (JSONException e) {
                             e.printStackTrace();
@@ -363,6 +365,7 @@ public class BookFragment extends Fragment {
         bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
         bookedRoomSO.setHotelName(response.getString("hotelName"));
         bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
+        bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
         bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
         return bookedRoomSO;

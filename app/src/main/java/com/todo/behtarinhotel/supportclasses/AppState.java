@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
@@ -309,6 +310,54 @@ public class AppState {
             }
         });
         VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
+    }
+
+    public static ArrayList<BookedRoomSO> getBookedRooms(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        if(sPrefLog.getString("bookedRooms", "").length()==0){
+            return new ArrayList<>();
+        }else{
+            return gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
+        }
+    }
+
+    public static void saveBookedRoom(BookedRoomSO roomToBook){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        if(sPrefLog.getString("bookedRooms", "").length()==0){
+            bookedRooms.add(roomToBook);
+        }else{
+            bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
+            bookedRooms.add(roomToBook);
+        }
+        sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
+
+    }
+
+    public static void removeRoomFromBooking(BookedRoomSO roomToBook){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        if (sPrefLog.getString("bookedRooms", "").length() != 0) {
+            bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
+            for (BookedRoomSO bookedRoomSO : bookedRooms){
+                if (bookedRoomSO.getItineraryId() == roomToBook.getItineraryId()){
+                    bookedRooms.remove(bookedRoomSO);
+                    sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
+
+                }
+            }
+        }
+
+
     }
 
 

@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.BookedRoomFragment;
@@ -64,12 +66,17 @@ public class BookedRoomsAdapter extends BaseAdapter {
         TextView tvArrivalDate = (TextView) view.findViewById(R.id.tvArrivalDate);
         TextView tvDepartureDate = (TextView) view.findViewById(R.id.tvDepartureDate);
         ButtonFlat btnReadMore = (ButtonFlat) view.findViewById(R.id.btnReadMore);
+        ImageView bookedRoomImage = (ImageView) view.findViewById(R.id.bookedRoomImage);
 
         tvHotelName.setText(bookedRoom.getHotelName());
         tvHotelAddress.setText(bookedRoom.getHotelAddress());
         tvRoomPrice.setText(bookedRoom.getRoomPrice());
         tvArrivalDate.setText(bookedRoom.getArrivalDate());
         tvDepartureDate.setText(bookedRoom.getDepartureDate());
+
+        Glide.with(activity)
+                .load(bookedRoom.getPhotoUrl())
+                .into(bookedRoomImage);
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override

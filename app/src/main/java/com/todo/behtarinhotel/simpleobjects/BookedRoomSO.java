@@ -17,6 +17,7 @@ public class BookedRoomSO {
     String cancellationPolicy;
     String photoUrl;
     String roomPrice;
+    int itineraryId;
     ArrayList<String> valueAdds;
     boolean isCancellable;
 
@@ -101,5 +102,12 @@ public class BookedRoomSO {
 
     public void setIsCancellable(boolean isCancellable) {
         this.isCancellable = isCancellable;
+    }
+
+    public int getItineraryId() {
+        return itineraryId;
+    }
+    public void setItineraryId(int itineraryId) {
+        this.itineraryId = itineraryId;
     }
 }

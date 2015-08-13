@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
+import com.todo.behtarinhotel.supportclasses.AppState;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,6 +94,7 @@ public class BookedRoomFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //TODO cancel booking
+                                AppState.removeRoomFromBooking(bookedRoomSO);
                                 dialog.dismiss();
                             }
                         })
