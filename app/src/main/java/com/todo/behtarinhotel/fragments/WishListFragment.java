@@ -1,28 +1,24 @@
 package com.todo.behtarinhotel.fragments;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.TabHost;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.adapters.WishListAdapter;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
@@ -42,7 +38,7 @@ public class WishListFragment extends Fragment {
 
     ArrayList<Integer> wishListItems = new ArrayList<>();
     ArrayList<SearchResultSO> hotels = new ArrayList<>();
-    ListView listView;
+    ListView listView, bookedRoomsList;
     WishListAdapter adapter;
     View rootView;
 
@@ -77,12 +73,18 @@ public class WishListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         rootView = inflater.inflate(R.layout.fragment_wish_list, container, false);
-        listView = (ListView) rootView.findViewById(R.id.lv_wish_list_wish_list_fragment);
+        listView = (ListView) rootView.findViewById(R.id.wishList);
+        bookedRoomsList = (ListView) rootView.findViewById(R.id.bookedRoomsList);
+
+        initTabs();
+
         wishListItems = AppState.getWishList();
         if(wishListItems!=null){
             loadHotelsFromExpedia();
         }
+
         return rootView;
     }
 
@@ -160,6 +162,22 @@ public class WishListFragment extends Fragment {
         }
         return hotelSting;
     }
+
+    private void initTabs(){
+        TabHost host = (TabHost) rootView.findViewById(R.id.tab_host);
+        host.setup();
+
+        TabHost.TabSpec spec = host.newTabSpec("Wishlist");
+        spec.setContent(R.id.tab_one_container);
+        spec.setIndicator("Wishlist");
+        host.addTab(spec);
+
+        spec = host.newTabSpec("Booked rooms");
+        spec.setContent(R.id.tab_two_container);
+        spec.setIndicator("Booked rooms");
+        host.addTab(spec);
+    }
+
 
 
 }

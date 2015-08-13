@@ -161,10 +161,10 @@
             </LinearLayout>
 
             <com.gc.materialdesign.views.ButtonRectangle
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
                 android:id="@+id/btnCancelBooking"
-                android:text="Cancel booking"
+                android:text="Cancel booking..."
                 android:textSize="8sp"
                 android:background="@color/base_yellow"
                 android:layout_gravity="center_horizontal"

@@ -1,14 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.todo.behtarinhotel.fragments.WishListFragment"
-    android:background="@color/base_white">
+    android:background="@color/base_white"
+    android:orientation="vertical">
 
-    <ListView
-    android:id="@+id/lv_wish_list_wish_list_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:cacheColorHint="@android:color/transparent"
-    android:listSelector="@android:color/transparent" />
+    <TabHost android:id="@+id/tab_host"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TabWidget android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/base_text" />
+            <FrameLayout android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/tab_one_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/wishList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab_two_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
 
-</FrameLayout>
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bookedRoomsList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent"/>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+
+</LinearLayout>

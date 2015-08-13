@@ -58,6 +58,9 @@ dependencies {
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     // Material button
     compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+    // Tabs
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+
 
 
 
