@@ -289,7 +289,6 @@ public class MainFragment extends Fragment {
                     room = room + rooms.get(a).getGuests().get(b).getAge() + ",";
                 }
             }
-
         }
         return room;
     }

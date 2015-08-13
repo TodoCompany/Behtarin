@@ -101,16 +101,63 @@ public class CheckAvailabilityFragment extends Fragment {
                     if (getActivity() != null) {
                         response = response.getJSONObject("HotelRoomAvailabilityResponse");
                         availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
-                        JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
-                        for (int i = 0; i < hotelRoomsResponse.length(); i++) {
-                            JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
-                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
+                        try {
+                            JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
+                            for (int i = 0; i < hotelRoomsResponse.length(); i++) {
+                                JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject(i).getJSONObject("BedTypes");
+                                JSONObject rateInfos = hotelRoomsResponse.getJSONObject(i).getJSONObject("RateInfos");
+
+                                String bedDescription = "";
+                                ArrayList<AvailableRoomsSO.Bed> beds = new ArrayList<>();
+                                try {
+                                    JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
+                                    availableRoomsSO.getRoomSO().get(i).setBedsQuantity(bedTypesArray.length());
+                                    for (int n = 0; n < bedTypesArray.length(); n++) {
+                                        JSONObject object = bedTypesArray.getJSONObject(n);
+                                        bedDescription = bedDescription + object.getString("description") + "\n";
+                                        AvailableRoomsSO.Bed bed = availableRoomsSO.buildBedObject();
+                                        bed.setBedDescript(object.getString("description"));
+                                        bed.setId(object.getInt("@id"));
+                                        beds.add(bed);
+                                    }
+                                } catch (Exception itIsNotAnArray) {
+
+                                    JSONObject bedType = bedTypesObject.getJSONObject("BedType");
+                                    bedDescription = bedDescription + bedType.getString("description") + "\n";
+                                    availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
+                                    AvailableRoomsSO.Bed bed = availableRoomsSO.buildBedObject();
+                                    bed.setBedDescript(bedType.getString("description"));
+                                    bed.setId(bedType.getInt("@id"));
+                                    beds.add(bed);
+                                }
+
+                                try {
+                                    String rateKey = rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
+                                    availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+                                } catch (Exception isNotObject) {
+                                    JSONArray arr = rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONArray("Room");
+                                    String rateKey = arr.getJSONObject(0).getString("rateKey");
+                                    availableRoomsSO.getRoomSO().get(i).setRateKey(rateKey);
+
+                                }
+
+                                availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
+                                availableRoomsSO.getRoomSO().get(i).setBed(beds);
+
+
+                            }
+                        }catch (Exception isNotArray) {
+                            JSONObject hotelRoomsResponse = response.getJSONObject("HotelRoomResponse");
+                            JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject("BedTypes");
+                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject("RateInfos");
 
                             String bedDescription = "";
                             ArrayList<AvailableRoomsSO.Bed> beds = new ArrayList<>();
                             try {
                                 JSONArray bedTypesArray = bedTypesObject.getJSONArray("BedType");
-                                availableRoomsSO.getRoomSO().get(i).setBedsQuantity(bedTypesArray.length());
+                                availableRoomsSO.getRoomSO().get(0).setBedsQuantity(bedTypesArray.length());
                                 for (int n = 0; n < bedTypesArray.length(); n++) {
                                     JSONObject object = bedTypesArray.getJSONObject(n);
                                     bedDescription = bedDescription + object.getString("description") + "\n";
@@ -123,30 +170,14 @@ public class CheckAvailabilityFragment extends Fragment {
 
                                 JSONObject bedType = bedTypesObject.getJSONObject("BedType");
                                 bedDescription = bedDescription + bedType.getString("description") + "\n";
-                                availableRoomsSO.getRoomSO().get(i).setBedsQuantity(1);
+                                availableRoomsSO.getRoomSO().get(0).setBedsQuantity(1);
                                 AvailableRoomsSO.Bed bed = availableRoomsSO.buildBedObject();
                                 bed.setBedDescript(bedType.getString("description"));
                                 bed.setId(bedType.getInt("@id"));
                                 beds.add(bed);
                             }
-
-                            try {
-                                String rateKey = rateInfos.getJSONObject("RateInfo")
-                                        .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
-                                availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
-                            } catch (Exception isNotObject) {
-                                JSONArray arr = rateInfos.getJSONObject("RateInfo")
-                                        .getJSONObject("RoomGroup").getJSONArray("Room");
-                                    String rateKey = arr.getJSONObject(0).getString("rateKey");
-                                    availableRoomsSO.getRoomSO().get(i).setRateKey(rateKey);
-
-                            }
-
-                            availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
-                            availableRoomsSO.getRoomSO().get(i).setBed(beds);
-
-
                         }
+
 
 
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);

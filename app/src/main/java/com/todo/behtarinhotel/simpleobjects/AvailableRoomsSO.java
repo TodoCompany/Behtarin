@@ -193,7 +193,7 @@ public class AvailableRoomsSO {
                 }
 
                 private class ChargeableRateInfo {
-                    @SerializedName("@averageRate")
+                    @SerializedName("@total")
                     private float averageRate;
                     @SerializedName("@averageBaseRate")
                     private float oldPrice;

@@ -30,6 +30,7 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.0.0'
 
     compile 'com.balysv.materialmenu:material-menu:1.5.4'
+    compile 'com.alihafizji.creditcardedittext:library:+@aar'
     compile 'org.roboguice:roboguice:3.+'
     provided 'org.roboguice:roboblender:3.+'
     compile 'com.mcxiaoke.volley:library:1.0.+'
