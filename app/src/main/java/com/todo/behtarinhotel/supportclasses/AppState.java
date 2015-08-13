@@ -348,9 +348,9 @@ public class AppState {
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         if (sPrefLog.getString("bookedRooms", "").length() != 0) {
             bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
-            for (BookedRoomSO bookedRoomSO : bookedRooms){
-                if (bookedRoomSO.getItineraryId() == roomToBook.getItineraryId()){
-                    bookedRooms.remove(bookedRoomSO);
+            for (int i = 0; i < bookedRooms.size(); i++){
+                if (bookedRooms.get(i).getItineraryId() == roomToBook.getItineraryId()){
+                    bookedRooms.remove(bookedRooms.get(i));
                     sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
 
                 }
