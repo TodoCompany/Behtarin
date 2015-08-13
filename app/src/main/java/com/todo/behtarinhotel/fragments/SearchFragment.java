@@ -230,6 +230,15 @@ public class SearchFragment extends Fragment {
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);
 
+        etCheckIn.setTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setTextColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setHelperTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setHelperTextColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setMetTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setMetTextColor(getResources().getColor(R.color.base_white));
+
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {

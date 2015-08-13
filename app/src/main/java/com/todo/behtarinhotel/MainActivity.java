@@ -67,7 +67,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                 getResources(),
                 AppState.getLoggedUser().getFullName(), "",
                 R.mipmap.icon_profile,
-                R.drawable.back_drawer));
+                R.drawable.dubai));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new RoomManagementFragment()));

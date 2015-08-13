@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class BookFragment extends Fragment {
     TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
     TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
     TextView tvCheckInInstructions, tvCancellationPolicy;
+    ScrollView scroll;
     AvailableRoomsSO availableRooms;
     int position;
 
@@ -173,6 +175,7 @@ public class BookFragment extends Fragment {
         payParametersScreen = (LinearLayout) rootView.findViewById(R.id.payParametersScreen);
         confirmPayScreen = (LinearLayout) rootView.findViewById(R.id.confirmPayScreen);
 
+        scroll = (ScrollView) rootView.findViewById(R.id.bookingScroll);
 
     }
 
@@ -209,6 +212,7 @@ public class BookFragment extends Fragment {
     private void switchToConfirmPayPage(boolean isConfirmPay){
         if (isConfirmPay){
             initInfoOnConfirmPage();
+            scroll.smoothScrollTo(0, 0);
             confirmPayScreen.setVisibility(View.VISIBLE);
             payParametersScreen.setVisibility(View.GONE);
         }else{

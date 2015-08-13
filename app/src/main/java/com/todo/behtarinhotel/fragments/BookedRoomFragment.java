@@ -95,6 +95,7 @@ public class BookedRoomFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 //TODO cancel booking
                                 AppState.removeRoomFromBooking(bookedRoomSO);
+                                getActivity().onBackPressed();
                                 dialog.dismiss();
                             }
                         })

@@ -337,10 +337,11 @@ public class AppState {
             bookedRooms.add(roomToBook);
         }
         sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
+        addToHistory(roomToBook);
 
     }
 
-    public static void removeRoomFromBooking(BookedRoomSO roomToBook){
+    public static void removeRoomFromBooking(BookedRoomSO roomToDelete){
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
@@ -348,11 +349,11 @@ public class AppState {
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         if (sPrefLog.getString("bookedRooms", "").length() != 0) {
             bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
-            for (BookedRoomSO bookedRoomSO : bookedRooms){
-                if (bookedRoomSO.getItineraryId() == roomToBook.getItineraryId()){
-                    bookedRooms.remove(bookedRoomSO);
+            for (int i = 0; i < bookedRooms.size(); i++){
+                if (bookedRooms.get(i).getItineraryId() == roomToDelete.getItineraryId()){
+                    bookedRooms.remove(bookedRooms.get(i));
+                    changeRoomHistoryState(roomToDelete, BookedRoomSO.CANCELLED);
                     sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
-
                 }
             }
         }
@@ -360,6 +361,52 @@ public class AppState {
 
     }
 
+    public static ArrayList<BookedRoomSO> getHistory(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        if(sPrefLog.getString("history", "").length()==0){
+            return new ArrayList<>();
+        }else{
+            return gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
+        }
+    }
+
+    public static void addToHistory(BookedRoomSO roomToAdd){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        ArrayList<BookedRoomSO> history = new ArrayList<>();
+        if(sPrefLog.getString("history", "").length()==0){
+            history.add(roomToAdd);
+        }else{
+            history = gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
+            history.add(roomToAdd);
+        }
+        sPrefLog.edit().putString("history", gson.toJson(history)).apply();
+
+    }
+
+    public static void changeRoomHistoryState(BookedRoomSO room, int state){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        if (sPrefLog.getString("history", "").length() != 0) {
+            bookedRooms = gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
+            for (int i = 0; i < bookedRooms.size(); i++){
+                if (bookedRooms.get(i).getItineraryId() == room.getItineraryId()){
+                    bookedRooms.get(i).setOrderState(state);
+                    sPrefLog.edit().putString("history", gson.toJson(bookedRooms)).apply();
+
+                }
+            }
+        }
+
+    }
 
 
 }

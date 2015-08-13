@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView3">
+        android:id="@+id/bookingScroll">
 
         <LinearLayout
             android:orientation="vertical"
@@ -21,30 +21,260 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/payParametersScreen"
                 android:background="@color/base_background">
 
-                <include
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/wizard_page_1" />
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your personal info"
+                        android:id="@+id/wizardExpandButton" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/wizardExpandableContainer"
+                        android:layout_marginTop="16dp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/base_text"
+                            android:ems="10"
+                            android:id="@+id/etWizardEmail"
+                            android:hint="Email"
+                            android:text="someNiceEmail@gmail.com" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/base_text"
+                            android:ems="10"
+                            android:id="@+id/etWizardFirstName"
+                            android:layout_marginTop="8dp"
+                            android:hint="First name"
+                            android:text="firstName" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="textPersonName"
+                            android:ems="10"
+                            android:id="@+id/etWizardLastName"
+                            android:layout_marginTop="8dp"
+                            android:hint="Last name"
+                            android:text="lastName" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="phone"
+                            android:ems="10"
+                            android:id="@+id/etWizardHomePhone"
+                            android:layout_marginTop="8dp"
+                            android:hint="Home phone"
+                            android:text="380671111111" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="phone"
+                            android:ems="10"
+                            android:id="@+id/etWizardWorkPhone"
+                            android:layout_marginTop="8dp"
+                            android:hint="Work phone" />
+                        android:hint="Phone"
+                        android:text="380999999999" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/wizardRoomsList" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your credit card info"
+                        android:id="@+id/wizardExpandButton" />
 
-                <include
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Use camera"
+                        android:id="@+id/btnCardIo"
+                        android:layout_gravity="right"
+                        android:textColor="@color/base_white" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/wizardExpandableContainer"
+                        android:layout_marginTop="16dp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:ems="10"
+                            android:id="@+id/etWizardCreditCardNumber"
+                            android:textColor="@color/base_text"
+                            android:hint="Credit card number"
+                            android:text="5401999999999999"
+                            android:maxLength="16" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardIdentifier"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:hint="Credit card identifier"
+                                android:text="123"
+                                android:layout_weight="1"
+                                android:maxLength="3" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardExpirationMonth"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:hint="Credit card expiration month"
+                                android:layout_weight="1"
+                                android:maxLength="2"
+                                android:text="09" />
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardExpirationYear"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:hint="Credit card expiration year"
+                                android:layout_weight="1"
+                                android:maxLength="2"
+                                android:text="25" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    layout="@layout/wizard_page_2"
-                    android:layout_gravity="center_horizontal" />
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
 
-                <include
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/wizard_page_3" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.gc.materialdesign.views.ButtonFlat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enter your location info"
+                            android:id="@+id/wizardExpandButton" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/wizardExpandableContainer"
+                        android:layout_marginTop="16dp">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardAddress"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="Address"
+                            android:text="travelnow" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardCity"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="City"
+                            android:text="L&apos;viv" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etStateProvinceCode"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="State province code"
+                            android:text="WA" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardCountryCode"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="Country code"
+                            android:text="UA" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:ems="10"
+                            android:id="@+id/etWizardPostalCode"
+                            android:textColor="@color/base_text"
+                            android:hint="Postal code"
+                            android:text="79000" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <com.gc.materialdesign.views.ButtonRectangle
                     android:layout_width="match_parent"
@@ -52,7 +282,8 @@
                     android:id="@+id/btnPay"
                     android:background="@color/base_yellow"
                     android:text="Pay"
-                    android:textSize="14sp" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +309,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +352,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,7 +388,8 @@
                     android:background="@color/base_white"
                     android:padding="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -202,7 +436,8 @@
                     android:padding="16dp"
                     android:background="@color/base_white"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -226,7 +461,8 @@
                     android:padding="16dp"
                     android:background="@color/base_white"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -253,7 +489,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="Data wrong. Edit"
-                    android:textSize="8sp"
                     android:id="@+id/btnCancelPay"
                     android:background="#ffdc4000"
                     android:layout_marginTop="16dp"
@@ -263,7 +498,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:text="All data correct. Pay"
-                    android:textSize="8sp"
                     android:id="@+id/btnConfirmPay"
                     android:background="@color/base_yellow"
                     android:layout_marginTop="16dp"

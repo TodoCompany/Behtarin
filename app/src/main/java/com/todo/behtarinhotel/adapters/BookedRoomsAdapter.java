@@ -70,7 +70,7 @@ public class BookedRoomsAdapter extends BaseAdapter {
 
         tvHotelName.setText(bookedRoom.getHotelName());
         tvHotelAddress.setText(bookedRoom.getHotelAddress());
-        tvRoomPrice.setText(bookedRoom.getRoomPrice());
+        tvRoomPrice.setText(bookedRoom.getRoomPrice() + " $");
         tvArrivalDate.setText(bookedRoom.getArrivalDate());
         tvDepartureDate.setText(bookedRoom.getDepartureDate());
 
