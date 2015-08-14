@@ -5,22 +5,56 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.gson.reflect.TypeToken;
+import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BookedRoomFragment extends Fragment {
+
+    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
+    private static final String CID = "55505";
+
+    String apiKey = "&apiKey=";
+    String cid = "&cid=";
+    String locale = "&locale=enUS";
+    String customerSessionID = "&customerSessionID=1";
+    String customerIpAddress = "&customerIpAddress=193.93.219.63";
+    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
+    String minorRev = "&minorRev=30";
+    String currencyCode = "&currencyCode=USD";
+    String itineraryId = "&itineraryId=";
+    String confirmationNumber = "&confirmationNumber=";
+    String email = "&email=";
 
     ImageView roomImage;
     TextView tvHotelName, tvRoomDescription, tvHotelLocation, tvArrival, tvDeparture, tvRoomPrice;
@@ -92,11 +126,50 @@ public class BookedRoomFragment extends Fragment {
                         })
                         .setPositiveButton("Yes, cancel", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(final DialogInterface dialog, int which) {
                                 //TODO cancel booking
-                                AppState.removeRoomFromBooking(bookedRoomSO);
-                                getActivity().onBackPressed();
-                                dialog.dismiss();
+                                final String url = "http://api.ean.com/ean-services/rs/hotel/v3/cancel?" +
+                                        apiKey + API_KEY +
+                                        cid + CID +
+                                        sig +
+                                        customerIpAddress +
+                                        currencyCode +
+                                        customerSessionID +
+                                        minorRev +
+                                        locale +
+                                        itineraryId + bookedRoomSO.getItineraryId() +
+                                        confirmationNumber + bookedRoomSO.getConfimationNumber() +
+                                        email + "someNiceEmail@gmail.com";
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                                        url,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                    Log.d("ExpediaRequest", "First hotels loading from: " + url);
+                                                try {
+                                                    response.getJSONObject("HotelRoomCancellationResponse");
+                                                    AppState.removeRoomFromBooking(bookedRoomSO);
+                                                    getActivity().onBackPressed();
+                                                    dialog.dismiss();
+                                                    Toast.makeText(getActivity(),"OK",Toast.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    Toast.makeText(getActivity(),"Bad",Toast.LENGTH_SHORT).show();
+                                                    getActivity().onBackPressed();
+                                                    dialog.dismiss();
+                                                }
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.e("Error: ", error.getMessage());
+
+                                    }
+                                }
+
+                                );
+                                VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+
                             }
                         })
                         .show();
