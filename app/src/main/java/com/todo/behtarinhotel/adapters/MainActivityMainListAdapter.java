@@ -181,7 +181,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSO.getAddress());
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
-        tvPrice.setText("$ " + searchResultSO.getMinPrice());
+        tvPrice.setText("$" + searchResultSO.getMinPrice());
 
 
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {

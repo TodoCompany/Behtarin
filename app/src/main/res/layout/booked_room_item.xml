@@ -137,7 +137,9 @@
             android:background="@color/base_yellow"
             android:text="READ MORE"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp" />
 
     </LinearLayout>
 </LinearLayout>

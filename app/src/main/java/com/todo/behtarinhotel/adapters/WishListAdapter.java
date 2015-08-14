@@ -26,11 +26,9 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.fragments.CheckAvailabilityFragment;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
-import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
@@ -173,7 +171,7 @@ public class WishListAdapter extends BaseAdapter {
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(searchResultSO.getAddress());
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
-        tvPrice.setText("$ " + searchResultSO.getMinPrice());
+        tvPrice.setText("$" + searchResultSO.getMinPrice());
 
 
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {

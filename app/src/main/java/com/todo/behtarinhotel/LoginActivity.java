@@ -9,11 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
@@ -24,12 +23,12 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 public class LoginActivity extends Activity {
 
     //reg info
-    EditText etRegName, etRegEmail, etRegPassword;
-    Button btnSignUp;
+    MaterialEditText etRegName, etRegEmail, etRegPassword;
+    ButtonRectangle btnSignUp;
     ProgressDialog pd;
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    private MaterialEditText mEmailView;
+    private MaterialEditText mPasswordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +36,13 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        etRegName = (EditText) findViewById(R.id.et_reg_name);
-        etRegEmail = (EditText) findViewById(R.id.et_reg_email);
-        etRegPassword = (EditText) findViewById(R.id.et_reg_password);
-        btnSignUp = (Button) findViewById(R.id.btn_sign_up);
+        mEmailView = (MaterialEditText) findViewById(R.id.email);
+        etRegName = (MaterialEditText) findViewById(R.id.et_reg_name);
+        etRegEmail = (MaterialEditText) findViewById(R.id.et_reg_email);
+        etRegPassword = (MaterialEditText) findViewById(R.id.et_reg_password);
+        btnSignUp = (ButtonRectangle) findViewById(R.id.btn_sign_up);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (MaterialEditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -56,7 +55,7 @@ public class LoginActivity extends Activity {
                 return false;
             }
         });
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        ButtonRectangle mEmailSignInButton = (ButtonRectangle) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

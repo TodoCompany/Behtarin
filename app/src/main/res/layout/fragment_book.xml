@@ -38,13 +38,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Enter your personal info"
-                        android:id="@+id/wizardExpandButton" />
+                        android:background="@color/base_yellow"
+                        />
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/wizardExpandableContainer"
+
                         android:layout_marginTop="16dp">
 
                         <EditText
@@ -121,7 +122,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Enter your credit card info"
-                        android:id="@+id/wizardExpandButton" />
+                        android:background="@color/base_yellow"
+
+                        />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
@@ -136,7 +139,7 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/wizardExpandableContainer"
+
                         android:layout_marginTop="16dp">
 
                         <LinearLayout
@@ -160,7 +163,7 @@
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:id="@+id/iv_card_type"
-                                android:src="@drawable/ic_launcher"
+                                android:src="@drawable/cards4"
                                 android:layout_marginRight="16dp"
                                 android:layout_marginLeft="16dp" />
                         </LinearLayout>
@@ -232,14 +235,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Enter your location info"
-                            android:id="@+id/wizardExpandButton" />
+                            android:background="@color/base_yellow"
+
+                            />
                     </LinearLayout>
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/wizardExpandableContainer"
+
                         android:layout_marginTop="16dp">
 
                         <EditText

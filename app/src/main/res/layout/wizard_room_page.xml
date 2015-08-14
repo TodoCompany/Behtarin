@@ -23,14 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Enter room data"
-                android:id="@+id/wizardExpandButton" />
+                android:background="@color/base_yellow" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/wizardExpandableContainer"
             android:layout_marginTop="16dp">
 
             <EditText

@@ -20,7 +20,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/hotel_images_height"
                 android:layout_gravity="right|top"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/dubai" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#bb8a8a8a"
+                android:visibility="visible"
+                android:id="@+id/grayImage">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Cancelled"
+                    android:id="@+id/textView14"
+                    android:layout_gravity="center"
+                    android:textColor="@color/base_white"
+                    android:textStyle="bold"
+                    android:textSize="26sp" />
+            </FrameLayout>
 
         </FrameLayout>
 

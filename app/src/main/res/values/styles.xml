@@ -9,7 +9,8 @@
         <item name="android:editTextColor">@color/base_text</item>
         <item name="android:textColorHint">@color/base_hint</item>
         <item name="android:textColorSecondary">@color/base_black</item>
-
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large</item>
+        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small</item>
 
 
     </style>

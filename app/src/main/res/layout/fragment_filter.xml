@@ -78,6 +78,15 @@
                 android:layout_below="@+id/imageView15"
                 android:layout_centerHorizontal="true" />
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/chb_star_rate_1_filter_fragment"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/linearLayout"></LinearLayout>
+
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,36 +101,44 @@
                 android:layout_height="wrap_content"
                 android:text="2"
                 android:id="@+id/chb_star_rate_2_filter_fragment"
-                android:layout_below="@+id/chb_star_rate_1_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                android:layout_alignTop="@+id/linearLayout"
+                android:layout_toRightOf="@+id/chb_star_rate_1_filter_fragment"
+                android:layout_toEndOf="@+id/chb_star_rate_1_filter_fragment" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
                 android:id="@+id/chb_star_rate_3_filter_fragment"
-                android:layout_below="@+id/chb_star_rate_2_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                android:layout_below="@+id/linearLayout"
+                android:layout_toRightOf="@+id/chb_star_rate_2_filter_fragment"
+                android:layout_toEndOf="@+id/chb_star_rate_2_filter_fragment" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4"
                 android:id="@+id/chb_star_rate_4_filter_fragment"
-                android:layout_below="@+id/chb_star_rate_3_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                android:layout_below="@+id/linearLayout"
+                android:layout_toRightOf="@+id/chb_star_rate_3_filter_fragment"
+                android:layout_toEndOf="@+id/chb_star_rate_3_filter_fragment" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
                 android:id="@+id/chb_star_rate_5_filter_fragment"
-                android:layout_below="@+id/chb_star_rate_4_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                android:layout_alignTop="@+id/linearLayout"
+                android:layout_toRightOf="@+id/chb_star_rate_4_filter_fragment"
+                android:layout_toEndOf="@+id/chb_star_rate_4_filter_fragment" />
 
             <ImageView
                 android:layout_width="match_parent"

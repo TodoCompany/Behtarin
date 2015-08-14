@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Andriy on 13.08.2015.
@@ -30,6 +33,14 @@ public class HistoryAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         history = AppState.getHistory();
+
+        Collections.sort(history, new Comparator<BookedRoomSO>() {
+            @Override
+            public int compare(BookedRoomSO lhs, BookedRoomSO rhs) {
+
+                return lhs.getOrderState() - rhs.getOrderState();
+            }
+        });
     }
 
     @Override
@@ -62,12 +73,12 @@ public class HistoryAdapter extends BaseAdapter {
         TextView tvDeparture = (TextView) view.findViewById(R.id.tvDeparture);
         ButtonFlat btnState = (ButtonFlat) view.findViewById(R.id.btnState);
         ImageView image = (ImageView) view.findViewById(R.id.imageRoom);
-
+        FrameLayout grayImage = (FrameLayout) view.findViewById(R.id.grayImage);
         BookedRoomSO historyRoom = history.get(position);
 
         tvHotelName.setText(historyRoom.getHotelName());
         tvHotelAddress.setText(historyRoom.getHotelAddress());
-        tvRoomPrice.setText(historyRoom.getRoomPrice() + " $");
+        tvRoomPrice.setText("$" + historyRoom.getRoomPrice());
         tvArrival.setText(historyRoom.getArrivalDate());
         tvDeparture.setText(historyRoom.getDepartureDate());
 
@@ -77,15 +88,19 @@ public class HistoryAdapter extends BaseAdapter {
 
         switch (historyRoom.getOrderState()){
             case BookedRoomSO.BOOKED:
+                grayImage.setVisibility(View.GONE);
                 btnState.setText("Booked");
                 break;
             case BookedRoomSO.ACTIVE:
+                grayImage.setVisibility(View.GONE);
                 btnState.setText("Active");
                 break;
             case BookedRoomSO.OUT_OF_DATE:
+                grayImage.setVisibility(View.GONE);
                 btnState.setText("Passed");
                 break;
             case BookedRoomSO.CANCELLED:
+                grayImage.setVisibility(View.VISIBLE);
                 btnState.setText("Cancelled");
                 break;
         }
