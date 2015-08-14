@@ -4,13 +4,16 @@ package com.todo.behtarinhotel.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -31,6 +34,7 @@ import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.CardTypeEnum;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONException;
@@ -39,6 +43,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.card.payment.CardIOActivity;
+import io.card.payment.CardType;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
@@ -60,6 +65,7 @@ public class BookFragment extends Fragment {
     TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
     TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
     TextView tvCheckInInstructions, tvCancellationPolicy;
+    ImageView ivCardType;
     ScrollView scroll;
     AvailableRoomsSO availableRooms;
     int position;
@@ -142,6 +148,24 @@ public class BookFragment extends Fragment {
         etWizardWorkPhone = (EditText) rootView.findViewById(R.id.etWizardWorkPhone);
 
         etWizardCreditCardNumber = (EditText) rootView.findViewById(R.id.etWizardCreditCardNumber);
+        etWizardCreditCardNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                switch (CardTypeEnum.detect(s.toString())){
+                    case VISA: ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.visa5));break;
+                    case MASTERCARD:ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.mastercard5));break;
+                        default:ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         etWizardCreditCardIdentifier = (EditText) rootView.findViewById(R.id.etWizardCreditCardIdentifier);
         etWizardCreditCardExMonth = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationMonth);
         etWizardCreditCardExYear = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationYear);
@@ -176,6 +200,8 @@ public class BookFragment extends Fragment {
         confirmPayScreen = (LinearLayout) rootView.findViewById(R.id.confirmPayScreen);
 
         scroll = (ScrollView) rootView.findViewById(R.id.bookingScroll);
+
+        ivCardType = (ImageView) rootView.findViewById(R.id.iv_card_type);
 
     }
 

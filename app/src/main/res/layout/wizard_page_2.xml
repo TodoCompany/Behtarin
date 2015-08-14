@@ -34,16 +34,31 @@
             android:id="@+id/wizardExpandableContainer"
             android:layout_marginTop="16dp">
 
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberSigned"
-                android:ems="10"
-                android:id="@+id/etWizardCreditCardNumber"
-                android:textColor="@color/base_text"
-                android:hint="Credit card number"
-                android:text="5401999999999999"
-                android:maxLength="16" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:id="@+id/etWizardCreditCardNumber"
+                    android:textColor="@color/base_text"
+                    android:hint="Credit card number"
+                    android:text="5401999999999999"
+                    android:maxLength="16"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/iv_card_type"
+                    android:src="@drawable/ic_launcher"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
