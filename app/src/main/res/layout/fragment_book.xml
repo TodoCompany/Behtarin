@@ -160,7 +160,7 @@
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:id="@+id/iv_card_type"
-                                android:src="@drawable/ic_launcher"
+                                android:src="@drawable/cards4"
                                 android:layout_marginRight="16dp"
                                 android:layout_marginLeft="16dp" />
                         </LinearLayout>

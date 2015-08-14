@@ -23,6 +23,24 @@ public class BookedRoomSO {
     ArrayList<String> valueAdds;
     boolean isCancellable;
     int orderState = BOOKED;
+    int confimationNumber;
+    String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getConfimationNumber() {
+        return confimationNumber;
+    }
+
+    public void setConfimationNumber(int confimationNumber) {
+        this.confimationNumber = confimationNumber;
+    }
 
     public String getArrivalDate() {
         return arrivalDate;

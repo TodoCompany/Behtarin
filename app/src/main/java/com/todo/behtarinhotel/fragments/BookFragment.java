@@ -398,6 +398,7 @@ public class BookFragment extends Fragment {
         bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
         bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
+        bookedRoomSO.setConfimationNumber(response.getInt("confirmationNumbers"));
         return bookedRoomSO;
     }
 
