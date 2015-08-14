@@ -11,9 +11,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.todo.behtarinhotel.R;
@@ -111,7 +108,7 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
         JSONObject obj = new JSONObject(params);
         String str = obj.toString();
         String url;
-        url = "http://behtarinhotel.com/wp/api/user/booking/";
+        url = "http://dev.behtarinhotel.com/api/user/booking/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params), future, future);
         VolleySingleton.getInstance(mContext).addToRequestQueue(request);

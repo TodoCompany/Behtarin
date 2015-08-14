@@ -20,21 +20,12 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.google.gson.reflect.TypeToken;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,7 +57,6 @@ public class BookedRoomFragment extends Fragment {
     public BookedRoomFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,7 +91,7 @@ public class BookedRoomFragment extends Fragment {
         tvHotelLocation.setText(bookedRoomSO.getHotelAddress());
         tvArrival.setText(bookedRoomSO.getArrivalDate());
         tvDeparture.setText(bookedRoomSO.getDepartureDate());
-        tvRoomPrice.setText(bookedRoomSO.getRoomPrice() + " $");
+        tvRoomPrice.setText("$" + bookedRoomSO.getRoomPrice());
 
     }
 
@@ -145,15 +135,14 @@ public class BookedRoomFragment extends Fragment {
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                    Log.d("ExpediaRequest", "First hotels loading from: " + url);
+                                                Log.d("ExpediaRequest", "First hotels loading from: " + url);
                                                 try {
                                                     response.getJSONObject("HotelRoomCancellationResponse");
                                                     AppState.removeRoomFromBooking(bookedRoomSO);
                                                     getActivity().onBackPressed();
-                                                    dialog.dismiss();
-                                                    Toast.makeText(getActivity(),"OK",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
                                                 } catch (Exception e) {
-                                                    Toast.makeText(getActivity(),"Bad",Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getActivity(), "Bad", Toast.LENGTH_SHORT).show();
                                                     getActivity().onBackPressed();
                                                     dialog.dismiss();
                                                 }
