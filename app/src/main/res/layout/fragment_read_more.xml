@@ -70,7 +70,7 @@
                 </LinearLayout>
 
                 <com.gc.materialdesign.views.ButtonFloat
-                    android:id="@+id/btn_float"
+                    android:id="@+id/btn_add_wish_read_more"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="right|bottom"

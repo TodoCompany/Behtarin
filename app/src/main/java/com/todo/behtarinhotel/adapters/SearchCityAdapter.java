@@ -147,6 +147,9 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
 
         } catch (Exception e) {
             e.printStackTrace();
+            ArrayList<String> results = new ArrayList<>();
+            results.add("123");
+            return results;
         }
 
         return null;

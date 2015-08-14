@@ -92,7 +92,7 @@ public class ReadMoreFragment extends Fragment {
         hotelStar3 = (ImageView) rootView.findViewById(R.id.hotel_star_3);
         hotelStar4 = (ImageView) rootView.findViewById(R.id.hotel_star_4);
         hotelStar5 = (ImageView) rootView.findViewById(R.id.hotel_star_5);
-        btnFloat = (ButtonFloat) rootView.findViewById(R.id.btn_float);
+        btnFloat = (ButtonFloat) rootView.findViewById(R.id.btn_add_wish_read_more);
         btnCheckAvailability = (ButtonFlat) rootView.findViewById(R.id.btn_check_availability);
     }
 
@@ -127,14 +127,36 @@ public class ReadMoreFragment extends Fragment {
         btnCheckAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(rooms!=null){
+                if (rooms != null) {
                     CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
                     ((MaterialNavigationDrawer) getActivity()).setFragmentChild(checkAvailabilityFragment, getActivity().getString(R.string.fragment_checkavailablerooms));
                     checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrival, departure, rooms);
-                }else{
+                } else {
                     SearchFragment searchFragment = new SearchFragment();
-                    searchFragment.setParameters(searchResultSO.getHotelId(),searchResultSO.getHotelName());
+                    searchFragment.setParameters(searchResultSO.getHotelId(), searchResultSO.getHotelName());
                     ((MaterialNavigationDrawer) getActivity()).setFragmentChild(searchFragment, "Search");
+                }
+            }
+        });
+
+        if(!AppState.isInWishList(searchResultSO.getHotelId())){
+            btnFloat.setBackgroundColor(getResources().getColor(R.color.base_white));
+            btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.star_selected));
+        }else{
+            btnFloat.setBackgroundColor(getResources().getColor(R.color.base_yellow));
+            btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.abc_btn_rating_star_on_mtrl_alpha));
+        }
+        btnFloat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!AppState.isInWishList(searchResultSO.getHotelId())){
+                    AppState.addToWishList(searchResultSO.getHotelId());
+                    btnFloat.setBackgroundColor(getResources().getColor(R.color.base_yellow));
+                    btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.abc_btn_rating_star_on_mtrl_alpha));
+                }else{
+                    AppState.removeFromWishList(searchResultSO.getHotelId());
+                    btnFloat.setBackgroundColor(getResources().getColor(R.color.base_white));
+                    btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.star_selected));
                 }
             }
         });
