@@ -200,7 +200,7 @@ public class SearchFragment extends Fragment {
                         SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
                                 etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
 
-                        mainFragment.setSearchParams(searchParamsSO,isSearchWithHotelId,hotelID);
+                        mainFragment.setSearchParams(searchParamsSO, isSearchWithHotelId, hotelID);
                         famMenu.collapse();
                     }
                 }
@@ -238,6 +238,18 @@ public class SearchFragment extends Fragment {
         etCheckOut.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
         etCheckIn.setMetTextColor(getResources().getColor(R.color.base_white));
         etCheckOut.setMetTextColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setPrimaryColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setPrimaryColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setUnderlineColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setUnderlineColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setHintTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setHintTextColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setErrorColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setErrorColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setHighlightColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setHighlightColor(getResources().getColor(R.color.base_white));
+        etCheckIn.setLinkTextColor(getResources().getColor(R.color.base_white));
+        etCheckOut.setLinkTextColor(getResources().getColor(R.color.base_white));
 
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override

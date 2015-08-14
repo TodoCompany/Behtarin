@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:layout_centerInParent="true"
         android:background="@null"
-        android:src="@drawable/delete"
+        android:src="@drawable/ic_remove"
         android:padding="12dp" />
 
     <TextView

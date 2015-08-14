@@ -34,7 +34,7 @@
             android:layout_marginRight="32dp"
             android:layout_toLeftOf="@+id/ib_edit_fragment_search_room_list"
             android:background="@android:drawable/ic_menu_close_clear_cancel"
-            android:src="@drawable/delete"
+            android:src="@drawable/ic_remove"
             android:scaleType="fitCenter" />
 
         <ImageButton
@@ -47,7 +47,7 @@
             android:layout_marginRight="16dp"
             android:padding="10dp"
             android:layout_alignParentTop="false"
-            android:src="@drawable/pencil"
+            android:src="@drawable/ic_edit_pencil"
             android:scaleType="fitCenter" />
 
         <ImageView
