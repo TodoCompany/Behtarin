@@ -9,12 +9,12 @@
         <item name="android:editTextColor">@color/base_text</item>
         <item name="android:textColorHint">@color/base_hint</item>
         <item name="android:textColorSecondary">@color/base_black</item>
-        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large</item>
-        <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small</item>
-
-
+        <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme</item>
     </style>
 
+    <style name="itemTextStyle.AppTheme" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/base_white</item>
+    </style>
 
 
 </resources>
