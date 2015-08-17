@@ -116,9 +116,9 @@ public class ReadMoreFragment extends Fragment {
         imageViews.add(hotelStar4);
         imageViews.add(hotelStar5);
 
-        tvHotelName.setText(searchResultSO.getHotelName());
+        tvHotelName.setText(Html.fromHtml(searchResultSO.getHotelName()));
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
-        tvHotelAddress.setText(searchResultSO.getAddress());
+        tvHotelAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
         tvHotelDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvHotelPrice.setText(searchResultSO.getMinPrice() + " $");
         tvHotelLikes.setText("" + searchResultSO.getLikeCounter());

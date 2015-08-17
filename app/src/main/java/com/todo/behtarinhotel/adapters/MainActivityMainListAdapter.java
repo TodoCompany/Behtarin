@@ -177,9 +177,10 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
 
         final SearchResultSO searchResultSO = searchResultSOArrayList.get(position);
-        tvHotelName.setText(searchResultSO.getHotelName());
+        tvHotelName.setText(Html.fromHtml(searchResultSO.getHotelName()));
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
-        tvAddress.setText(searchResultSO.getAddress());
+        tvAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
+        String str = Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()).toString();
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvPrice.setText("$" + searchResultSO.getMinPrice());
 
