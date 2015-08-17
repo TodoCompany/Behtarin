@@ -1,7 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="MyNavigationDrawerTheme" parent="MaterialNavigationDrawerTheme">
+    <style name="MyNavigationDrawerTheme" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
         <item name="colorPrimary">@color/base_text</item>
         <item name="colorPrimaryDark">#FF5D5D5D</item>
         <item name="colorAccent">@color/base_gold</item>
@@ -10,11 +10,20 @@
         <item name="android:textColorHint">@color/base_hint</item>
         <item name="android:textColorSecondary">@color/base_black</item>
         <item name="android:itemTextAppearance">@style/itemTextStyle.AppTheme</item>
+        <item name="android:datePickerDialogTheme" tools:targetApi="lollipop">@style/MyDatePickerDialogTheme</item>
     </style>
 
     <style name="itemTextStyle.AppTheme" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@color/base_white</item>
+        <item name="android:textColor">@color/base_black</item>
     </style>
 
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+        <item name="android:colorAccent">@color/base_gold</item>
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+    </style>
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+        <item name="android:calendarTextColor">@color/base_black</item>
+    </style>
 
 </resources>

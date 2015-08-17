@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -80,15 +81,9 @@ public class WishListFragment extends Fragment {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_wish_list, container, false);
-        TextView tvWishlistEmpty = new TextView(getActivity());
-        TextView tvBookedRoomsEmpty = new TextView(getActivity());
-        TextView tvHistoryEmpty = new TextView(getActivity());
-        tvWishlistEmpty.setText("Wish list empty");
-        tvBookedRoomsEmpty.setText("No booked rooms");
-        tvHistoryEmpty.setText("History is empty");
-        tvWishlistEmpty.setTextColor(getResources().getColor(R.color.base_text));
-        tvBookedRoomsEmpty.setTextColor(getResources().getColor(R.color.base_text));
-        tvHistoryEmpty.setTextColor(getResources().getColor(R.color.base_text));
+        TextView tvWishlistEmpty = (TextView) rootView.findViewById(R.id.tv_wish_list_empty);
+        TextView tvBookedRoomsEmpty = (TextView) rootView.findViewById(R.id.tv_booked_rooms_list_empty);
+        TextView tvHistoryEmpty = (TextView) rootView.findViewById(R.id.tv_history_list_empty);
 
         listView = (ListView) rootView.findViewById(R.id.wishList);
         bookedRoomsList = (ListView) rootView.findViewById(R.id.bookedRoomsList);
