@@ -98,18 +98,40 @@ public class BookingInputsAdapter extends BaseAdapter {
         });
 
 
+
         RadioGroup radioGroupSmoking = (RadioGroup) view.findViewById(R.id.radioGroupSmoking);
+
+        String[] smoke = roomInfo.getSmokingPreference().split(",");
+        for(int i = 0; i<smoke.length;i++){
+            RadioButton rb = new RadioButton(ctx);
+            if(smoke[i].equals("NS")){
+                rb.setText("Non smoking");
+                rb.setId(0);
+            }else if(smoke[i].equals("S")){
+                rb.setText("Smoking");
+                rb.setId(1);
+            }
+            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            radioGroupSmoking.addView(rb);
+        }
+        if(smoke.length == 2){
+            RadioButton rbEither = new RadioButton(ctx);
+            rbEither.setText("Either");
+            rbEither.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            radioGroupSmoking.addView(rbEither);
+            rbEither.setId(2);
+        }
         radioGroupSmoking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rbSmoking:
-                        rooms.get(position).setSmokingPreference(SearchRoomSO.SMOKING);
-                        break;
-                    case R.id.rbNotSmoking:
+                    case 0:
                         rooms.get(position).setSmokingPreference(SearchRoomSO.NOT_SMOKING);
                         break;
-                    case R.id.rbEither:
+                    case 1:
+                        rooms.get(position).setSmokingPreference(SearchRoomSO.SMOKING);
+                        break;
+                    case 2:
                         rooms.get(position).setSmokingPreference(SearchRoomSO.EITHER);
                         break;
                 }
@@ -117,6 +139,7 @@ public class BookingInputsAdapter extends BaseAdapter {
         });
 
         RadioGroup radioGroupBeds = (RadioGroup) view.findViewById(R.id.radioGroupBeds);
+
 
         for(AvailableRoomsSO.Bed bed : roomInfo.getBeds()){
             RadioButton rb = new RadioButton(ctx);
@@ -140,7 +163,8 @@ public class BookingInputsAdapter extends BaseAdapter {
 
 
     public ArrayList<SearchRoomSO> getRooms() {
-
         return rooms;
     }
+
+
 }
