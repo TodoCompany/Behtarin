@@ -131,7 +131,8 @@
                 android:clickable="false"
                 android:enabled="true"
                 android:textSize="12sp"
-                android:id="@+id/rbBedType" />
+                android:id="@+id/rbBedType"
+                style="@null" />
         </LinearLayout>
 
     </LinearLayout>

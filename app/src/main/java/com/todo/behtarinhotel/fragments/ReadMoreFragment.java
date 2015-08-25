@@ -38,7 +38,7 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class ReadMoreFragment extends Fragment {
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
-    public static final String PHOTO_URL_END = "b.jpg";
+    public static final String PHOTO_URL_END = "z.jpg";
 
     TextView tvHotelName, tvHotelAddress, tvHotelDescription, tvHotelPrice, tvHotelLikes;
     ImageView hotelImage, imageTripAdvisor, hotelStar1, hotelStar2, hotelStar3, hotelStar4, hotelStar5;

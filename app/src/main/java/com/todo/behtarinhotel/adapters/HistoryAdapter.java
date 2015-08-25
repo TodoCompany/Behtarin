@@ -82,8 +82,14 @@ public class HistoryAdapter extends BaseAdapter {
         tvArrival.setText(historyRoom.getArrivalDate());
         tvDeparture.setText(historyRoom.getDepartureDate());
 
+        String temp = "";
+        if (historyRoom.getPhotoUrl() != null && !historyRoom.getPhotoUrl().equals("")) {
+            temp = historyRoom.getPhotoUrl()
+                    .substring(0, historyRoom.getPhotoUrl().length() - 5);
+        }
+
         Glide.with(context)
-                .load(historyRoom.getPhotoUrl())
+                .load(temp + "z.jpg")
                 .into(image);
 
         switch (historyRoom.getOrderState()){

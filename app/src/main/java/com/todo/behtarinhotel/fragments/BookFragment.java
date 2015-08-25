@@ -21,12 +21,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.BookingInputsAdapter;
 import com.todo.behtarinhotel.adapters.ConfirmRoomsInfoAdapter;
@@ -37,13 +41,14 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.CardTypeEnum;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.card.payment.CardIOActivity;
-import io.card.payment.CardType;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
@@ -82,7 +87,6 @@ public class BookFragment extends Fragment {
     private String departureDate;
 
 
-
     public BookFragment() {
     }
 
@@ -97,7 +101,7 @@ public class BookFragment extends Fragment {
         setRequiredEditTexts();
         switchToConfirmPayPage(false);
 
-        bookingInputsAdapter  = new BookingInputsAdapter(getActivity(), rooms, availableRooms.getRoomSO().get(position));
+        bookingInputsAdapter = new BookingInputsAdapter(getActivity(), rooms, availableRooms.getRoomSO().get(position));
         wizardRoomsList.setAdapter(bookingInputsAdapter);
         setListViewHeightBasedOnChildren(wizardRoomsList);
 
@@ -153,14 +157,21 @@ public class BookFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                switch (CardTypeEnum.detect(s.toString())){
-                    case VISA: ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.visa5));break;
-                    case MASTERCARD:ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.mastercard5));break;
-                        default:ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
+                switch (CardTypeEnum.detect(s.toString())) {
+                    case VISA:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.visa5));
+                        break;
+                    case MASTERCARD:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.mastercard5));
+                        break;
+                    default:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -235,19 +246,19 @@ public class BookFragment extends Fragment {
         listView.requestLayout();
     }
 
-    private void switchToConfirmPayPage(boolean isConfirmPay){
-        if (isConfirmPay){
+    private void switchToConfirmPayPage(boolean isConfirmPay) {
+        if (isConfirmPay) {
             initInfoOnConfirmPage();
             scroll.smoothScrollTo(0, 0);
             confirmPayScreen.setVisibility(View.VISIBLE);
             payParametersScreen.setVisibility(View.GONE);
-        }else{
+        } else {
             confirmPayScreen.setVisibility(View.GONE);
             payParametersScreen.setVisibility(View.VISIBLE);
         }
     }
 
-    private void initInfoOnConfirmPage(){
+    private void initInfoOnConfirmPage() {
         tvWizardEmail.setText(Html.fromHtml("Email: " + "<b>" + etWizardEmail.getText().toString() + "</b>"));
         tvWizardFirstName.setText(Html.fromHtml("First name: " + "<b>" + etWizardFirstName.getText().toString() + "</b>"));
         tvWizardLastName.setText(Html.fromHtml("Last name: " + "<b>" + etWizardLastName.getText().toString() + "</b>"));
@@ -307,8 +318,8 @@ public class BookFragment extends Fragment {
 
 
     }
-    
-    private void addRoomsInfoToConfirmPage(){
+
+    private void addRoomsInfoToConfirmPage() {
         SearchRoomSO defaultRoomData = new SearchRoomSO();
         defaultRoomData.setFirstName(etWizardFirstName.getText().toString());
         defaultRoomData.setLastName(etWizardLastName.getText().toString());
@@ -319,9 +330,9 @@ public class BookFragment extends Fragment {
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
         confirmRoomInfoList.setAdapter(confirmRoomsInfoAdapter);
         setListViewHeightBasedOnChildren(confirmRoomInfoList);
-    }  
+    }
 
-    private void makeBookingRequest(){
+    private void makeBookingRequest() {
         url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?" +
                 "&cid=55505" +
                 sig +
@@ -358,23 +369,24 @@ public class BookFragment extends Fragment {
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,
 
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<org.json.JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(org.json.JSONObject response) {
 
-                            // response :"status":200,"success":"Yep"
+                        // response :"status":200,"success":"Yep"
 
-                            Log.i("Response :", response.toString());
+                        Log.i("Response :", response.toString());
                         try {
                             if (getActivity() != null) {
                                 BookedRoomSO bookedRoomSO = null;
                                 bookedRoomSO = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
+                                sendDataToAPI(bookedRoomSO);
                                 AppState.saveBookedRoom(bookedRoomSO);
                                 BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
                                 bookedRoomFragment.initFragment(bookedRoomSO);
                                 ((MaterialNavigationDrawer) getActivity()).setFragmentChild(bookedRoomFragment, "Booked Room");
                             }
-                            } catch (JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -387,9 +399,26 @@ public class BookFragment extends Fragment {
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(req);
     }
 
-    private BookedRoomSO parseResponseIntoSO(JSONObject response) throws JSONException{
+    private BookedRoomSO parseResponseIntoSO(org.json.JSONObject response) throws JSONException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+
         BookedRoomSO bookedRoomSO = new BookedRoomSO();
+        bookedRoomSO.setUserID(AppState.getLoggedUser().getUserID());
+        bookedRoomSO.setHotelID(availableRooms.getHotelId());
+        bookedRoomSO.setFirstName(etWizardFirstName.getText().toString());
+        bookedRoomSO.setLastName(etWizardLastName.getText().toString());
+        bookedRoomSO.setSumPrice((float) response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo").getDouble("@total"));
         bookedRoomSO.setPhotoUrl(availableRooms.getRoomSO().get(position).getRoomImage());
+        bookedRoomSO.setCurrency("USD");
+        bookedRoomSO.setNights(response.getJSONObject("RateInfos")
+                .getJSONObject("RateInfo")
+                .getJSONObject("CancelPolicyInfoList")
+                .getJSONArray("CancelPolicyInfo")
+                .getJSONObject(0)
+                .getInt("nightCount"));
+        JSONObject obj = response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
+        bookedRoomSO.setPrices(obj);
         bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
         bookedRoomSO.setDepartureDate(response.getString("departureDate"));
         bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
@@ -398,14 +427,25 @@ public class BookFragment extends Fragment {
         bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
         bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
-        bookedRoomSO.setConfimationNumber(response.getInt("confirmationNumbers"));
+        if (rooms.size() > 1) {
+            JSONArray arr = response.getJSONArray("confirmationNumbers");
+            int[] confNumbers = new int[rooms.size()];
+            for (int i = 0; i < arr.length(); i++) {
+                confNumbers[i] = arr.getInt(i);
+            }
+            bookedRoomSO.setConfirmationNumber(confNumbers);
+        } else {
+            int[] confNumbers = new int[rooms.size()];
+            confNumbers[0] = response.getInt("confirmationNumbers");
+            bookedRoomSO.setConfirmationNumber(confNumbers);
+        }
         return bookedRoomSO;
     }
 
     private String makeRoomString() {
         String roomsString = "";
         for (int i = 0; i < rooms.size(); i++) {
-            roomsString = "&room" + (i + 1) + "=";
+            roomsString = roomsString + "&room" + (i + 1) + "=";
             for (int j = 0; j < rooms.get(i).getGuests().size(); j++) {
                 roomsString = roomsString + rooms.get(i).getGuests().get(j).getAge() + ",";
             }
@@ -417,13 +457,90 @@ public class BookFragment extends Fragment {
         return roomsString;
     }
 
-    private boolean isAllRequiredInputsFilled(){
-        for (EditText editText : requiredEditTexts){
-            if (editText.getText().toString().length() == 0){
+    private boolean isAllRequiredInputsFilled() {
+        for (EditText editText : requiredEditTexts) {
+            if (editText.getText().toString().length() == 0) {
                 return false;
             }
         }
         return true;
+    }
+
+    private void sendDataToAPI(BookedRoomSO bookedRoomSO) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+
+        HashMap<String, Object> booking = new HashMap<>();
+        ArrayList<HashMap> orderedRooms = new ArrayList<>();
+        for (int i = 0; i < rooms.size(); i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("ItineraryID", bookedRoomSO.getItineraryId());
+            map.put("FirstName", rooms.get(i).getFirstName());
+            map.put("LastName", rooms.get(i).getLastName());
+            map.put("BedType", rooms.get(i).getBedTypeId());
+            map.put("SmokingPreference", rooms.get(i).getSmokingPreferenceApiCode());
+            map.put("Photo", bookedRoomSO.getPhotoUrl());
+            map.put("adult", rooms.get(i).getGuests().get(0).getAge());
+            String children = "";
+            if (rooms.get(i).getGuests().size() > 1) {
+                for (int a = 1; a < rooms.get(i).getGuests().size(); a++) {
+                    children = children + rooms.get(i).getGuests().get(a).getAge() + ",";
+                }
+            }
+            map.put("children", children);
+            map.put("PricesArray", bookedRoomSO.getPrices());
+            map.put("ConfirmationNumber", bookedRoomSO.getConfirmationNumber()[i]);
+            map.put("cancellationNumber", "");
+            map.put("cancellationDate", 0);
+            map.put("u_id", 1);
+
+            orderedRooms.add(map);
+        }
+        HashMap<String, Object> expedia = new HashMap<>();
+
+        expedia.put("ItineraryID", bookedRoomSO.getItineraryId());
+        expedia.put("RoomName", bookedRoomSO.getRoomDescription());
+        expedia.put("SumPrice", bookedRoomSO.getSumPrice());
+        expedia.put("Currency", bookedRoomSO.getCurrency());
+        expedia.put("StartDate", bookedRoomSO.getArrivalDate());
+        expedia.put("EndDate", bookedRoomSO.getDepartureDate());
+        expedia.put("Nights", bookedRoomSO.getNights());
+        expedia.put("UserID", bookedRoomSO.getUserID());
+        expedia.put("HotelID", bookedRoomSO.getHotelID());
+
+        //booking.put("expedia_order", expedia);
+        booking.put("ordered_room", orderedRooms);
+
+        JSONObject obj = new JSONObject(booking);
+        String str = obj.toString();
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
+                new JSONObject(booking),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // response :"status":200,"success":"Yep"
+
+                            Log.i("Response :", response.toString());
+
+                            if (response.getInt("status") == 200) {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        req.setRetryPolicy(policy);
+        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(req);
     }
 
 

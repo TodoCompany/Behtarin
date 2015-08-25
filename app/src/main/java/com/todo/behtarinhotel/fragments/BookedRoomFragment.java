@@ -83,16 +83,18 @@ public class BookedRoomFragment extends Fragment {
     }
 
     private void initViewsWithData() {
-        Glide.with(getActivity())
-                .load(bookedRoomSO.getPhotoUrl())
-                .into(roomImage);
+        if (bookedRoomSO.getPhotoUrl() != null && !bookedRoomSO.getPhotoUrl().equals("")) {
+            String str = bookedRoomSO.getPhotoUrl().substring(0, bookedRoomSO.getPhotoUrl().length() - 5);
+            Glide.with(getActivity())
+                    .load(str + "z.jpg")
+                    .into(roomImage);
+        }
         tvHotelName.setText(bookedRoomSO.getHotelName());
         tvRoomDescription.setText(bookedRoomSO.getRoomDescription());
         tvHotelLocation.setText(bookedRoomSO.getHotelAddress());
         tvArrival.setText(bookedRoomSO.getArrivalDate());
         tvDeparture.setText(bookedRoomSO.getDepartureDate());
         tvRoomPrice.setText("$" + bookedRoomSO.getRoomPrice());
-
     }
 
     private void setOnClickListeners() {
@@ -128,7 +130,7 @@ public class BookedRoomFragment extends Fragment {
                                         minorRev +
                                         locale +
                                         itineraryId + bookedRoomSO.getItineraryId() +
-                                        confirmationNumber + bookedRoomSO.getConfimationNumber() +
+                                        confirmationNumber + bookedRoomSO.getConfirmationNumber() +
                                         email + "someNiceEmail@gmail.com";
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                                         url,

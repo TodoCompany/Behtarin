@@ -204,7 +204,4 @@ public class WishListFragment extends Fragment {
             tv.setTextColor(getResources().getColor(R.color.base_white));
         }
     }
-
-
-
 }

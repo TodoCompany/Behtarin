@@ -5,16 +5,38 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
+import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 
 /**
@@ -23,7 +45,7 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 public class LoginActivity extends Activity {
 
     //reg info
-    MaterialEditText etRegName, etRegEmail, etRegPassword;
+    MaterialEditText etRegUserName, etRegEmail, etRegPassword, etRegFirstName, etRegLastName, etRegConfirmPassword;
     ButtonRectangle btnSignUp;
     ProgressDialog pd;
     // UI references.
@@ -37,9 +59,12 @@ public class LoginActivity extends Activity {
 
         // Set up the login form.
         mEmailView = (MaterialEditText) findViewById(R.id.email);
-        etRegName = (MaterialEditText) findViewById(R.id.et_reg_name);
+        etRegUserName = (MaterialEditText) findViewById(R.id.et_reg_username);
         etRegEmail = (MaterialEditText) findViewById(R.id.et_reg_email);
         etRegPassword = (MaterialEditText) findViewById(R.id.et_reg_password);
+        etRegConfirmPassword = (MaterialEditText) findViewById(R.id.et_reg_confirm_password);
+        etRegFirstName = (MaterialEditText) findViewById(R.id.et_reg_first_name);
+        etRegLastName = (MaterialEditText) findViewById(R.id.et_reg_last_name);
         btnSignUp = (ButtonRectangle) findViewById(R.id.btn_sign_up);
 
         mPasswordView = (MaterialEditText) findViewById(R.id.password);
@@ -47,7 +72,6 @@ public class LoginActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE) {
-
                     //LOGIN PROCESS
                     attemptLogin();
                     return true;
@@ -94,11 +118,7 @@ public class LoginActivity extends Activity {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError("Need your email");
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError("Wrong email address");
+            mEmailView.setError("Need your email or username");
             focusView = mEmailView;
             cancel = true;
         }
@@ -116,21 +136,31 @@ public class LoginActivity extends Activity {
 
     public void attemptRegister() {
         // Reset errors.
-        etRegName.setError(null);
+        etRegUserName.setError(null);
         etRegEmail.setError(null);
         etRegPassword.setError(null);
+        etRegConfirmPassword.setError(null);
         // Store values at the time of the login attempt.
-        String name = etRegName.getText().toString();
-        String email = etRegEmail.getText().toString();
-        String password = etRegPassword.getText().toString();
+        final String userName = etRegUserName.getText().toString();
+        final String email = etRegEmail.getText().toString();
+        final String password = etRegPassword.getText().toString();
+        String confirmPassword = etRegConfirmPassword.getText().toString();
+        final String firstName = etRegFirstName.getText().toString();
+        final String lastName = etRegLastName.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a name not empty
-        if (name.equals("")){
-            etRegName.setError("Name cannot be empty");
-            focusView = etRegName;
+        if (userName.equals("")) {
+            etRegUserName.setError("Name can not be empty");
+            focusView = etRegUserName;
+            cancel = true;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            etRegConfirmPassword.setError("Passwords don`t match");
+            focusView = etRegConfirmPassword;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
@@ -158,13 +188,36 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            userRegisterTask(name, email, password);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                    "http://dev.behtarinhotel.com/api/get_nonce/?controller=user&method=register",
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String nonce = response.getString("nonce");
+                                userRegisterTask(userName, firstName, lastName, email, password, nonce);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    VolleyLog.e("Error: ", error.getMessage());
+                }
+            }
+            );
+            int socketTimeout = 10000;//30 seconds - change to what you want
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("@") && email.length() > 5;
     }
 
     private boolean isPasswordValid(String password) {
@@ -177,20 +230,95 @@ public class LoginActivity extends Activity {
      * the user.
      */
 
-    private void userLoginTask(String email, String password) {
-        AppState.userLoggedIn(new UserSO("empty_name", email, password));
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+    private void userLoginTask(final String email, final String password) {
+        String url = "http://dev.behtarinhotel.com/api/user/generate_auth_cookie/?" +
+                "username=" + email +
+                "&password=" + password +
+                "&seconds=60";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("status").equals("ok")) {
+                                JSONObject user = response.getJSONObject("user");
+                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                        user.getString("lastname"),
+                                        user.getInt("id"),
+                                        user.getString("email"),
+                                        password));
+                                GsonBuilder gsonBuilder = new GsonBuilder();
+                                Gson gson = gsonBuilder.create();
+                                Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
+                                }.getType();
+                                ArrayList<Integer> wishList = new ArrayList<>();
+                                wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
+                                AppState.setWishList(wishList);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        }
+        );
+        int socketTimeout = 10000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
     }
 
-    private void userRegisterTask(String name, String email, String password) {
-        AppState.userLoggedIn(new UserSO(name, email, password));
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+    private void userRegisterTask(final String userName, String firstName, String lastName, final String email, final String password, String nonce) {
+
+        String url = "http://dev.behtarinhotel.com/api/user/register/?" +
+                "username=" + userName +
+                "&email=" + email +
+                "&user_pass=" + password +
+                "&display_name=" + userName +
+                "&nonce=" + nonce +
+                "&first_name=" + firstName +
+                "&last_name=" + lastName;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("status").equals("ok")) {
+//                                AppState.userLoggedIn(new UserSO(userName, email, password));
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+
+            }
+        }
+
+        );
+        int socketTimeout = 10000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
 

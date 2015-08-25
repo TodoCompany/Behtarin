@@ -74,8 +74,13 @@ public class BookedRoomsAdapter extends BaseAdapter {
         tvArrivalDate.setText(bookedRoom.getArrivalDate());
         tvDepartureDate.setText(bookedRoom.getDepartureDate());
 
+        String temp = "";
+        if (bookedRoom.getPhotoUrl() != null && !bookedRoom.getPhotoUrl().equals("")) {
+            temp = bookedRoom.getPhotoUrl()
+                    .substring(0, bookedRoom.getPhotoUrl().length() - 5);
+        }
         Glide.with(activity)
-                .load(bookedRoom.getPhotoUrl())
+                .load(temp + "z.jpg")
                 .into(bookedRoomImage);
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {

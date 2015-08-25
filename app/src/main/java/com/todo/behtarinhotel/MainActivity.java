@@ -58,13 +58,12 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
             }
         });
 
-
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
         addAccount(new MaterialAccount(
                 getResources(),
-                AppState.getLoggedUser().getFullName(), "",
+                AppState.getLoggedUser().getFirstName() + " " + AppState.getLoggedUser().getFirstName(), "",
                 R.mipmap.icon_profile,
                 R.drawable.dubai));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
@@ -128,8 +127,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 //    }
 
 
-
-
     @Override
     public void onResult(ArrayList<Object> result) {
 
@@ -137,7 +134,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
             if (confirm != null) {
@@ -152,21 +149,19 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                     Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
                 }
             }
-        }
-        else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             Log.i("paymentExample", "The user canceled.");
-        }
-        else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+        } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
             Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
         }
     }
 
-    public void updateArrayListInFragment(ArrayList<RoomQueryGuestSO> guests, int position){
+    public void updateArrayListInFragment(ArrayList<RoomQueryGuestSO> guests, int position) {
 
-        if(position == 9){
+        if (position == 9) {
             searchFragment.addRoom(new SearchRoomSO(guests));
-        }else{
-            searchFragment.addRoom(new SearchRoomSO(guests),position);
+        } else {
+            searchFragment.addRoom(new SearchRoomSO(guests), position);
         }
     }
 

@@ -177,7 +177,7 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
-        etLocation.setThreshold(4);
+        etLocation.setThreshold(2);
         etLocation.setAdapter(new SearchCityAdapter(getActivity()));
         etLocation.setLoadingIndicator((ProgressBar) view.findViewById(R.id.progress_bar));
 

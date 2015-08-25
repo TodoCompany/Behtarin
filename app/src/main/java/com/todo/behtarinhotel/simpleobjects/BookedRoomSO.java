@@ -1,5 +1,7 @@
 package com.todo.behtarinhotel.simpleobjects;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -9,7 +11,7 @@ public class BookedRoomSO {
 
     public static final int BOOKED = 1, ACTIVE = 2, OUT_OF_DATE = 3, CANCELLED = 4;
 
-    private final String PHOTO_URL_END = "b.jpg";
+    private final String PHOTO_URL_END = "z.jpg";
 
     String arrivalDate;
     String departureDate;
@@ -23,8 +25,119 @@ public class BookedRoomSO {
     ArrayList<String> valueAdds;
     boolean isCancellable;
     int orderState = BOOKED;
-    int confimationNumber;
+    int[] confirmationNumber;
     String email;
+    float SumPrice;
+    String currency;
+    int nights;
+    int userID;
+    int hotelID;
+    String firstName;
+    String lastName;
+    String smokingPreference;
+    int BedType;
+    int adult;
+    int[] children;
+
+    JSONObject prices;
+
+    public JSONObject getPrices() {
+        return prices;
+    }
+
+    public void setPrices(JSONObject prices) {
+        this.prices = prices;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getHotelID() {
+        return hotelID;
+    }
+
+    public void setHotelID(int hotelID) {
+        this.hotelID = hotelID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSmokingPreference() {
+        return smokingPreference;
+    }
+
+    public void setSmokingPreference(String smokingPreference) {
+        this.smokingPreference = smokingPreference;
+    }
+
+    public int getBedType() {
+        return BedType;
+    }
+
+    public void setBedType(int bedType) {
+        BedType = bedType;
+    }
+
+    public int getAdult() {
+        return adult;
+    }
+
+    public void setAdult(int adult) {
+        this.adult = adult;
+    }
+
+    public int[] getChildren() {
+        return children;
+    }
+
+    public void setChildren(int[] children) {
+        this.children = children;
+    }
+
+
+
+    public int getNights() {
+        return nights;
+    }
+
+    public void setNights(int nights) {
+        this.nights = nights;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public float getSumPrice() {
+        return SumPrice;
+    }
+
+    public void setSumPrice(float sumPrice) {
+        SumPrice = sumPrice;
+    }
 
     public String getEmail() {
         return email;
@@ -34,12 +147,12 @@ public class BookedRoomSO {
         this.email = email;
     }
 
-    public int getConfimationNumber() {
-        return confimationNumber;
+    public int[] getConfirmationNumber() {
+        return confirmationNumber;
     }
 
-    public void setConfimationNumber(int confimationNumber) {
-        this.confimationNumber = confimationNumber;
+    public void setConfirmationNumber(int[] confirmationNumber) {
+        this.confirmationNumber = confirmationNumber;
     }
 
     public String getArrivalDate() {

@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -51,17 +53,20 @@ public class AppState {
             logEditor = sPrefLog.edit();
             loggedUser = userSO;
             logEditor.putBoolean(LOG_STATUS, true);
-            logEditor.putString("fullName", loggedUser.getFullName());
+            logEditor.putString("firstName", loggedUser.getFirstName());
+            logEditor.putString("lastName", loggedUser.getLastName());
             logEditor.putString("email", loggedUser.getEmail());
             logEditor.putString("password", loggedUser.getPassword());
-
+            logEditor.putInt("userID", loggedUser.getUserID());
             logEditor.apply();
         }
     }
 
     public static UserSO getLoggedUser() {
         UserSO user = new UserSO();
-        user.setFullName(sPrefLog.getString("fullName", " "));
+        user.setUserID(sPrefLog.getInt("userID",0));
+        user.setFirstName(sPrefLog.getString("firstName", " "));
+        user.setLastName(sPrefLog.getString("lastName", " "));
         user.setEmail(sPrefLog.getString("email", " "));
         user.setPassword(sPrefLog.getString("password", ""));
         return user;
@@ -115,7 +120,6 @@ public class AppState {
                 + "&includeRoomImages=true"
                 +"&includeDetails=true"
                 + makeRoomString(rooms);
-
     }
 
     public static String getMD5EncryptedString(String encTarget) {
@@ -194,14 +198,14 @@ public class AppState {
 
         HashMap<String, Object> params = new HashMap<>();
         HashMap<String, Object> values = new HashMap<>();
-        values.put("userID", 10);
-        values.put("hotelID", 10);
-        params.put("deleteWishList",values);
+        values.put("userID", getLoggedUser().getUserID());
+        values.put("hotelID", hotel);
+        params.put("addWishList",values);
 
         JSONObject obj = new JSONObject(params);
         String str = obj.toString();
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://behtarinhotel.com/wp/api/user/booking/",
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://dev.behtarinhotel.com/api/user/booking/",
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -212,8 +216,6 @@ public class AppState {
                             Log.i("Response :", response.toString());
 
                             if(response.getInt("status") == 200){
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -225,6 +227,9 @@ public class AppState {
                 VolleyLog.e("Error: ", error.getMessage());
             }
         });
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        req.setRetryPolicy(policy);
         VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
 
     }
@@ -279,14 +284,14 @@ public class AppState {
 
         HashMap<String, Object> params = new HashMap<>();
         HashMap<String, Object> values = new HashMap<>();
-        values.put("userID", 10);
-
-        params.put("getWishList",values);
+        values.put("userID", getLoggedUser().getUserID());
+        values.put("hotelID", hotelID);
+        params.put("deleteWishList",values);
 
         JSONObject obj = new JSONObject(params);
         String str = obj.toString();
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://behtarinhotel.com/wp/api/user/booking/",
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,"http://dev.behtarinhotel.com/api/user/booking/",
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -297,7 +302,6 @@ public class AppState {
                             Log.i("Response :", response.toString());
 
                             if(response.getInt("status") == 200){
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -309,7 +313,19 @@ public class AppState {
                 VolleyLog.e("Error: ", error.getMessage());
             }
         });
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        req.setRetryPolicy(policy);
         VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
+    }
+
+    public static void setWishList(ArrayList<Integer> wishList){
+        logEditor = sPrefLog.edit();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String wishListString = gson.toJson(wishList);
+        logEditor.putString("wishlist", wishListString);
+        logEditor.apply();
     }
 
     public static ArrayList<BookedRoomSO> getBookedRooms(){
@@ -357,8 +373,6 @@ public class AppState {
                 }
             }
         }
-
-
     }
 
     public static ArrayList<BookedRoomSO> getHistory(){
@@ -401,7 +415,6 @@ public class AppState {
                 if (bookedRooms.get(i).getItineraryId() == room.getItineraryId()){
                     bookedRooms.get(i).setOrderState(state);
                     sPrefLog.edit().putString("history", gson.toJson(bookedRooms)).apply();
-
                 }
             }
         }

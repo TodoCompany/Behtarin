@@ -10,7 +10,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.todo.behtarinhotel.R;
@@ -111,17 +113,22 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
         url = "http://dev.behtarinhotel.com/api/user/booking/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params), future, future);
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         VolleySingleton.getInstance(mContext).addToRequestQueue(request);
+        long l = System.currentTimeMillis();
 
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS); // this will block (forever)
 
             if (response != null) {
+                long l1 = System.currentTimeMillis()-l;
                 Log.d("Response", response.toString());
                 ArrayList<String> results = new ArrayList<>();
                 JSONArray arr = new JSONArray();
                 try {
-                    arr = response.getJSONArray("results");
+                    arr = response.getJSONArray("response");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

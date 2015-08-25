@@ -29,12 +29,12 @@ public class PhotoPagerAdapter extends PagerAdapter{
 
         ImageView imageView = new ImageView(context);
         imageView.setBackgroundColor(context.getResources().getColor(R.color.base_dark));
+        String temp = imageUrls.get(position)
+                .substring(0, imageUrls.get(position).length() - 5);
         Glide.with(context)
-                .load(imageUrls.get(position))
+                .load(temp + "z.jpg")
                 .error(R.drawable.empty)
                 .into(imageView);
-
-
                 ((ViewPager) collection).addView(imageView, 0);
         return imageView;
     }

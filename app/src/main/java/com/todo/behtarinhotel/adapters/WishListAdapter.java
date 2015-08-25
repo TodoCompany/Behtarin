@@ -49,7 +49,7 @@ import roboguice.inject.ContentView;
 public class WishListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
-    public static final String PHOTO_URL_END = "b.jpg";
+    public static final String PHOTO_URL_END = "z.jpg";
     ImageLoader imageLoader;
     ImageView ivPhoto;
     ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;

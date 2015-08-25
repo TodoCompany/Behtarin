@@ -21,7 +21,7 @@ import it.sephiroth.android.library.widget.AbsHListView;
 public class PhotoListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
-    public static final String PHOTO_URL_END = "b.jpg";
+    public static final String PHOTO_URL_END = "z.jpg";
 
     ArrayList<String> imageUrls;
     int checkedItem = 0;

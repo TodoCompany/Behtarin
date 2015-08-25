@@ -91,7 +91,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
                     .substring(0, room.getRoomImage().length() - 5);
         }
         Glide.with(activity)
-                .load(temp + "b.jpg")
+                .load(temp + "z.jpg")
                 .placeholder(R.color.base_hint)
                 .error(R.drawable.empty)
                 .into(roomImage);
