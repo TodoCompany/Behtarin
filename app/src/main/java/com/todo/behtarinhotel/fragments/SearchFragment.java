@@ -46,13 +46,8 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class SearchFragment extends Fragment {
 
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
-
     private boolean isSearchWithHotelId = false;
     private int hotelID;
-
-
     ListView listView;
     public RoomListAdapter listAdapter;
     public ArrayList<SearchRoomSO> soArrayList;
@@ -69,40 +64,14 @@ public class SearchFragment extends Fragment {
     public RoomBuilderFragment builderFragment;
 
     DelayAutoCompleteTextView etLocation;
-    EditText etRoom;
-    EditText etAdult;
-    EditText etChildren;
-    Button btnSearchForHotels;
-    RangeBar rbStars;
-
-
     LayoutInflater inflater;
-
     MainFragment mainFragment;
-
-    String url;
-    String apiKey = "&apiKey=";
-    String cid = "&cid=";
-    String locale = "&locale=enUS";
-    String customerSessionID = "&customerSessionID=1";
-    String customerIpAddress = "&customerIpAddress=193.93.219.63";
-    String arrivalDate = "&arrivalDate=";
-    String currencyCode = "&currencyCode=USD";
-    String departureDate = "&departureDate=";
-    String city = "&destinationString=";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String customerUserAgent = "&customerUserAgent=TravelWizard/1.0(iOS 10_10_3)MOBILE_APP";
-    String minorRev = "&minorRev=30";
-    String room = "&room1=";
-
-    GsonBuilder gsonBuilder;
     private String hotelName;
-    Gson gson;
+
 
     boolean isCheckInSelected;
     int starCount;
 
-    ArrayList<SearchResultSO> searchResultSOArrayList;
     DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -153,10 +122,9 @@ public class SearchFragment extends Fragment {
             ((MaterialNavigationDrawer) getActivity()).getToolbar().removeView(((MaterialNavigationDrawer) getActivity()).getToolbar().findViewById(1));
         }
 
-
         listAdapter = new RoomListAdapter(getActivity().getApplicationContext(), soArrayList, this);
         listView.setAdapter(listAdapter);
-        //listView.addFooterView(rootView.findViewById(R.id.right_labels));
+
 
         return rootView;
     }

@@ -145,7 +145,7 @@ public class MainFragment extends Fragment {
     public void setSearchParams(SearchParamsSO searchParams, boolean isWishListSearch, int hotelId) {
         this.searchParams = searchParams;
         filterParams = new FilterSO(0, 5000, 0, 4, 0, 4);
-        filterParams.setMinStarRate(searchParams.getMinStar());
+        filterParams.setMinStarRate(searchParams.getMinStar()-1);
         this.isWishListSearch = isWishListSearch;
         this.hotelId = hotelId;
     }

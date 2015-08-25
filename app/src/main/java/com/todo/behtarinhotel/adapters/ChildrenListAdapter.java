@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.RoomBuilderFragment;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
@@ -109,6 +110,8 @@ public class ChildrenListAdapter extends BaseAdapter {
         final Dialog d = new Dialog(fragment.getActivity());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.date_picker_dialog);
+        MaterialEditText editText = (MaterialEditText)d.findViewById(R.id.editText);
+        editText.setVisibility(View.GONE);
         Button b1 = (Button) d.findViewById(R.id.button1);
         Button b2 = (Button) d.findViewById(R.id.button2);
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);

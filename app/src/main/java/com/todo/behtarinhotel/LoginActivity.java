@@ -1,8 +1,10 @@
 package com.todo.behtarinhotel;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -47,10 +50,11 @@ public class LoginActivity extends Activity {
     //reg info
     MaterialEditText etRegUserName, etRegEmail, etRegPassword, etRegFirstName, etRegLastName, etRegConfirmPassword;
     ButtonRectangle btnSignUp;
-    ProgressDialog pd;
+
     // UI references.
     private MaterialEditText mEmailView;
     private MaterialEditText mPasswordView;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,7 @@ public class LoginActivity extends Activity {
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE) {
                     //LOGIN PROCESS
+                    progressDialog = ProgressDialog.show(LoginActivity.this, "", "Loading...");
                     attemptLogin();
                     return true;
                 }
@@ -130,6 +135,11 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Loading");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
             userLoginTask(email, password);
         }
     }
@@ -188,11 +198,17 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Loading");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     "http://dev.behtarinhotel.com/api/get_nonce/?controller=user&method=register",
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
                             try {
                                 String nonce = response.getString("nonce");
                                 userRegisterTask(userName, firstName, lastName, email, password, nonce);
@@ -204,6 +220,8 @@ public class LoginActivity extends Activity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
                 }
             }
             );
@@ -211,6 +229,8 @@ public class LoginActivity extends Activity {
             RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+
 
         }
     }
@@ -240,6 +260,7 @@ public class LoginActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
                         try {
                             if (response.getString("status").equals("ok")) {
                                 JSONObject user = response.getJSONObject("user");
@@ -259,6 +280,8 @@ public class LoginActivity extends Activity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Invalid username or password",Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -268,6 +291,8 @@ public class LoginActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
             }
         }
         );
@@ -294,6 +319,7 @@ public class LoginActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
                         try {
                             if (response.getString("status").equals("ok")) {
 //                                AppState.userLoggedIn(new UserSO(userName, email, password));
@@ -309,8 +335,9 @@ public class LoginActivity extends Activity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 VolleyLog.e("Error: ", error.getMessage());
-
+                Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -320,6 +347,9 @@ public class LoginActivity extends Activity {
         jsonObjectRequest.setRetryPolicy(policy);
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
+
+
+
 
 
 }
