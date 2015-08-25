@@ -93,7 +93,9 @@
                 android:id="@+id/chb_star_rate_1_filter_fragment"
                 android:checked="false"
                 android:layout_below="@+id/textView6"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                style="@style/CustomCheckBox"
+                />
 
             <ImageView
                 android:layout_width="32dp"
@@ -113,7 +115,8 @@
                 android:checked="false"
                 android:textColor="@color/base_black"
                 android:layout_below="@+id/chb_star_rate_1_filter_fragment"
-                android:layout_alignLeft="@+id/chb_star_rate_1_filter_fragment" />
+                android:layout_alignLeft="@+id/chb_star_rate_1_filter_fragment"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="32dp"
@@ -142,7 +145,8 @@
                 android:checked="false"
                 android:textColor="@color/base_black"
                 android:layout_below="@+id/chb_star_rate_2_filter_fragment"
-                android:layout_alignLeft="@+id/chb_star_rate_2_filter_fragment" />
+                android:layout_alignLeft="@+id/chb_star_rate_2_filter_fragment"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="32dp"
@@ -181,7 +185,8 @@
                 android:checked="false"
                 android:textColor="@color/base_black"
                 android:layout_below="@+id/chb_star_rate_3_filter_fragment"
-                android:layout_alignLeft="@+id/chb_star_rate_3_filter_fragment" />
+                android:layout_alignLeft="@+id/chb_star_rate_3_filter_fragment"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="32dp"
@@ -230,7 +235,8 @@
                 android:checked="false"
                 android:textColor="@color/base_black"
                 android:layout_below="@+id/chb_star_rate_4_filter_fragment"
-                android:layout_alignLeft="@+id/chb_star_rate_4_filter_fragment" />
+                android:layout_alignLeft="@+id/chb_star_rate_4_filter_fragment"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="32dp"
@@ -304,7 +310,8 @@
                 android:id="@+id/chb_trip_rate_1_filter_fragment"
                 android:layout_below="@+id/textView8"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -322,7 +329,8 @@
                 android:id="@+id/chb_trip_rate_2_filter_fragment"
                 android:layout_below="@+id/chb_trip_rate_1_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -340,7 +348,8 @@
                 android:id="@+id/chb_trip_rate_3_filter_fragment"
                 android:layout_below="@+id/chb_trip_rate_2_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -358,7 +367,8 @@
                 android:id="@+id/chb_trip_rate_4_filter_fragment"
                 android:layout_below="@+id/chb_trip_rate_3_filter_fragment"
                 android:checked="false"
-                android:textColor="@color/base_black" />
+                android:textColor="@color/base_black"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -376,7 +386,8 @@
                 android:layout_below="@+id/chb_trip_rate_4_filter_fragment"
                 android:checked="false"
                 android:textColor="@color/base_black"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                style="@style/CustomCheckBox"/>
 
             <ImageView
                 android:layout_width="wrap_content"

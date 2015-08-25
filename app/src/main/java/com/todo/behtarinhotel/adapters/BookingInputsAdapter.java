@@ -100,27 +100,6 @@ public class BookingInputsAdapter extends BaseAdapter {
 
 
         RadioGroup radioGroupSmoking = (RadioGroup) view.findViewById(R.id.radioGroupSmoking);
-
-        String[] smoke = roomInfo.getSmokingPreference().split(",");
-        for(int i = 0; i<smoke.length;i++){
-            RadioButton rb = new RadioButton(ctx);
-            if(smoke[i].equals("NS")){
-                rb.setText("Non smoking");
-                rb.setId(0);
-            }else if(smoke[i].equals("S")){
-                rb.setText("Smoking");
-                rb.setId(1);
-            }
-            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
-            radioGroupSmoking.addView(rb);
-        }
-        if(smoke.length == 2){
-            RadioButton rbEither = new RadioButton(ctx);
-            rbEither.setText("Either");
-            rbEither.setTextColor(ctx.getResources().getColor(R.color.base_text));
-            radioGroupSmoking.addView(rbEither);
-            rbEither.setId(2);
-        }
         radioGroupSmoking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -137,17 +116,32 @@ public class BookingInputsAdapter extends BaseAdapter {
                 }
             }
         });
+        String[] smoke = roomInfo.getSmokingPreference().split(",");
+        for(int i = 0; i<smoke.length;i++){
+            RadioButton rb =(RadioButton)inflater.inflate(R.layout.radio_button,null);
+            if(smoke[i].equals("NS")){
+                rb.setText("Non smoking");
+                rb.setId(0);
+            }else if(smoke[i].equals("S")){
+                rb.setText("Smoking");
+                rb.setId(1);
+            }
+            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            radioGroupSmoking.addView(rb);
+            if(i==0){
+                rb.setChecked(true);
+            }
+        }
+        if(smoke.length == 2){
+            RadioButton rbEither = (RadioButton)inflater.inflate(R.layout.radio_button,null);
+            rbEither.setText("Either");
+            rbEither.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            radioGroupSmoking.addView(rbEither);
+            rbEither.setId(2);
+        }
+
 
         RadioGroup radioGroupBeds = (RadioGroup) view.findViewById(R.id.radioGroupBeds);
-
-
-        for(AvailableRoomsSO.Bed bed : roomInfo.getBeds()){
-            RadioButton rb = new RadioButton(ctx);
-            rb.setText(bed.getBedDescript());
-            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
-            rb.setId(bed.getId());
-            radioGroupBeds.addView(rb);
-        }
         radioGroupBeds.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -158,6 +152,18 @@ public class BookingInputsAdapter extends BaseAdapter {
         });
 
 
+        boolean temp = true;
+        for(AvailableRoomsSO.Bed bed : roomInfo.getBeds()){
+            RadioButton rb = (RadioButton)inflater.inflate(R.layout.radio_button,null);
+            rb.setText(bed.getBedDescript());
+            rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
+            rb.setId(bed.getId());
+            radioGroupBeds.addView(rb);
+            if(temp){
+                rb.setChecked(true);
+                temp = false;
+            }
+        }
         return view;
     }
 
