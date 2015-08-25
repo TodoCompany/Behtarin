@@ -45,8 +45,8 @@ public class HotelPhotosFragment extends Fragment {
         if (imagesUrls != null) {
             pager = (ViewPager) rootView.findViewById(R.id.photoPager);
             horizontalPhotosList = new HListView(getActivity());
-            final PhotoPagerAdapter photoPagerAdapter = new PhotoPagerAdapter(getActivity(), imagesUrls);
             final PhotoListAdapter photoListAdapter = new PhotoListAdapter(getActivity(), imagesUrls);
+            final PhotoPagerAdapter photoPagerAdapter = new PhotoPagerAdapter(getActivity(), imagesUrls);
             horizontalPhotosList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             pager.setAdapter(photoPagerAdapter);
             horizontalPhotosList.setAdapter(photoListAdapter);

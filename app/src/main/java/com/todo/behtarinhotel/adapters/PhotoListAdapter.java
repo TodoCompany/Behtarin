@@ -20,9 +20,6 @@ import it.sephiroth.android.library.widget.AbsHListView;
  */
 public class PhotoListAdapter extends BaseAdapter {
 
-    public static final String PHOTO_URL_START = "http://images.travelnow.com";
-    public static final String PHOTO_URL_END = "z.jpg";
-
     ArrayList<String> imageUrls;
     int checkedItem = 0;
 
@@ -69,14 +66,6 @@ public class PhotoListAdapter extends BaseAdapter {
             Log.d("Adapter", "Setting inactive " + position + " item");
             imageView.setBackgroundColor(context.getResources().getColor(R.color.base_dark));
         }
-
-        String temp = imageUrls.get(position)
-                .substring(0, imageUrls.get(position).length() - 5);
-
-        Glide.with(context)
-                .load(PHOTO_URL_START + temp + PHOTO_URL_END)
-                .error(R.drawable.empty)
-                .into(imageView);
 
         Glide.with(context)
                 .load(imageUrls.get(position))
