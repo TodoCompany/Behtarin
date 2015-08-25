@@ -336,7 +336,15 @@ public class AppState {
         if(sPrefLog.getString("bookedRooms", "").length()==0){
             return new ArrayList<>();
         }else{
-            return gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
+            try {
+                return gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
+            }catch (Exception notArray){
+                ArrayList<BookedRoomSO> arrayList = new ArrayList<>();
+                String str =  sPrefLog.getString("bookedRooms", "");
+                BookedRoomSO bookedRoomSO = gson.fromJson(sPrefLog.getString("bookedRooms", ""), BookedRoomSO.class);
+                arrayList.add(bookedRoomSO);
+                return arrayList;
+            }
         }
     }
 

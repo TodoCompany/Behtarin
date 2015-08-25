@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -368,7 +369,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void changeSearchType(){
-        etLocation.setText(hotelName);
+        etLocation.setText(Html.fromHtml(Html.fromHtml(hotelName).toString()).toString());
         etLocation.setEnabled(false);
     }
 

@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
@@ -27,8 +29,9 @@ public class HistoryAdapter extends BaseAdapter {
     ArrayList<BookedRoomSO> history;
     Context context;
     LayoutInflater inflater;
+    RequestListener listener;
 
-    public HistoryAdapter(Context context){
+    public HistoryAdapter(final Context context){
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -41,6 +44,21 @@ public class HistoryAdapter extends BaseAdapter {
                 return lhs.getOrderState() - rhs.getOrderState();
             }
         });
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(context)
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -90,6 +108,7 @@ public class HistoryAdapter extends BaseAdapter {
 
         Glide.with(context)
                 .load(temp + "z.jpg")
+                .listener(listener)
                 .into(image);
 
         switch (historyRoom.getOrderState()){

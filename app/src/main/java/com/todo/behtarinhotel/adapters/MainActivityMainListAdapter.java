@@ -22,6 +22,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -86,8 +88,9 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     String url;
     private int posForLoading = 19;
     CheckBox chbWishList;
+    RequestListener listener;
 
-    public MainActivityMainListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
+    public MainActivityMainListAdapter(final Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList, String arrivalDate, String departureDate, ArrayList<SearchRoomSO> rooms, String cacheKey, String cacheLocation, String url) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
     this.arrivalDate = arrivalDate;
@@ -100,6 +103,26 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         this.cacheKey = cacheKey;
         this.cacheLocation = cacheLocation;
         this.url = url;
+
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(activity.getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .error(R.drawable.empty)
+                        .placeholder(R.color.base_grey)
+                        .fitCenter()
+                        .listener(listener)
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -194,6 +217,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                     .fitCenter()
                     .placeholder(R.color.base_grey)
                     .error(R.drawable.empty)
+                    .listener(listener)
                     .into(ivPhoto);
 
             Glide.with(activity)

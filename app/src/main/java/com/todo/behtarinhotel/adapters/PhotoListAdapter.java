@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
@@ -24,10 +26,28 @@ public class PhotoListAdapter extends BaseAdapter {
     int checkedItem = 0;
 
     Context context;
+    RequestListener listener;
 
-    public PhotoListAdapter(Context context, ArrayList<String> urls){
+    public PhotoListAdapter(final Context context, ArrayList<String> urls){
         imageUrls = urls;
         this.context = context;
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(context)
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .error(R.drawable.empty)
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
+
     }
 
 
@@ -70,6 +90,7 @@ public class PhotoListAdapter extends BaseAdapter {
         Glide.with(context)
                 .load(imageUrls.get(position))
                 .error(R.drawable.empty)
+                .listener(listener)
                 .into(imageView);
 
 

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.todo.behtarinhotel.R;
 
 import java.util.ArrayList;
@@ -24,12 +26,27 @@ public class HotelImagesAdapter extends BaseAdapter {
     Context ctx;
     ArrayList<String> urls;
     LayoutInflater layoutInflater;
+    RequestListener listener;
 
-     public HotelImagesAdapter(Context ctx, ArrayList<String> urls) {
+     public HotelImagesAdapter(final Context ctx, ArrayList<String> urls) {
          this.ctx = ctx;
          this.urls = urls;
          layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         listener = new RequestListener() {
+             @Override
+             public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                 String str = model.toString();
+                 Glide.with(ctx)
+                         .load(str.substring(0, str.length() - 5) + "b.jpg")
+                         .into(target);
+                 return true;
+             }
 
+             @Override
+             public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                 return false;
+             }
+         };
     }
 
     @Override
@@ -59,12 +76,14 @@ public class HotelImagesAdapter extends BaseAdapter {
 
             Glide.with(ctx)
                     .load(urls.get(position))
+                    .listener(listener)
                     .into(imageView);
         }else{
             ImageView imageView = new ImageView(ctx);
             imageView.setImageDrawable(ctx.getResources().getDrawable(R.drawable.empty));
             Glide.with(ctx)
                     .load(urls.get(position))
+                    .listener(listener)
                     .into(imageView);
             view = imageView;
         }

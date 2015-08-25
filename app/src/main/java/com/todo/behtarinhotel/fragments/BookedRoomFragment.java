@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
@@ -53,6 +55,7 @@ public class BookedRoomFragment extends Fragment {
     View rootView;
 
     BookedRoomSO bookedRoomSO;
+    RequestListener listener;
 
     public BookedRoomFragment() {
         // Required empty public constructor
@@ -83,10 +86,26 @@ public class BookedRoomFragment extends Fragment {
     }
 
     private void initViewsWithData() {
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(getActivity().getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
         if (bookedRoomSO.getPhotoUrl() != null && !bookedRoomSO.getPhotoUrl().equals("")) {
             String str = bookedRoomSO.getPhotoUrl().substring(0, bookedRoomSO.getPhotoUrl().length() - 5);
             Glide.with(getActivity())
                     .load(str + "z.jpg")
+                    .listener(listener)
                     .into(roomImage);
         }
         tvHotelName.setText(bookedRoomSO.getHotelName());

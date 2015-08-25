@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.BookFragment;
@@ -38,9 +40,10 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     BookFragment bookFragment;
     String arrivalDate;
     String departureDate;
+    RequestListener listener;
 
 
-    public AvailableRoomsAdapter(MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO,String arrivalDate,String departureDate) {
+    public AvailableRoomsAdapter(final MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO,String arrivalDate,String departureDate) {
         this.activity = activity;
         this.availableRooms = availableRooms;
         this.searchRoomSO = searchRoomSO;
@@ -49,6 +52,22 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         bookFragment = new BookFragment();
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(activity.getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .error(R.drawable.empty)
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -94,6 +113,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
                 .load(temp + "z.jpg")
                 .placeholder(R.color.base_hint)
                 .error(R.drawable.empty)
+                .listener(listener)
                 .into(roomImage);
 
         btnBook.setOnClickListener(new View.OnClickListener() {

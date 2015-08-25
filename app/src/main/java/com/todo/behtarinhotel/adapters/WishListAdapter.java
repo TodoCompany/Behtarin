@@ -22,6 +22,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,14 +84,34 @@ public class WishListAdapter extends BaseAdapter {
     String url;
     private int posForLoading = 19;
     CheckBox chbWishList;
+    RequestListener listener;
 
-    public WishListAdapter(Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList) {
+    public WishListAdapter(final Activity activity, ArrayList<SearchResultSO> searchResultSOArrayList) {
         this.activity = activity;
         this.searchResultSOArrayList = searchResultSOArrayList;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = VolleySingleton.getInstance(activity).getImageLoader();
         res = activity.getResources();
+
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(activity.getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .error(R.drawable.empty)
+                        .placeholder(R.color.base_grey)
+                        .fitCenter()
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -183,6 +205,7 @@ public class WishListAdapter extends BaseAdapter {
                     .fitCenter()
                     .placeholder(R.color.base_grey)
                     .error(R.drawable.empty)
+                    .listener(listener)
                     .into(ivPhoto);
 
             Glide.with(activity)

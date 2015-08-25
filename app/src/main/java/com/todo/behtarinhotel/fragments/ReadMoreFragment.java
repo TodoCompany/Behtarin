@@ -17,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.todo.behtarinhotel.R;
@@ -57,6 +59,7 @@ public class ReadMoreFragment extends Fragment {
     ArrayList<ImageView> hotelImages;
     ArrayList<String> hotelImagesUrls;
     int checkedImageNumber;
+    RequestListener listener;
 
 
 
@@ -94,6 +97,23 @@ public class ReadMoreFragment extends Fragment {
         hotelStar5 = (ImageView) rootView.findViewById(R.id.hotel_star_5);
         btnFloat = (ButtonFloat) rootView.findViewById(R.id.btn_add_wish_read_more);
         btnCheckAvailability = (ButtonFlat) rootView.findViewById(R.id.btn_check_availability);
+
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(getActivity().getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .error(R.drawable.empty)
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
     }
 
     public void setHotelData(SearchResultSO searchResultSO, String arrival, String departure, ArrayList<SearchRoomSO> rooms) {
@@ -169,6 +189,7 @@ public class ReadMoreFragment extends Fragment {
                 .load(PHOTO_URL_START + temp + PHOTO_URL_END)
                 .placeholder(R.mipmap.ic_hotel_placeholder)
                 .error(R.drawable.empty)
+                .listener(listener)
                 .into(hotelImage);
 
         Glide.with(getActivity())
@@ -243,6 +264,7 @@ public class ReadMoreFragment extends Fragment {
                 imageView.setLayoutParams(params);
                 Glide.with(getActivity())
                         .load(hotelImagesUrls.get(i))
+                        .listener(listener)
                         .into(imageView);
                 photos.add(imageView);
             }
@@ -254,6 +276,7 @@ public class ReadMoreFragment extends Fragment {
                 imageView.setId(i);
                 Glide.with(getActivity())
                         .load(hotelImagesUrls.get(i))
+                        .listener(listener)
                         .into(imageView);
                 photos.add(imageView);
             }
@@ -273,6 +296,7 @@ public class ReadMoreFragment extends Fragment {
             btnLoadMorePhotos.setText("+" + (hotelImagesUrls.size() - 6));
             Glide.with(getActivity())
                     .load(hotelImagesUrls.get(5))
+                    .listener(listener)
                     .into(imageLoadMore);
             photos.add(view);
         }

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.BookedRoomFragment;
@@ -27,12 +29,29 @@ public class BookedRoomsAdapter extends BaseAdapter {
 
     MaterialNavigationDrawer activity;
     LayoutInflater inflater;
+    RequestListener listener;
 
-    public BookedRoomsAdapter(MaterialNavigationDrawer activity, ArrayList<BookedRoomSO> bookedRooms){
+
+    public BookedRoomsAdapter(final MaterialNavigationDrawer activity, ArrayList<BookedRoomSO> bookedRooms){
         this.bookedRooms = bookedRooms;
         this.activity = activity;
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        listener = new RequestListener() {
+            @Override
+            public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
+                String str = model.toString();
+                Glide.with(activity.getApplicationContext())
+                        .load(str.substring(0, str.length() - 5) + "b.jpg")
+                        .into(target);
+                return true;
+            }
+
+            @Override
+            public boolean onResourceReady(Object resource, Object model, Target target, boolean isFromMemoryCache, boolean isFirstResource) {
+                return false;
+            }
+        };
 
     }
 
@@ -81,6 +100,7 @@ public class BookedRoomsAdapter extends BaseAdapter {
         }
         Glide.with(activity)
                 .load(temp + "z.jpg")
+                .listener(listener)
                 .into(bookedRoomImage);
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {
