@@ -23,7 +23,6 @@ public class AvailableRoomsSO {
     @SerializedName("checkInInstructions")
     private String checkInInstruction;
 
-
     public String getCheckInInstruction() {
         return checkInInstruction;
     }
@@ -54,6 +53,7 @@ public class AvailableRoomsSO {
 
     // This inner classes used to parse their fucking response
     public class RoomSO {
+        private float[] nightlyRates;
         @SerializedName("rateCode")
         private int rateCode;
         @SerializedName("roomTypeCode")
@@ -73,6 +73,14 @@ public class AvailableRoomsSO {
 
         private String rateKey;
         private ArrayList<Bed> beds;
+
+        public float[] getNightlyRates() {
+            return nightlyRates;
+        }
+
+        public void setNightlyRates(float[] nightlyRates) {
+            this.nightlyRates = nightlyRates;
+        }
 
         public String getRateKey() {
             return rateKey;
@@ -141,6 +149,18 @@ public class AvailableRoomsSO {
             return rateInfos.getRateInfo().getChargeableRateInfo().getAverageRate();
         }
 
+        public float getTotal() {
+            return rateInfos.getRateInfo().getChargeableRateInfo().getTotal();
+        }
+
+        public float getNightlyRateTotal() {
+            return rateInfos.getRateInfo().getChargeableRateInfo().getNightlyRateTotal();
+        }
+
+        public float getSurchargeTotal() {
+            return rateInfos.getRateInfo().getChargeableRateInfo().getSurchargeTotal();
+        }
+
         public float getOldPrice() {
             return rateInfos.getRateInfo().getChargeableRateInfo().getOldPrice();
         }
@@ -197,10 +217,16 @@ public class AvailableRoomsSO {
                 }
 
                 private class ChargeableRateInfo {
-                    @SerializedName("@total")
+                    @SerializedName("@averageRate")
                     private float averageRate;
                     @SerializedName("@averageBaseRate")
                     private float oldPrice;
+                    @SerializedName("@nightlyRateTotal")
+                    private float nightlyRateTotal;
+                    @SerializedName("@surchargeTotal")
+                    private float surchargeTotal;
+                    @SerializedName("@total")
+                    private float total;
 
                     private float getAverageRate() {
                         return averageRate;
@@ -208,6 +234,18 @@ public class AvailableRoomsSO {
 
                     private float getOldPrice() {
                         return oldPrice;
+                    }
+
+                    private float getNightlyRateTotal() {
+                        return nightlyRateTotal;
+                    }
+
+                    private float getSurchargeTotal() {
+                        return surchargeTotal;
+                    }
+
+                    private float getTotal() {
+                        return total;
                     }
                 }
             }

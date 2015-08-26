@@ -110,14 +110,13 @@ public class CheckAvailabilityFragment extends Fragment {
                     if (getActivity() != null) {
                         response = response.getJSONObject("HotelRoomAvailabilityResponse");
                         availableRoomsSO = gson.fromJson(response.toString(), AvailableRoomsSO.class);
-
-
+                        ArrayList<Float> nightRates = new ArrayList<>();
                         try {
                             JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
                             Type roomArray = new TypeToken<ArrayList<AvailableRoomsSO.RoomSO>>() {
                             }.getType();
                             ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
-                            rooms = gson.fromJson(hotelRoomsResponse.toString(),roomArray);
+                            rooms = gson.fromJson(hotelRoomsResponse.toString(), roomArray);
                             availableRoomsSO.setRoomSO(rooms);
 
                             for (int i = 0; i < hotelRoomsResponse.length(); i++) {
@@ -152,12 +151,41 @@ public class CheckAvailabilityFragment extends Fragment {
                                     String rateKey = rateInfos.getJSONObject("RateInfo")
                                             .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
                                     availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+                                    try {
+                                        Float nightRate = (float) rateInfos.getJSONObject("RateInfo")
+                                                .getJSONObject("RoomGroup").getJSONObject("Room").getJSONObject("ChargeableNightlyRates").getDouble("@rate");
+                                        float[] arr = new float[]{nightRate};
+                                        nightRates.add(nightRate);
+                                        availableRoomsSO.getRoomSO().get(i).setNightlyRates(arr);
+                                    } catch (Exception isNotObject) {
+                                        JSONArray nightRatesArr = rateInfos.getJSONObject("RateInfo")
+                                                .getJSONObject("RoomGroup").getJSONObject("Room").getJSONArray("ChargeableNightlyRates");
+                                        float[] arr = new float[nightRatesArr.length()];
+                                        for (int z = 0; z < nightRatesArr.length(); z++) {
+                                            arr[z] = ((float) nightRatesArr.getJSONObject(z).getDouble("@rate"));
+                                        }
+                                        availableRoomsSO.getRoomSO().get(i).setNightlyRates(arr);
+                                    }
                                 } catch (Exception isNotObject) {
                                     JSONArray arr = rateInfos.getJSONObject("RateInfo")
                                             .getJSONObject("RoomGroup").getJSONArray("Room");
                                     String rateKey = arr.getJSONObject(0).getString("rateKey");
                                     availableRoomsSO.getRoomSO().get(i).setRateKey(rateKey);
-
+                                    try {
+                                        Float nightRate = (float) rateInfos.getJSONObject("RateInfo")
+                                                .getJSONObject("RoomGroup").getJSONArray("Room").getJSONObject(0).getJSONObject("ChargeableNightlyRates").getDouble("@rate");
+                                        float[] nightRatesArr = new float[]{nightRate};
+                                        nightRates.add(nightRate);
+                                        availableRoomsSO.getRoomSO().get(i).setNightlyRates(nightRatesArr);
+                                    } catch (Exception NightlyRatesIsNotObject) {
+                                        JSONArray nightRatesArr = rateInfos.getJSONObject("RateInfo")
+                                                .getJSONObject("RoomGroup").getJSONArray("Room").getJSONObject(0).getJSONArray("ChargeableNightlyRates");
+                                        float[] nightRatesArray = new float[nightRatesArr.length()];
+                                        for (int z = 0; z < nightRatesArr.length(); z++) {
+                                            nightRatesArray[z] = ((float) nightRatesArr.getJSONObject(z).getDouble("@rate"));
+                                        }
+                                        availableRoomsSO.getRoomSO().get(i).setNightlyRates(nightRatesArray);
+                                    }
                                 }
 
                                 availableRoomsSO.getRoomSO().get(i).setBedDescription(bedDescription);
@@ -165,7 +193,7 @@ public class CheckAvailabilityFragment extends Fragment {
 
 
                             }
-                        }catch (Exception isNotArray) {
+                        } catch (Exception isNotArray) {
                             JSONObject hotelRoomsResponse = response.getJSONObject("HotelRoomResponse");
                             ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
                             AvailableRoomsSO.RoomSO room = gson.fromJson(hotelRoomsResponse.toString(), AvailableRoomsSO.RoomSO.class);
@@ -202,18 +230,46 @@ public class CheckAvailabilityFragment extends Fragment {
                                 String rateKey = rateInfos.getJSONObject("RateInfo")
                                         .getJSONObject("RoomGroup").getJSONObject("Room").getString("rateKey");
                                 availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
+                                try {
+                                    Float nightRate = (float) rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONObject("Room").getJSONObject("ChargeableNightlyRates").getDouble("@rate");
+                                    float[] nightRatesArr = new float[]{nightRate};
+                                    nightRates.add(nightRate);
+                                    availableRoomsSO.getRoomSO().get(0).setNightlyRates(nightRatesArr);
+                                } catch (Exception NightlyRatesIsNotObject) {
+                                    JSONArray nightRatesArr = rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONObject("Room").getJSONArray("ChargeableNightlyRates");
+                                    float[] nightRatesArray = new float[nightRatesArr.length()];
+                                    for (int z = 0; z < nightRatesArr.length(); z++) {
+                                        nightRatesArray[z] = ((float) nightRatesArr.getJSONObject(z).getDouble("@rate"));
+                                    }
+                                    availableRoomsSO.getRoomSO().get(0).setNightlyRates(nightRatesArray);
+                                }
                             } catch (Exception isNotObject) {
                                 JSONArray arr = rateInfos.getJSONObject("RateInfo")
                                         .getJSONObject("RoomGroup").getJSONArray("Room");
                                 String rateKey = arr.getJSONObject(0).getString("rateKey");
                                 availableRoomsSO.getRoomSO().get(0).setRateKey(rateKey);
-
+                                try {
+                                    Float nightRate = (float) rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONArray("Room").getJSONObject(0).getJSONObject("ChargeableNightlyRates").getDouble("@rate");
+                                    float[] nightRatesArr = new float[]{nightRate};
+                                    nightRates.add(nightRate);
+                                    availableRoomsSO.getRoomSO().get(0).setNightlyRates(nightRatesArr);
+                                } catch (Exception NightlyRatesIsNotObject) {
+                                    JSONArray nightRatesArr = rateInfos.getJSONObject("RateInfo")
+                                            .getJSONObject("RoomGroup").getJSONArray("Room").getJSONObject(0).getJSONArray("ChargeableNightlyRates");
+                                    float[] nightRatesArray = new float[nightRatesArr.length()];
+                                    for (int z = 0; z < nightRatesArr.length(); z++) {
+                                        nightRatesArray[z] = ((float) nightRatesArr.getJSONObject(z).getDouble("@rate"));
+                                    }
+                                    availableRoomsSO.getRoomSO().get(0).setNightlyRates(nightRatesArray);
+                                }
                             }
 
                             availableRoomsSO.getRoomSO().get(0).setBedDescription(bedDescription);
                             availableRoomsSO.getRoomSO().get(0).setBed(beds);
                         }
-
 
 
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
@@ -227,7 +283,7 @@ public class CheckAvailabilityFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IllegalStateException ie) {
-
+                    ie.printStackTrace();
                 }
                 Log.d("API", "parsing done");
             }
@@ -265,7 +321,6 @@ public class CheckAvailabilityFragment extends Fragment {
         swipeContainer.setRefreshing(false);
 
     }
-
 
 
 }

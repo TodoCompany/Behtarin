@@ -14,11 +14,20 @@ public class SearchRoomSO {
     private int smokingPreference = NOT_SMOKING;
     private String bedType;
     private int bedTypeId;
+    float[] nightRates;
 
     public SearchRoomSO(ArrayList<RoomQueryGuestSO> guests) {
         this.guests = guests;
     }
     public SearchRoomSO() {
+    }
+
+    public float[] getNightRates() {
+        return nightRates;
+    }
+
+    public void setNightRates(float[] nightRates) {
+        this.nightRates = nightRates;
     }
 
     public ArrayList<RoomQueryGuestSO> getGuests() {

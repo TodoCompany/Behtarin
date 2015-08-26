@@ -1,21 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.todo.behtarinhotel.fragments.BookFragment"
-    android:orientation="vertical"
-    android:background="@color/base_background">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bookingScroll">
+        android:id="@+id/bookingScroll"
+        android:background="@color/base_background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@null">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -23,7 +20,7 @@
                 android:layout_height="match_parent"
                 android:visibility="visible"
                 android:id="@+id/payParametersScreen"
-                android:background="@color/base_background">
+                android:background="@null">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -110,7 +107,8 @@
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/wizardRoomsList" />
+                    android:id="@+id/wizardRoomsList"
+                    android:dividerHeight="0dp" />
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
@@ -448,7 +446,9 @@
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/confirmRoomInfoList" />
+                    android:id="@+id/confirmRoomInfoList"
+                    android:dividerHeight="0dp"
+                    android:divider="@null" />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -465,7 +465,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Check in instructions"
-                        android:id="@+id/textView13" />
+                        android:id="@+id/textView13"
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -490,7 +491,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Cancellation policy"
-                        android:id="@+id/textView12" />
+                        android:id="@+id/textView12"
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -498,6 +500,32 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Small Text"
                         android:id="@+id/tvCancellationPolicy" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:background="@color/base_white"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Total cost"
+                        android:id="@+id/textView120"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Small Text"
+                        android:id="@+id/tvTotalCost" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -529,4 +557,3 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>

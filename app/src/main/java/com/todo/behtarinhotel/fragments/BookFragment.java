@@ -69,7 +69,7 @@ public class BookFragment extends Fragment {
     TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
     TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
     TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
-    TextView tvCheckInInstructions, tvCancellationPolicy;
+    TextView tvCheckInInstructions, tvCancellationPolicy, tvTotalCost;
     ImageView ivCardType;
     ScrollView scroll;
     AvailableRoomsSO availableRooms;
@@ -203,6 +203,7 @@ public class BookFragment extends Fragment {
 
         tvCheckInInstructions = (TextView) rootView.findViewById(R.id.tvCheckInInstructions);
         tvCancellationPolicy = (TextView) rootView.findViewById(R.id.tvCancellationPolicy);
+        tvTotalCost = (TextView) rootView.findViewById(R.id.tvTotalCost);
 
         wizardRoomsList = (ListView) rootView.findViewById(R.id.wizardRoomsList);
         confirmRoomInfoList = (ListView) rootView.findViewById(R.id.confirmRoomInfoList);
@@ -232,16 +233,14 @@ public class BookFragment extends Fragment {
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
         int totalHeight = 0;
         View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
+        view = listAdapter.getView(0, view, listView);
+        view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+        totalHeight = view.getMeasuredHeight() * listAdapter.getCount();
+
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = totalHeight;
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
@@ -275,6 +274,12 @@ public class BookFragment extends Fragment {
 
         tvCheckInInstructions.setText(Html.fromHtml(availableRooms.getCheckInInstruction()));
         tvCancellationPolicy.setText(availableRooms.getRoomSO().get(position).getCancellationPolicy());
+        tvTotalCost.setText(Html.fromHtml("Total nightly rate : "
+                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getNightlyRateTotal()+ "</b>" + "<br>"+ "<br>"
+                + "Total surcharges : "
+                +"<b>"+ "$" + availableRooms.getRoomSO().get(position).getSurchargeTotal()+ "</b>" + "<br>"+ "<br>"
+                + "Total : "
+                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getTotal()+ "</b>"));
 
         addRoomsInfoToConfirmPage();
 
@@ -325,6 +330,7 @@ public class BookFragment extends Fragment {
         defaultRoomData.setLastName(etWizardLastName.getText().toString());
         defaultRoomData.setBedType(availableRooms.getRoomSO().get(position).getBeds().get(0).getBedDescript());
         defaultRoomData.setBedTypeId(availableRooms.getRoomSO().get(position).getBeds().get(0).getId());
+        defaultRoomData.setNightRates(availableRooms.getRoomSO().get(position).getNightlyRates());
 
 
         ConfirmRoomsInfoAdapter confirmRoomsInfoAdapter = new ConfirmRoomsInfoAdapter(getActivity(), rooms, defaultRoomData);
@@ -349,7 +355,7 @@ public class BookFragment extends Fragment {
                 "&rateKey=" + availableRooms.getRoomSO().get(position).getRateKey() +
                 "&roomTypeCode=" + availableRooms.getRoomSO().get(position).getRoomTypeCode() +
                 "&rateCode=" + availableRooms.getRoomSO().get(position).getRateCode() +
-                "&chargeableRate=" + availableRooms.getRoomSO().get(position).getAverageRate() +
+                "&chargeableRate=" + availableRooms.getRoomSO().get(position).getTotal() +
                 makeRoomString() +
                 "&email=" + etWizardEmail.getText().toString() +
                 "&firstName=" + etWizardFirstName.getText().toString() +
@@ -467,9 +473,6 @@ public class BookFragment extends Fragment {
     }
 
     private void sendDataToAPI(BookedRoomSO bookedRoomSO) {
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
 
         HashMap<String, Object> booking = new HashMap<>();
         ArrayList<HashMap> orderedRooms = new ArrayList<>();

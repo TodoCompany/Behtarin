@@ -119,6 +119,7 @@ public class AppState {
                 + departureDate + depDate
                 + "&includeRoomImages=true"
                 +"&includeDetails=true"
+                +"&includeHotelFeeBreakdown=true"
                 + makeRoomString(rooms);
     }
 
