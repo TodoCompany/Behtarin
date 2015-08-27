@@ -223,10 +223,12 @@ public class MainFragment extends Fragment {
                                 SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList.add(so);
-                                adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                                slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                                listView.setAdapter(slideExpandableListAdapter);
-                                clearLoadingScreen();
+                                if(getActivity()!=null){
+                                    adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                                    slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                                    listView.setAdapter(slideExpandableListAdapter);
+                                    clearLoadingScreen();
+                                }
                             }else{
                                 if (arr == null || arr.length() == 0) {
                                     showError("No hotels");
@@ -343,15 +345,15 @@ public class MainFragment extends Fragment {
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
 
                         } else {
+                            if(getActivity()!=null){
+                                adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                                slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                                listView.setAdapter(slideExpandableListAdapter);
+                                clearLoadingScreen();
+                            }
                             sortData();
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
-                            adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                            listView.setAdapter(slideExpandableListAdapter);
-                            clearLoadingScreen();
                             isFiltersChanged = false;
-
-
                         }
 
 
@@ -464,13 +466,15 @@ public class MainFragment extends Fragment {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FilterFragment filterFragment = new FilterFragment();
-                if (filterParams == null) {
-                    filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
-                } else {
-                    filterFragment.setFilterParams(filterParams, MainFragment.this);
+                if (searchResultSOArrayList != null && searchResultSOArrayList.size() != 0) {
+                    FilterFragment filterFragment = new FilterFragment();
+                    if (filterParams == null) {
+                        filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
+                    } else {
+                        filterFragment.setFilterParams(filterParams, MainFragment.this);
+                    }
+                    ((MaterialNavigationDrawer) getActivity()).setFragmentChild(filterFragment, "Filter");
                 }
-                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(filterFragment, "Filter");
             }
         });
         imageSort.setOnClickListener(new View.OnClickListener() {

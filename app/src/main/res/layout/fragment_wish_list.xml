@@ -25,6 +25,15 @@
                     android:orientation="vertical"
                     >
 
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/progressBar"
+                        android:visibility="visible"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -41,7 +50,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/wishList"
                         android:listSelector="@color/transparent"
-                        android:cacheColorHint="@color/transparent"/>
+                        android:cacheColorHint="@color/transparent"
+                        android:visibility="gone" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/tab_booked_rooms"

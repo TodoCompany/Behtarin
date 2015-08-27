@@ -2,6 +2,8 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -45,6 +48,7 @@ public class WishListFragment extends Fragment {
     ArrayList<Integer> wishListItems = new ArrayList<>();
     ArrayList<SearchResultSO> hotels = new ArrayList<>();
     ListView listView, bookedRoomsList, historyList;
+    ProgressBar pb;
     WishListAdapter adapter;
     View rootView;
 
@@ -85,12 +89,13 @@ public class WishListFragment extends Fragment {
         TextView tvBookedRoomsEmpty = (TextView) rootView.findViewById(R.id.tv_booked_rooms_list_empty);
         TextView tvHistoryEmpty = (TextView) rootView.findViewById(R.id.tv_history_list_empty);
 
+        pb = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
         listView = (ListView) rootView.findViewById(R.id.wishList);
         bookedRoomsList = (ListView) rootView.findViewById(R.id.bookedRoomsList);
         historyList = (ListView) rootView.findViewById(R.id.historyList);
         bookedRoomsList.setAdapter(new BookedRoomsAdapter((MaterialNavigationDrawer) getActivity(), AppState.getBookedRooms()));
         historyList.setAdapter(new HistoryAdapter(getActivity()));
-        listView.setEmptyView(tvWishlistEmpty);
         bookedRoomsList.setEmptyView(tvBookedRoomsEmpty);
         historyList.setEmptyView(tvHistoryEmpty);
 
@@ -99,6 +104,10 @@ public class WishListFragment extends Fragment {
         wishListItems = AppState.getWishList();
         if(wishListItems!=null){
             loadHotelsFromExpedia();
+        }else{
+            pb.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            listView.setEmptyView(tvWishlistEmpty);
         }
         return rootView;
     }
@@ -149,6 +158,8 @@ public class WishListFragment extends Fragment {
                                 Log.d("ExpediaRequest", "There was " + hotels.size() + " hotels");
                                 adapter = new WishListAdapter(getActivity(),hotels);
                                 listView.setAdapter(adapter);
+                                pb.setVisibility(View.GONE);
+                                listView.setVisibility(View.VISIBLE);
                             }else if(obj!=null){
                                 hotels.clear();
                                 SearchResultSO so = gson.fromJson(obj.toString(),SearchResultSO.class);
@@ -156,6 +167,8 @@ public class WishListFragment extends Fragment {
                                 Log.d("ExpediaRequest", "There was " + hotels.size() + " hotels");
                                 adapter = new WishListAdapter(getActivity(),hotels);
                                 listView.setAdapter(adapter);
+                                pb.setVisibility(View.GONE);
+                                listView.setVisibility(View.VISIBLE);
                             }
 
                         }

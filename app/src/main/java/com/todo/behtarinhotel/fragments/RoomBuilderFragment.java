@@ -105,6 +105,7 @@ public class RoomBuilderFragment extends Fragment {
         tvTitleAdults = (TextView) rootView.findViewById(R.id.tv_title_adults_fragment_room_builder);
         tvTitleAdults.setText("x " + adultCount);
         tvTitleChilds = (TextView) rootView.findViewById(R.id.tv_title_children_fragment_room_builder);
+        tvTitleChilds.setText("x " + childrenSOArrayList.size());
 
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
