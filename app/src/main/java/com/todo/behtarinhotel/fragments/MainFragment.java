@@ -190,12 +190,14 @@ public class MainFragment extends Fragment {
             }
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
+            final long l = System.currentTimeMillis();
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            long l1 = System.currentTimeMillis()-l;
                             Log.d("ExpediaRequest", "First hotels loading from: " + url);
                             try {
                                 cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");

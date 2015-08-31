@@ -37,6 +37,7 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
 import com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -157,13 +158,18 @@ public class SearchFragment extends Fragment {
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("MMddyyyy");
+                int currentDate = Integer.valueOf(format.format(calendar.getTime()));
                 if (etLocation.getText().toString().equals("") ||
                         etCheckIn.getText().toString().equals("") ||
                         etCheckOut.getText().toString().equals("")) {
                     Toast.makeText(getActivity().getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >
-                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))) {
+                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >=
+                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", "")) ||
+                            Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", ""))<
+                                    currentDate ) {
                         Toast.makeText(getActivity().getApplicationContext(), "Wrong dates", Toast.LENGTH_SHORT).show();
                     } else {
                         MainActivity parentActivity = (MainActivity) getActivity();
