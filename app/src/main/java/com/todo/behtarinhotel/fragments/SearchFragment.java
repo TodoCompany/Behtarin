@@ -4,6 +4,7 @@ package com.todo.behtarinhotel.fragments;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -148,7 +149,9 @@ public class SearchFragment extends Fragment {
         });
         etLocation.setThreshold(2);
         etLocation.setAdapter(new SearchCityAdapter(getActivity()));
-        etLocation.setLoadingIndicator((ProgressBar) view.findViewById(R.id.progress_bar));
+        ProgressBar pb = (ProgressBar) view.findViewById(R.id.progress_bar);
+        pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
+        etLocation.setLoadingIndicator(pb);
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {

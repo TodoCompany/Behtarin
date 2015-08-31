@@ -145,7 +145,7 @@ public class MainFragment extends Fragment {
     public void setSearchParams(SearchParamsSO searchParams, boolean isWishListSearch, int hotelId) {
         this.searchParams = searchParams;
         filterParams = new FilterSO(0, 5000, 0, 4, 0, 4);
-        filterParams.setMinStarRate(searchParams.getMinStar()-1);
+        filterParams.setMinStarRate(searchParams.getMinStar() - 1);
         this.isWishListSearch = isWishListSearch;
         this.hotelId = hotelId;
     }
@@ -191,7 +191,7 @@ public class MainFragment extends Fragment {
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -219,17 +219,17 @@ public class MainFragment extends Fragment {
                             Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
                             }.getType();
 
-                            if(isWishListSearch){
+                            if (isWishListSearch) {
                                 SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
                                 searchResultSOArrayList = new ArrayList<>();
                                 searchResultSOArrayList.add(so);
-                                if(getActivity()!=null){
+                                if (getActivity() != null) {
                                     adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
                                     slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                     listView.setAdapter(slideExpandableListAdapter);
                                     clearLoadingScreen();
                                 }
-                            }else{
+                            } else {
                                 if (arr == null || arr.length() == 0) {
                                     showError("No hotels");
                                     return;
@@ -306,8 +306,8 @@ public class MainFragment extends Fragment {
             return filter;
         }
         filter = filter + "&minRate=" + filterParams.getMinPrice() + "&maxRate=" + filterParams.getMaxPrice() +
-                "&minStarRating=" + (filterParams.getMinStarRate()+1) + "&maxStarRating=" + (filterParams.getMaxStarRate()+1) +
-                "&minTripAdvisorRating=" + (filterParams.getMinTripRate()+1) + "&maxTripAdvisorRating=" + (filterParams.getMaxTripRate()+1);
+                "&minStarRating=" + (filterParams.getMinStarRate() + 1) + "&maxStarRating=" + (filterParams.getMaxStarRate() + 1) +
+                "&minTripAdvisorRating=" + (filterParams.getMinTripRate() + 1) + "&maxTripAdvisorRating=" + (filterParams.getMaxTripRate() + 1);
         return filter;
     }
 
@@ -345,7 +345,7 @@ public class MainFragment extends Fragment {
                             Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
 
                         } else {
-                            if(getActivity()!=null){
+                            if (getActivity() != null) {
                                 adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
                                 slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
                                 listView.setAdapter(slideExpandableListAdapter);
@@ -466,7 +466,7 @@ public class MainFragment extends Fragment {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (searchResultSOArrayList != null && searchResultSOArrayList.size() != 0) {
+                if (adapter != null && adapter.getCount() != 0) {
                     FilterFragment filterFragment = new FilterFragment();
                     if (filterParams == null) {
                         filterFragment.setFilterParams(new FilterSO(0, 1000, 1, 5, 1, 5), MainFragment.this);
