@@ -21,7 +21,6 @@ import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.AvailableRoomsAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
@@ -69,7 +68,6 @@ public class CheckAvailabilityFragment extends Fragment {
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbRoomLoading);
-        tvError = (TextView) rootView.findViewById(R.id.tvError);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

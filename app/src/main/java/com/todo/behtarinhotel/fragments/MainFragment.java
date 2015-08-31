@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -88,12 +86,14 @@ public class MainFragment extends Fragment {
     ImageView imageSort;
     PopupMenu popupMenu;
     ImageView btnFilter;
+    LinearLayout errorLayout;
 
     SearchParamsSO searchParams;
     ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
     ListView listView;
     SlideExpandableListAdapter slideExpandableListAdapter;
     MainActivityMainListAdapter adapter;
+    JsonObjectRequest jsonObjectRequest;
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
@@ -101,6 +101,9 @@ public class MainFragment extends Fragment {
 
     JsonObjectRequest nextPageRequest;
     View ll;
+
+    // Used to count "null" responses from expedia and start new requests
+    int expediaBadResponseCounter = 0;
 
     boolean isFiltersChanged = false;
     private boolean isWishListSearch;
@@ -119,13 +122,12 @@ public class MainFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
+        errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
+                progressBar.setVisibility(View.GONE);
                 loadDataFromExpedia();
             }
         });
@@ -153,7 +155,7 @@ public class MainFragment extends Fragment {
 
     public void loadDataFromExpedia() {
         if (searchParams != null) {
-            showLoadingScreen();
+            showLoadingScreen(true);
             if (isWishListSearch) {
                 url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
                         apiKey + API_KEY +
@@ -191,12 +193,13 @@ public class MainFragment extends Fragment {
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("ExpediaRequest", "First hotels loading from: " + url);
+                            expediaBadResponseCounter = 0;
                             try {
                                 cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
                                 cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
@@ -249,7 +252,12 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
-                    showError(error.getMessage());
+                    expediaBadResponseCounter++;
+                    if (expediaBadResponseCounter > 3){
+                        showError("Server returns bad response");
+                    }else{
+                        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+                    }
                 }
             }
 
@@ -263,20 +271,21 @@ public class MainFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
         tvError.setText("Error: " + errorMessage);
-        tvError.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingScreen() {
-        tvError.setVisibility(View.GONE);
+    private void showLoadingScreen(boolean firstLaunch) {
         progressBar.setVisibility(View.VISIBLE);
+        if (firstLaunch){
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void clearLoadingScreen() {
-        tvError.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
-        TextView tvError = new TextView(getActivity());
         tvError.setText("No hotels found");
-        listView.setEmptyView(tvError);
+        listView.setEmptyView(errorLayout);
         swipeContainer.setRefreshing(false);
     }
 
@@ -488,7 +497,7 @@ public class MainFragment extends Fragment {
         ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(ll);
 
         if (isFiltersChanged) {
-            showLoadingScreen();
+            showLoadingScreen(false);
             loadDataFromExpedia();
         }
     }
