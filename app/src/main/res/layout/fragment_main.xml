@@ -7,6 +7,22 @@
     tools:context=".MainActivity">
 
 
+
+
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/pbHotelLoading"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@color/base_yellow"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,17 +48,6 @@
             />
     </LinearLayout>
 
-
-    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
-        android:id="@+id/pbHotelLoading"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:background="@color/base_yellow"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
@@ -56,4 +61,5 @@
         android:cacheColorHint="@android:color/transparent"
         android:listSelector="@android:color/transparent" />
     </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
 </LinearLayout>

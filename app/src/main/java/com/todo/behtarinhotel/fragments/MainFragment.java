@@ -254,7 +254,8 @@ public class MainFragment extends Fragment {
                     VolleyLog.e("Error: ", error.getMessage());
                     expediaBadResponseCounter++;
                     if (expediaBadResponseCounter > 3){
-                        showError("Server returns bad response");
+                        showError("No internet");
+                        listView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
                     }else{
                         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
                     }
@@ -270,7 +271,7 @@ public class MainFragment extends Fragment {
     private void showError(String errorMessage) {
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
-        tvError.setText("Error: " + errorMessage);
+        tvError.setText("Error: " + errorMessage + ". \nPull to refresh");
         errorLayout.setVisibility(View.VISIBLE);
     }
 

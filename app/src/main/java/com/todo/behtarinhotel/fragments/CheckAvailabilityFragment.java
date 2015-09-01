@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class CheckAvailabilityFragment extends Fragment {
     ListView roomsListView;
     ViewGroup rootView;
     TextView tvError;
+    LinearLayout errorLayout;
 
     int hotelId;
     String arrivalDate, departureDate;
@@ -63,18 +65,20 @@ public class CheckAvailabilityFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_check_availability, container, false);
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
+        errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
+        tvError = (TextView) rootView.findViewById(R.id.tvError);
+
+
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbRoomLoading);
-
+        showLoadingScreen(true);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
+                showLoadingScreen(false);
                 getData(hotelId, arrivalDate, departureDate, rooms);
             }
         });
@@ -96,7 +100,7 @@ public class CheckAvailabilityFragment extends Fragment {
         this.arrivalDate = dateArrival;
         this.departureDate = dateDeparture;
         this.rooms = rooms;
-        showLoadingScreen();
+
         final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
 
 
@@ -296,28 +300,26 @@ public class CheckAvailabilityFragment extends Fragment {
     }
 
     private void showError(String errorMessage) {
-
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
-        if (tvError != null) {
-            tvError.setText("Error: " + errorMessage);
-            tvError.setVisibility(View.VISIBLE);
-        }
+        roomsListView.setAdapter(new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), new AvailableRoomsSO(), new ArrayList<SearchRoomSO>(), "",""));
+        tvError.setText("Error: " + errorMessage + ". \n Pull to refresh");
+        errorLayout.setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingScreen() {
-        if (tvError != null) {
-            tvError.setVisibility(View.GONE);
+    private void showLoadingScreen(boolean firstLaunch) {
+        progressBar.setVisibility(View.VISIBLE);
+        if (!firstLaunch){
+            progressBar.setVisibility(View.GONE);
         }
     }
 
     private void clearLoadingScreen() {
-        if (tvError != null) {
-            tvError.setVisibility(View.GONE);
-        }
+        errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
+        tvError.setText("");
+        roomsListView.setEmptyView(errorLayout);
         swipeContainer.setRefreshing(false);
-
     }
 
 
