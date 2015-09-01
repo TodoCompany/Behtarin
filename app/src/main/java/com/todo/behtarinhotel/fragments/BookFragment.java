@@ -2,6 +2,7 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -85,6 +86,7 @@ public class BookFragment extends Fragment {
     BookingInputsAdapter bookingInputsAdapter;
     private String arrivalDate;
     private String departureDate;
+    private ProgressDialog progressDialog;
 
 
     public BookFragment() {
@@ -275,11 +277,11 @@ public class BookFragment extends Fragment {
         tvCheckInInstructions.setText(Html.fromHtml(availableRooms.getCheckInInstruction()));
         tvCancellationPolicy.setText(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         tvTotalCost.setText(Html.fromHtml("Total nightly rate : "
-                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getNightlyRateTotal()+ "</b>" + "<br>"+ "<br>"
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getNightlyRateTotal() + "</b>" + "<br>" + "<br>"
                 + "Total surcharges : "
-                +"<b>"+ "$" + availableRooms.getRoomSO().get(position).getSurchargeTotal()+ "</b>" + "<br>"+ "<br>"
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getSurchargeTotal() + "</b>" + "<br>" + "<br>"
                 + "Total : "
-                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getTotal()+ "</b>"));
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getTotal() + "</b>"));
 
         addRoomsInfoToConfirmPage();
 
@@ -373,6 +375,12 @@ public class BookFragment extends Fragment {
                 "&countryCode=" + etWizardCountryCode.getText().toString() +
                 "&postalCode=" + etWizardPostalCode.getText().toString();
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("Loading");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,
 
                 new Response.Listener<org.json.JSONObject>() {
@@ -380,7 +388,7 @@ public class BookFragment extends Fragment {
                     public void onResponse(org.json.JSONObject response) {
 
                         // response :"status":200,"success":"Yep"
-
+                        progressDialog.dismiss();
                         Log.i("Response :", response.toString());
                         try {
                             if (getActivity() != null) {
@@ -388,18 +396,31 @@ public class BookFragment extends Fragment {
                                 ArrayList<BookedRoomSO> bookedRooms = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
                                 sendDataToAPI(bookedRooms);
                                 AppState.saveBookedRoom(bookedRooms);
-//                                BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
-//                                bookedRoomFragment.initFragment(bookedRoomSO);
-//                                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(bookedRoomFragment, "Booked Room");
+                                getActivity().onBackPressed();
+                                getActivity().onBackPressed();
+                                getActivity().onBackPressed();
+                                WishListFragment wishListFragment = new WishListFragment();
+                                wishListFragment.switchTab();
+                                ((MaterialNavigationDrawer) getActivity()).setFragment(wishListFragment, "Room management");
+                                ((MaterialNavigationDrawer) getActivity()).setSection(((MaterialNavigationDrawer) getActivity()).newSection("Room Management", new WishListFragment()));
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            try {
+                                Toast.makeText(getActivity(),
+                                        response.getJSONObject("HotelRoomReservationResponse")
+                                                .getJSONObject("EanWsError")
+                                                .getString("presentationMessage"),
+                                        Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e1) {
+                                Toast.makeText(getActivity(), "Some error occurred, check all and try again", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
+                progressDialog.dismiss();
             }
         });
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(req);
@@ -410,7 +431,7 @@ public class BookFragment extends Fragment {
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
 
 
-        for(int i = 0; i< rooms.size();i++){
+        for (int i = 0; i < rooms.size(); i++) {
             BookedRoomSO bookedRoomSO = new BookedRoomSO();
             bookedRoomSO.setUserID(AppState.getLoggedUser().getUserID());
             bookedRoomSO.setHotelID(availableRooms.getHotelId());

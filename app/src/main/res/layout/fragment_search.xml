@@ -28,7 +28,9 @@
             android:textColor="@color/base_white"
             android:textColorHint="@color/base_white"
             android:text="London"
-            android:layout_toLeftOf="@+id/progress_bar" />
+            android:layout_toLeftOf="@+id/progress_bar"
+            android:maxLines="1"
+            android:singleLine="true"/>
 
         <ProgressBar
             android:id="@+id/progress_bar"

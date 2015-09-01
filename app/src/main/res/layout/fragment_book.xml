@@ -54,7 +54,9 @@
                             android:id="@+id/etWizardEmail"
                             android:hint="Email"
                             android:text="someNiceEmail@gmail.com"
-                            android:textColorHint="@color/base_text" />
+                            android:textColorHint="@color/base_text"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -65,7 +67,9 @@
                             android:id="@+id/etWizardFirstName"
                             android:layout_marginTop="8dp"
                             android:hint="First name"
-                            android:text="firstName" />
+                            android:text="firstName"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -76,7 +80,9 @@
                             android:id="@+id/etWizardLastName"
                             android:layout_marginTop="8dp"
                             android:hint="Last name"
-                            android:text="lastName" />
+                            android:text="lastName"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -87,7 +93,9 @@
                             android:id="@+id/etWizardHomePhone"
                             android:layout_marginTop="8dp"
                             android:hint="Home phone"
-                            android:text="380671111111" />
+                            android:text="380671111111"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -97,9 +105,11 @@
                             android:ems="10"
                             android:id="@+id/etWizardWorkPhone"
                             android:layout_marginTop="8dp"
-                            android:hint="Work phone" />
-                        android:hint="Phone"
-                        android:text="380999999999" />
+                            android:hint="Work phone"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -156,7 +166,8 @@
                                 android:hint="Credit card number"
                                 android:text="5401999999999999"
                                 android:maxLength="16"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:maxLines="1" />
 
                             <ImageView
                                 android:layout_width="32dp"
@@ -253,7 +264,9 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="Address"
-                            android:text="travelnow" />
+                            android:text="travelnow"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -262,7 +275,9 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="City"
-                            android:text="L&apos;viv" />
+                            android:text="L&apos;viv"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -271,7 +286,9 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="State province code"
-                            android:text="WA" />
+                            android:text="WA"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -280,7 +297,9 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="Country code"
-                            android:text="UA" />
+                            android:text="UA"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -290,7 +309,9 @@
                             android:id="@+id/etWizardPostalCode"
                             android:textColor="@color/base_text"
                             android:hint="Postal code"
-                            android:text="79000" />
+                            android:text="79000"
+                            android:maxLines="1"
+                            android:singleLine="true"/>
                     </LinearLayout>
 
                 </LinearLayout>
