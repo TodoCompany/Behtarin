@@ -108,7 +108,9 @@ public class CheckAvailabilityFragment extends Fragment {
         buttonFlat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.android.settings", "com.android.settings.wifi.WifiSettings");
+                startActivity(intent);
             }
         });
 
