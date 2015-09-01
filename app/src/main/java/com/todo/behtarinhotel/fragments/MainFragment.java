@@ -2,7 +2,12 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -100,6 +105,8 @@ public class MainFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
     FilterSO filterParams;
+    NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+
 
     JsonObjectRequest nextPageRequest;
     View ll;
@@ -108,6 +115,7 @@ public class MainFragment extends Fragment {
     int expediaBadResponseCounter = 0;
 
     boolean isFiltersChanged = false;
+    boolean isErorShowing = false;
     private boolean isWishListSearch;
 
 
@@ -143,6 +151,11 @@ public class MainFragment extends Fragment {
         } else {
             listView.setAdapter(slideExpandableListAdapter);
         }
+
+        getActivity().registerReceiver(
+                networkStateReceiver,
+                new IntentFilter(
+                        ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         return rootView;
@@ -259,7 +272,6 @@ public class MainFragment extends Fragment {
                     expediaBadResponseCounter++;
                     if (expediaBadResponseCounter > 3){
                         showError("No internet");
-                        listView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
                     }else{
                         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
                     }
@@ -273,6 +285,10 @@ public class MainFragment extends Fragment {
     }
 
     private void showError(String errorMessage) {
+        if(getActivity() != null) {
+            listView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
+        }
+        isErorShowing = true;
         progressBar.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
         tvError.setText("Error: " + errorMessage + ". \nPull to refresh");
@@ -281,12 +297,13 @@ public class MainFragment extends Fragment {
 
     private void showLoadingScreen(boolean firstLaunch) {
         progressBar.setVisibility(View.VISIBLE);
-        if (firstLaunch){
+        if (!firstLaunch){
             progressBar.setVisibility(View.GONE);
         }
     }
 
     private void clearLoadingScreen() {
+        isErorShowing = false;
         errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         tvError.setText("No hotels found");
@@ -462,6 +479,27 @@ public class MainFragment extends Fragment {
 
     }
 
+    public class NetworkStateReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            Log.d("app", "Network connectivity change");
+            if(intent.getExtras()!=null) {
+                NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
+                    Log.i("app","Network "+ni.getTypeName()+" connected");
+                    if(isErorShowing){
+                        showLoadingScreen(true);
+                        loadDataFromExpedia();
+                    }
+                }
+            }
+            if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
+                Log.d("app", "There's no network connectivity");
+                clearLoadingScreen();
+                showError("No internet");
+
+            }
+        }
+    }
 
 
     @Override

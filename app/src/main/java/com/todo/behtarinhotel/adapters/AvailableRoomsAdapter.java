@@ -72,6 +72,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (availableRooms.getRoomSO() == null) return 0;
         return availableRooms.getRoomSO().size();
     }
 
