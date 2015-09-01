@@ -385,12 +385,12 @@ public class BookFragment extends Fragment {
                         try {
                             if (getActivity() != null) {
                                 BookedRoomSO bookedRoomSO = null;
-                                bookedRoomSO = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
-                                sendDataToAPI(bookedRoomSO);
-                                AppState.saveBookedRoom(bookedRoomSO);
-                                BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
-                                bookedRoomFragment.initFragment(bookedRoomSO);
-                                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(bookedRoomFragment, "Booked Room");
+                                ArrayList<BookedRoomSO> bookedRooms = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
+                                sendDataToAPI(bookedRooms);
+                                AppState.saveBookedRoom(bookedRooms);
+//                                BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
+//                                bookedRoomFragment.initFragment(bookedRoomSO);
+//                                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(bookedRoomFragment, "Booked Room");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -405,47 +405,48 @@ public class BookFragment extends Fragment {
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(req);
     }
 
-    private BookedRoomSO parseResponseIntoSO(org.json.JSONObject response) throws JSONException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
+    private ArrayList<BookedRoomSO> parseResponseIntoSO(JSONObject response) throws JSONException {
 
-        BookedRoomSO bookedRoomSO = new BookedRoomSO();
-        bookedRoomSO.setUserID(AppState.getLoggedUser().getUserID());
-        bookedRoomSO.setHotelID(availableRooms.getHotelId());
-        bookedRoomSO.setFirstName(etWizardFirstName.getText().toString());
-        bookedRoomSO.setLastName(etWizardLastName.getText().toString());
-        bookedRoomSO.setSumPrice((float) response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo").getDouble("@total"));
-        bookedRoomSO.setPhotoUrl(availableRooms.getRoomSO().get(position).getRoomImage());
-        bookedRoomSO.setCurrency("USD");
-        bookedRoomSO.setNights(response.getJSONObject("RateInfos")
-                .getJSONObject("RateInfo")
-                .getJSONObject("CancelPolicyInfoList")
-                .getJSONArray("CancelPolicyInfo")
-                .getJSONObject(0)
-                .getInt("nightCount"));
-        JSONObject obj = response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
-        bookedRoomSO.setPrices(obj);
-        bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
-        bookedRoomSO.setDepartureDate(response.getString("departureDate"));
-        bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
-        bookedRoomSO.setHotelName(response.getString("hotelName"));
-        bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
-        bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
-        bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
-        bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
-        if (rooms.size() > 1) {
-            JSONArray arr = response.getJSONArray("confirmationNumbers");
-            int[] confNumbers = new int[rooms.size()];
-            for (int i = 0; i < arr.length(); i++) {
-                confNumbers[i] = arr.getInt(i);
+        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+
+
+        for(int i = 0; i< rooms.size();i++){
+            BookedRoomSO bookedRoomSO = new BookedRoomSO();
+            bookedRoomSO.setUserID(AppState.getLoggedUser().getUserID());
+            bookedRoomSO.setHotelID(availableRooms.getHotelId());
+            bookedRoomSO.setFirstName(rooms.get(i).getFirstName());
+            bookedRoomSO.setLastName(rooms.get(i).getFirstName());
+            bookedRoomSO.setSmokingPreference(rooms.get(i).getSmokingPreferenceApiCode());
+            bookedRoomSO.setSumPrice((float) response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo").getDouble("@total"));
+            bookedRoomSO.setPhotoUrl(availableRooms.getRoomSO().get(position).getRoomImage());
+            bookedRoomSO.setCurrency("USD");
+            bookedRoomSO.setNights(response.getJSONObject("RateInfos")
+                    .getJSONObject("RateInfo")
+                    .getJSONObject("CancelPolicyInfoList")
+                    .getJSONArray("CancelPolicyInfo")
+                    .getJSONObject(0)
+                    .getInt("nightCount"));
+            JSONObject obj = response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
+            bookedRoomSO.setPrices(obj);
+            bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
+            bookedRoomSO.setDepartureDate(response.getString("departureDate"));
+            bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));
+            bookedRoomSO.setHotelName(response.getString("hotelName"));
+            bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
+            bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
+            bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
+            bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
+            if (rooms.size() > 1) {
+                JSONArray arr = response.getJSONArray("confirmationNumbers");
+                bookedRoomSO.setConfirmationNumber(arr.getInt(i));
+            } else {
+                bookedRoomSO.setConfirmationNumber(response.getInt("confirmationNumbers"));
             }
-            bookedRoomSO.setConfirmationNumber(confNumbers);
-        } else {
-            int[] confNumbers = new int[rooms.size()];
-            confNumbers[0] = response.getInt("confirmationNumbers");
-            bookedRoomSO.setConfirmationNumber(confNumbers);
+            bookedRooms.add(bookedRoomSO);
         }
-        return bookedRoomSO;
+
+
+        return bookedRooms;
     }
 
     private String makeRoomString() {
@@ -472,18 +473,18 @@ public class BookFragment extends Fragment {
         return true;
     }
 
-    private void sendDataToAPI(BookedRoomSO bookedRoomSO) {
+    private void sendDataToAPI(ArrayList<BookedRoomSO> bookedRooms) {
 
         HashMap<String, Object> booking = new HashMap<>();
         ArrayList<HashMap> orderedRooms = new ArrayList<>();
         for (int i = 0; i < rooms.size(); i++) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("ItineraryID", bookedRoomSO.getItineraryId());
+            map.put("ItineraryID", bookedRooms.get(i).getItineraryId());
             map.put("FirstName", rooms.get(i).getFirstName());
             map.put("LastName", rooms.get(i).getLastName());
             map.put("BedType", rooms.get(i).getBedTypeId());
             map.put("SmokingPreference", rooms.get(i).getSmokingPreferenceApiCode());
-            map.put("Photo", bookedRoomSO.getPhotoUrl());
+            map.put("Photo", bookedRooms.get(i).getPhotoUrl());
             map.put("adult", rooms.get(i).getGuests().get(0).getAge());
             String children = "";
             if (rooms.get(i).getGuests().size() > 1) {
@@ -492,8 +493,8 @@ public class BookFragment extends Fragment {
                 }
             }
             map.put("children", children);
-            map.put("PricesArray", bookedRoomSO.getPrices());
-            map.put("ConfirmationNumber", bookedRoomSO.getConfirmationNumber()[i]);
+            map.put("PricesArray", bookedRooms.get(i).getPrices());
+            map.put("ConfirmationNumber", bookedRooms.get(i).getConfirmationNumber());
             map.put("cancellationNumber", "");
             map.put("cancellationDate", 0);
             map.put("u_id", 1);
@@ -502,15 +503,15 @@ public class BookFragment extends Fragment {
         }
         HashMap<String, Object> expedia = new HashMap<>();
 
-        expedia.put("ItineraryID", bookedRoomSO.getItineraryId());
-        expedia.put("RoomName", bookedRoomSO.getRoomDescription());
-        expedia.put("SumPrice", bookedRoomSO.getSumPrice());
-        expedia.put("Currency", bookedRoomSO.getCurrency());
-        expedia.put("StartDate", bookedRoomSO.getArrivalDate());
-        expedia.put("EndDate", bookedRoomSO.getDepartureDate());
-        expedia.put("Nights", bookedRoomSO.getNights());
-        expedia.put("UserID", bookedRoomSO.getUserID());
-        expedia.put("HotelID", bookedRoomSO.getHotelID());
+        expedia.put("ItineraryID", bookedRooms.get(0).getItineraryId());
+        expedia.put("RoomName", bookedRooms.get(0).getRoomDescription());
+        expedia.put("SumPrice", bookedRooms.get(0).getSumPrice());
+        expedia.put("Currency", bookedRooms.get(0).getCurrency());
+        expedia.put("StartDate", bookedRooms.get(0).getArrivalDate());
+        expedia.put("EndDate", bookedRooms.get(0).getDepartureDate());
+        expedia.put("Nights", bookedRooms.get(0).getNights());
+        expedia.put("UserID", bookedRooms.get(0).getUserID());
+        expedia.put("HotelID", bookedRooms.get(0).getHotelID());
 
         //booking.put("expedia_order", expedia);
         booking.put("ordered_room", orderedRooms);
