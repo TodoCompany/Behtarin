@@ -6,10 +6,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -123,6 +125,8 @@ public class MainFragment extends Fragment {
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
         errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
+        errorLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        errorLayout.setGravity(Gravity.CENTER);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -457,6 +461,8 @@ public class MainFragment extends Fragment {
         }
 
     }
+
+
 
     @Override
     public void onPause() {

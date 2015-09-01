@@ -5,9 +5,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +69,8 @@ public class CheckAvailabilityFragment extends Fragment {
         roomsListView = (ListView) rootView.findViewById(R.id.rooms_list_view);
         errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
+        errorLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        errorLayout.setGravity(Gravity.CENTER);
 
 
         gsonBuilder = new GsonBuilder();
