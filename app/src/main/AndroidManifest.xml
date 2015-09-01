@@ -24,6 +24,7 @@
         android:theme="@style/MyNavigationDrawerTheme"
         >
 
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -68,6 +69,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <uses-library android:name="com.google.android.maps" />
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAeyjTHRNtdI7Mmw7GON83eYjwTE5A8qCU"/>
 
     </application>
 

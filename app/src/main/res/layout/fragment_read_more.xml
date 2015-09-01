@@ -229,6 +229,16 @@
                     android:layout_marginTop="16dp"
                     android:background="#EBEBEB" />
 
+                <view
+                    android:id="@+id/mapView"
+                    class="com.todo.behtarinhotel.views.MyMapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp" />
+
+                    <!--android:apiKey="AIzaSyAeyjTHRNtdI7Mmw7GON83eYjwTE5A8qCU"-->
+
+
+
             </LinearLayout>
 
         </LinearLayout>

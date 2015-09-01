@@ -21,11 +21,16 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.views.MyMapView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +53,9 @@ public class ReadMoreFragment extends Fragment {
     ButtonFlat btnCheckAvailability;
     View rootView;
     LayoutInflater inflater;
+    private MyMapView mapView;
+    private GoogleMap googleMap;
+    LatLng markerPosition = new LatLng(49.840550, 24.028200);
 
     SearchResultSO searchResultSO;
     float rate;
@@ -60,7 +68,6 @@ public class ReadMoreFragment extends Fragment {
     ArrayList<String> hotelImagesUrls;
     int checkedImageNumber;
     RequestListener listener;
-
 
 
     public ReadMoreFragment() {
@@ -78,6 +85,9 @@ public class ReadMoreFragment extends Fragment {
         initViewsById();
         fillWithData();
         loadImagesUrls();
+        setUpMapIfNeeded(savedInstanceState);
+
+
 
         return rootView;
     }
@@ -124,7 +134,7 @@ public class ReadMoreFragment extends Fragment {
 
     }
 
-    public void setHotelData(SearchResultSO searchResultSO){
+    public void setHotelData(SearchResultSO searchResultSO) {
         this.searchResultSO = searchResultSO;
     }
 
@@ -159,21 +169,21 @@ public class ReadMoreFragment extends Fragment {
             }
         });
 
-        if(!AppState.isInWishList(searchResultSO.getHotelId())){
+        if (!AppState.isInWishList(searchResultSO.getHotelId())) {
             btnFloat.setBackgroundColor(getResources().getColor(R.color.base_white));
             btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.star_selected));
-        }else{
+        } else {
             btnFloat.setBackgroundColor(getResources().getColor(R.color.base_yellow));
             btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.abc_btn_rating_star_on_mtrl_alpha));
         }
         btnFloat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!AppState.isInWishList(searchResultSO.getHotelId())){
+                if (!AppState.isInWishList(searchResultSO.getHotelId())) {
                     AppState.addToWishList(searchResultSO.getHotelId());
                     btnFloat.setBackgroundColor(getResources().getColor(R.color.base_yellow));
                     btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.abc_btn_rating_star_on_mtrl_alpha));
-                }else{
+                } else {
                     AppState.removeFromWishList(searchResultSO.getHotelId());
                     btnFloat.setBackgroundColor(getResources().getColor(R.color.base_white));
                     btnFloat.setDrawableIcon(getResources().getDrawable(R.drawable.star_selected));
@@ -212,7 +222,7 @@ public class ReadMoreFragment extends Fragment {
         }
     }
 
-    private void loadImagesUrls(){
+    private void loadImagesUrls() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 AppState.getHotelImagesUrl(searchResultSO.getHotelId()),
                 new Response.Listener<JSONObject>() {
@@ -225,7 +235,7 @@ public class ReadMoreFragment extends Fragment {
                                     .getJSONObject("HotelInformationResponse")
                                     .getJSONObject("HotelImages")
                                     .getJSONArray("HotelImage");
-                            for(int i = 0; i < imagesArray.length(); i++){
+                            for (int i = 0; i < imagesArray.length(); i++) {
                                 hotelImagesUrls.add(imagesArray.getJSONObject(i).getString("url"));
                             }
                             fillHotelImages();
@@ -244,7 +254,7 @@ public class ReadMoreFragment extends Fragment {
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void fillHotelImages(){
+    private void fillHotelImages() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.weight = 1;
         params.bottomMargin = 3;
@@ -256,8 +266,8 @@ public class ReadMoreFragment extends Fragment {
         firstRow.removeAllViews();
         secondRow.removeAllViews();
         ArrayList<View> photos = new ArrayList<>();
-        if (hotelImagesUrls.size() <= 6){
-            for (int i = 0; i < hotelImagesUrls.size(); i++){
+        if (hotelImagesUrls.size() <= 6) {
+            for (int i = 0; i < hotelImagesUrls.size(); i++) {
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setId(i);
@@ -268,8 +278,8 @@ public class ReadMoreFragment extends Fragment {
                         .into(imageView);
                 photos.add(imageView);
             }
-        }else{
-            for (int i = 0; i < 5; i++){
+        } else {
+            for (int i = 0; i < 5; i++) {
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setLayoutParams(params);
@@ -282,6 +292,7 @@ public class ReadMoreFragment extends Fragment {
             }
             View view = inflater.inflate(R.layout.more_photos_item, null, false);
             view.setLayoutParams(params);
+            //noinspection ResourceType
             view.setId(6);
             Button btnLoadMorePhotos = (Button) view.findViewById(R.id.btnLoadMorePhotos);
             btnLoadMorePhotos.setOnClickListener(new View.OnClickListener() {
@@ -309,7 +320,7 @@ public class ReadMoreFragment extends Fragment {
         secondRow.addView(photos.get(4));
         secondRow.addView(photos.get(5));
 
-        for (View view : photos){
+        for (View view : photos) {
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -323,10 +334,48 @@ public class ReadMoreFragment extends Fragment {
 
     }
 
+    private void setUpMapIfNeeded(Bundle savedInstanceState) {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (mapView == null) {
+            mapView = (MyMapView) rootView.findViewById(R.id.mapView);
+            mapView.onCreate(savedInstanceState);
+            googleMap = mapView.getMap();
+            if (googleMap != null) {
+                setUpMap();
+            }
+        }
+    }
+
+    private void setUpMap() {
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
+
+    }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
 
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+
+    }
 }
