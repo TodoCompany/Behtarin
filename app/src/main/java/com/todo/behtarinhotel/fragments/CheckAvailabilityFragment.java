@@ -23,13 +23,16 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.AvailableRoomsAdapter;
+import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
+import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
@@ -48,6 +51,9 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class CheckAvailabilityFragment extends Fragment {
 
+    private static final int NO_INTERNET = 1;
+
+
     GsonBuilder gsonBuilder;
     Gson gson;
     AvailableRoomsSO availableRoomsSO;
@@ -55,6 +61,7 @@ public class CheckAvailabilityFragment extends Fragment {
     ViewGroup rootView;
     TextView tvError;
     LinearLayout errorLayout;
+    ButtonFlat buttonFlat;
 
     int hotelId;
     String arrivalDate, departureDate;
@@ -89,12 +96,19 @@ public class CheckAvailabilityFragment extends Fragment {
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbRoomLoading);
-        showLoadingScreen(true);
+        progressBar.setVisibility(View.VISIBLE);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                showLoadingScreen(false);
+                progressBar.setVisibility(View.GONE);
                 getData(hotelId, arrivalDate, departureDate, rooms);
+            }
+        });
+        buttonFlat = (ButtonFlat) rootView.findViewById(R.id.btnCheckWifi);
+        buttonFlat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
             }
         });
 
@@ -292,7 +306,7 @@ public class CheckAvailabilityFragment extends Fragment {
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0) {
-                            showError("There are no free rooms in this hotel for that days");
+                            showError(NO_INTERNET);
                         } else {
                             clearLoadingScreen();
                         }
@@ -308,30 +322,31 @@ public class CheckAvailabilityFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("API", "Request was: " + url + "; Error response: " + error.toString());
-                showError("Something went wrong =( cant get hotel rooms. Check your internet connection");
+                showError(NO_INTERNET);
             }
         });
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void showError(String errorMessage) {
+    private void showError(int errorCode) {
         if(getActivity() != null) {
-            AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), new AvailableRoomsSO(), new ArrayList<SearchRoomSO>(), "", "");
-            roomsListView.setAdapter(adapter);
+            roomsListView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
+            isErorShowing = true;
+            progressBar.setVisibility(View.GONE);
+            swipeContainer.setRefreshing(false);
+
+            switch (errorCode) {
+                case NO_INTERNET:
+                    tvError.setText("Error: No internet");
+                    buttonFlat.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+            errorLayout.setVisibility(View.VISIBLE);
         }
-        isErorShowing = true;
-        progressBar.setVisibility(View.GONE);
-        swipeContainer.setRefreshing(false);
-        tvError.setText("Error: " + errorMessage + ". \nPull to refresh");
-        errorLayout.setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingScreen(boolean firstLaunch) {
-        progressBar.setVisibility(View.VISIBLE);
-        if (!firstLaunch){
-            progressBar.setVisibility(View.GONE);
-        }
-    }
+
 
     private void clearLoadingScreen() {
         isErorShowing = false;
@@ -351,7 +366,7 @@ public class CheckAvailabilityFragment extends Fragment {
                 if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
                     Log.i("app","Network "+ni.getTypeName()+" connected");
                     if(isErorShowing){
-                        showLoadingScreen(true);
+                        progressBar.setVisibility(View.VISIBLE);
                         getData(hotelId, arrivalDate, departureDate, rooms);
                     }
                 }
@@ -359,7 +374,7 @@ public class CheckAvailabilityFragment extends Fragment {
             if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
-                showError("No internet");
+                showError(NO_INTERNET);
 
             }
         }

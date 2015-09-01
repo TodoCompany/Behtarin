@@ -28,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -66,6 +67,8 @@ public class MainFragment extends Fragment {
     private static final int SORT_BY_LOWEST_PRICE = 2;
     private static final int SORT_BY_NAME = 3;
     private int sortingType = NO_SORTING;
+
+    private static final int NO_INTERNET = 1, NO_HOTELS = 2;
 
     String url;
     String apiKey = "&apiKey=";
@@ -106,7 +109,7 @@ public class MainFragment extends Fragment {
     private ProgressBarCircularIndeterminate progressBar;
     FilterSO filterParams;
     NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
-
+    ButtonFlat buttonFlat;
 
     JsonObjectRequest nextPageRequest;
     View ll;
@@ -135,6 +138,13 @@ public class MainFragment extends Fragment {
         errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
         errorLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         errorLayout.setGravity(Gravity.CENTER);
+        buttonFlat = (ButtonFlat) rootView.findViewById(R.id.btnCheckWifi);
+        buttonFlat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -172,7 +182,6 @@ public class MainFragment extends Fragment {
 
     public void loadDataFromExpedia() {
         if (searchParams != null) {
-            showLoadingScreen(true);
             if (isWishListSearch) {
                 url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
                         apiKey + API_KEY +
@@ -251,7 +260,7 @@ public class MainFragment extends Fragment {
                                 }
                             } else {
                                 if (arr == null || arr.length() == 0) {
-                                    showError("No hotels");
+                                    showError(NO_HOTELS);
                                     return;
                                 }
 
@@ -271,7 +280,7 @@ public class MainFragment extends Fragment {
                     VolleyLog.e("Error: ", error.getMessage());
                     expediaBadResponseCounter++;
                     if (expediaBadResponseCounter > 3){
-                        showError("No internet");
+                        showError(NO_INTERNET);
                     }else{
                         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
                     }
@@ -284,23 +293,29 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void showError(String errorMessage) {
+    private void showError(int errorCode) {
         if(getActivity() != null) {
             listView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
+            isErorShowing = true;
+            progressBar.setVisibility(View.GONE);
+            swipeContainer.setRefreshing(false);
+
+            switch (errorCode) {
+                case NO_INTERNET:
+                    tvError.setText("Error: No internet");
+                    buttonFlat.setVisibility(View.VISIBLE);
+                    break;
+                case NO_HOTELS:
+                    tvError.setText("Error: No hotels for query.");
+                    buttonFlat.setVisibility(View.GONE);;
+                    break;
+            }
+
+            errorLayout.setVisibility(View.VISIBLE);
         }
-        isErorShowing = true;
-        progressBar.setVisibility(View.GONE);
-        swipeContainer.setRefreshing(false);
-        tvError.setText("Error: " + errorMessage + ". \nPull to refresh");
-        errorLayout.setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingScreen(boolean firstLaunch) {
-        progressBar.setVisibility(View.VISIBLE);
-        if (!firstLaunch){
-            progressBar.setVisibility(View.GONE);
-        }
-    }
+
 
     private void clearLoadingScreen() {
         isErorShowing = false;
@@ -487,7 +502,7 @@ public class MainFragment extends Fragment {
                 if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
                     Log.i("app","Network "+ni.getTypeName()+" connected");
                     if(isErorShowing){
-                        showLoadingScreen(true);
+                        progressBar.setVisibility(View.VISIBLE);
                         loadDataFromExpedia();
                     }
                 }
@@ -495,7 +510,7 @@ public class MainFragment extends Fragment {
             if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
-                showError("No internet");
+                showError(NO_INTERNET);
 
             }
         }
@@ -542,7 +557,7 @@ public class MainFragment extends Fragment {
         ((MaterialNavigationDrawer) getActivity()).getToolbar().addView(ll);
 
         if (isFiltersChanged) {
-            showLoadingScreen(false);
+            progressBar.setVisibility(View.VISIBLE);
             loadDataFromExpedia();
         }
     }
