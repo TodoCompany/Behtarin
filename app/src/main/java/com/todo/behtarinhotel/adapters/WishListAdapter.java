@@ -41,13 +41,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import roboguice.inject.ContentView;
 
 /**
  * Created by dmytro on 7/8/15.
  */
-@ContentView(R.layout.main_activity_main_list_item)
-
 public class WishListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
@@ -193,7 +190,7 @@ public class WishListAdapter extends BaseAdapter {
 //        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
-        tvPrice.setText("$" + searchResultSO.getMinPrice());
+        tvPrice.setText("$" + String.format("%.2f", searchResultSO.getMinPrice()));
 
 
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {

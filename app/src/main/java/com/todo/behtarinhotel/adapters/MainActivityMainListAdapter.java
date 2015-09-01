@@ -42,12 +42,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import roboguice.inject.ContentView;
 
 /**
  * Created by dmytro on 7/8/15.
  */
-@ContentView(R.layout.main_activity_main_list_item)
 public class MainActivityMainListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
