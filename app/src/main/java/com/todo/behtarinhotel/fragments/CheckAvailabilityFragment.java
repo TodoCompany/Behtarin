@@ -66,7 +66,7 @@ public class CheckAvailabilityFragment extends Fragment {
     int hotelId;
     String arrivalDate, departureDate;
     ArrayList<SearchRoomSO> rooms;
-    boolean isErorShowing = false;
+    boolean isErrorShowing = false;
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
@@ -333,7 +333,7 @@ public class CheckAvailabilityFragment extends Fragment {
     private void showError(int errorCode) {
         if(getActivity() != null) {
             roomsListView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
-            isErorShowing = true;
+            isErrorShowing = true;
             progressBar.setVisibility(View.GONE);
             swipeContainer.setRefreshing(false);
 
@@ -351,7 +351,7 @@ public class CheckAvailabilityFragment extends Fragment {
 
 
     private void clearLoadingScreen() {
-        isErorShowing = false;
+        isErrorShowing = false;
         errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         tvError.setText("No hotels found");
@@ -367,7 +367,7 @@ public class CheckAvailabilityFragment extends Fragment {
                 NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
                 if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
                     Log.i("app","Network "+ni.getTypeName()+" connected");
-                    if(isErorShowing){
+                    if(isErrorShowing){
                         progressBar.setVisibility(View.VISIBLE);
                         getData(hotelId, arrivalDate, departureDate, rooms);
                     }
