@@ -3,6 +3,7 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -208,26 +209,6 @@ public class SearchFragment extends Fragment {
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);
 
-        etCheckIn.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setLinkTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setLinkTextColor(getResources().getColor(R.color.base_white));
 
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
@@ -308,6 +289,7 @@ public class SearchFragment extends Fragment {
 
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
+
         /**
          * Set Up Current Date Into date_picker_dialog
          */
