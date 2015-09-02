@@ -425,6 +425,8 @@ public class BookFragment extends Fragment {
                 .getInt("nightCount"));
         JSONObject obj = response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
         bookedRoomSO.setPrices(obj);
+        bookedRoomSO.setLatitude((float) response.getDouble("latitude"));
+        bookedRoomSO.setLongitude((float) response.getDouble("longitude"));
         bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
         bookedRoomSO.setDepartureDate(response.getString("departureDate"));
         bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));

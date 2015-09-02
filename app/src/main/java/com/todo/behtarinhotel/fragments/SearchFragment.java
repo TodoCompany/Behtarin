@@ -11,19 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.edmodo.rangebar.RangeBar;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
@@ -31,14 +26,14 @@ import com.todo.behtarinhotel.adapters.RoomListAdapter;
 import com.todo.behtarinhotel.adapters.SearchCityAdapter;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
 import com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -109,6 +104,7 @@ public class SearchFragment extends Fragment {
 
         initViewsById(rootView);
 
+        fillInputsWithCurrentDate();
         listView = (ListView) rootView.findViewById(R.id.lv_room_fragment_search);
         if (soArrayList == null) {
             soArrayList = new ArrayList<SearchRoomSO>();
@@ -302,10 +298,10 @@ public class SearchFragment extends Fragment {
 
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
-        /**
-         * Set Up Current Date Into date_picker_dialog
-         */
         Calendar calender = Calendar.getInstance();
+        if (!isCheckInSelected) {
+            calender.add(Calendar.DATE, 1);
+        }
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
         args.putInt("month", calender.get(Calendar.MONTH));
@@ -344,5 +340,14 @@ public class SearchFragment extends Fragment {
         etLocation.setEnabled(false);
     }
 
+    private void fillInputsWithCurrentDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        etCheckIn.setText(sdf.format(c.getTime()));
+        c.add(Calendar.DATE, 1);
+        etCheckOut.setText(sdf.format(c.getTime()));
+
+    }
 
 }

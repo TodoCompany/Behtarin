@@ -160,6 +160,13 @@
 
             </LinearLayout>
 
+            <view
+                android:id="@+id/mapView"
+                class="com.todo.behtarinhotel.views.MyMapView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="16dp" />
+
             <com.gc.materialdesign.views.ButtonRectangle
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -167,6 +174,7 @@
                 android:text="Cancel booking..."
                 android:background="@color/base_yellow"
                 android:layout_marginTop="8dp" />
+
 
         </LinearLayout>
     </ScrollView>

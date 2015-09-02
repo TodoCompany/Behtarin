@@ -39,6 +39,9 @@ public class BookedRoomSO {
     int adult;
     int[] children;
 
+    float latitude;
+    float longitude;
+
     JSONObject prices;
 
     public JSONObject getPrices() {
@@ -253,4 +256,23 @@ public class BookedRoomSO {
     public void setOrderState(int orderState) {
         this.orderState = orderState;
     }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
 }
+
+
+

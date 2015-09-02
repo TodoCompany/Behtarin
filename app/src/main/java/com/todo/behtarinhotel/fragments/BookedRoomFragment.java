@@ -22,10 +22,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.views.MyMapView;
 
 import org.json.JSONObject;
 
@@ -53,6 +58,8 @@ public class BookedRoomFragment extends Fragment {
     TextView tvHotelName, tvRoomDescription, tvHotelLocation, tvArrival, tvDeparture, tvRoomPrice;
     ButtonRectangle btnCancelBooking;
     View rootView;
+    MyMapView mapView;
+    GoogleMap googleMap;
 
     BookedRoomSO bookedRoomSO;
     RequestListener listener;
@@ -69,6 +76,7 @@ public class BookedRoomFragment extends Fragment {
         initViews();
         initViewsWithData();
         setOnClickListeners();
+      // TODO coordinates must be not 0;  setUpMapIfNeeded(savedInstanceState);
 
 
         return rootView;
@@ -189,5 +197,54 @@ public class BookedRoomFragment extends Fragment {
 
     public void initFragment(BookedRoomSO bookedRoomSO) {
         this.bookedRoomSO = bookedRoomSO;
+    }
+
+
+    private void setUpMapIfNeeded(Bundle savedInstanceState) {
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (mapView == null) {
+            mapView = (MyMapView) rootView.findViewById(R.id.mapView);
+            mapView.onCreate(savedInstanceState);
+            googleMap = mapView.getMap();
+            if (googleMap != null) {
+                setUpMap();
+            }
+        }
+    }
+
+    private void setUpMap() {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(bookedRoomSO.getLatitude(), bookedRoomSO.getLongitude()))
+                .title(bookedRoomSO.getHotelName())
+                .snippet(bookedRoomSO.getHotelAddress()));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(bookedRoomSO.getLatitude(), bookedRoomSO.getLongitude()), 12));
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+
     }
 }
