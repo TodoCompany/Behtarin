@@ -347,7 +347,10 @@ public class ReadMoreFragment extends Fragment {
     }
 
     private void setUpMap() {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()))
+                .title(searchResultSO.getHotelName())
+                .snippet(searchResultSO.getAddress()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
 
     }

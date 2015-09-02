@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
     private static final int SORT_BY_NAME = 3;
     private int sortingType = NO_SORTING;
 
-    private static final int NO_INTERNET = 1, NO_HOTELS = 2;
+    private static final int NO_INTERNET = 1, NO_HOTELS = 2, HOTEL_NOT_AVAILABLE = 3;
 
     String url;
     String apiKey = "&apiKey=";
@@ -135,6 +135,7 @@ public class MainFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         progressBar = (ProgressBarCircularIndeterminate) rootView.findViewById(R.id.pbHotelLoading);
         tvError = (TextView) rootView.findViewById(R.id.tvError);
+        tvError.setGravity(Gravity.CENTER);
         errorLayout = (LinearLayout) rootView.findViewById(R.id.errorLayout);
         errorLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         errorLayout.setGravity(Gravity.CENTER);
@@ -251,14 +252,19 @@ public class MainFragment extends Fragment {
                             }.getType();
 
                             if (isWishListSearch) {
-                                SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
-                                searchResultSOArrayList = new ArrayList<>();
-                                searchResultSOArrayList.add(so);
-                                if (getActivity() != null) {
-                                    adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                                    slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                                    listView.setAdapter(slideExpandableListAdapter);
-                                    clearLoadingScreen();
+                                try {
+                                    SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
+                                    searchResultSOArrayList = new ArrayList<>();
+                                    searchResultSOArrayList.add(so);
+                                    if (getActivity() != null) {
+                                        adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                                        slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                                        listView.setAdapter(slideExpandableListAdapter);
+                                        clearLoadingScreen();
+                                    }
+                                }catch (NullPointerException e){
+                                    // Hotel have no free roms for that date
+                                    showError(HOTEL_NOT_AVAILABLE);
                                 }
                             } else {
                                 if (arr == null || arr.length() == 0) {
@@ -304,12 +310,16 @@ public class MainFragment extends Fragment {
 
             switch (errorCode) {
                 case NO_INTERNET:
-                    tvError.setText("Error: No internet");
+                    tvError.setText("No internet connection");
                     buttonFlat.setVisibility(View.VISIBLE);
                     break;
                 case NO_HOTELS:
-                    tvError.setText("Error: No hotels for query.");
+                    tvError.setText("No hotels for this query.");
                     buttonFlat.setVisibility(View.GONE);;
+                    break;
+                case HOTEL_NOT_AVAILABLE:
+                    tvError.setText("There are no free rooms for that days.");
+                    buttonFlat.setVisibility(View.GONE);
                     break;
             }
 
