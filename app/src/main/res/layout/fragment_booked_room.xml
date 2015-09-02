@@ -165,7 +165,8 @@
                 class="com.todo.behtarinhotel.views.MyMapView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_margin="16dp" />
+                android:layout_margin="16dp"
+                android:background="#00ffffff"/>
 
             <com.gc.materialdesign.views.ButtonRectangle
                 android:layout_width="match_parent"

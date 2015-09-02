@@ -167,6 +167,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                 SearchResultSO searchResultSO = (SearchResultSO) getItem(position);
                 CheckAvailabilityFragment checkAvailabilityFragment = new CheckAvailabilityFragment();
                 ((MaterialNavigationDrawer) activity).setFragmentChild(checkAvailabilityFragment, activity.getString(R.string.fragment_checkavailablerooms));
+                checkAvailabilityFragment.setCoordinates(searchResultSOArrayList.get(position).getLongitude(), searchResultSOArrayList.get(position).getLatitude());
                 checkAvailabilityFragment.getData(searchResultSO.getHotelId(), arrivalDate, departureDate, rooms);
             }
         });

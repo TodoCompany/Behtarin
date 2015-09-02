@@ -74,6 +74,8 @@ public class BookFragment extends Fragment {
     ScrollView scroll;
     AvailableRoomsSO availableRooms;
     int position;
+    float longitude, latitude;
+
 
     String apiKey = "&apiKey=RyqEsq69";
     String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + System.currentTimeMillis() / 1000L);
@@ -217,12 +219,14 @@ public class BookFragment extends Fragment {
 
     }
 
-    public void setRooms(int position, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms, String arrivalDate, String departureDate) {
+    public void setRooms(int position, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> rooms, String arrivalDate, String departureDate, float longitude, float latitude) {
         this.rooms = rooms;
         this.position = position;
         this.availableRooms = availableRooms;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -386,6 +390,8 @@ public class BookFragment extends Fragment {
                             if (getActivity() != null) {
                                 BookedRoomSO bookedRoomSO = null;
                                 bookedRoomSO = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
+                                bookedRoomSO.setLongitude(longitude);
+                                bookedRoomSO.setLatitude(latitude);
                                 sendDataToAPI(bookedRoomSO);
                                 AppState.saveBookedRoom(bookedRoomSO);
                                 BookedRoomFragment bookedRoomFragment = new BookedRoomFragment();
@@ -425,8 +431,6 @@ public class BookFragment extends Fragment {
                 .getInt("nightCount"));
         JSONObject obj = response.getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
         bookedRoomSO.setPrices(obj);
-        bookedRoomSO.setLatitude((float) response.getDouble("latitude"));
-        bookedRoomSO.setLongitude((float) response.getDouble("longitude"));
         bookedRoomSO.setArrivalDate(response.getString("arrivalDate"));
         bookedRoomSO.setDepartureDate(response.getString("departureDate"));
         bookedRoomSO.setHotelAddress(response.getString("hotelAddress"));

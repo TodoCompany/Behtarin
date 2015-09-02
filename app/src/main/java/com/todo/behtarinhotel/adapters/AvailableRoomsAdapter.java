@@ -41,12 +41,15 @@ public class AvailableRoomsAdapter extends BaseAdapter {
     String arrivalDate;
     String departureDate;
     RequestListener listener;
+    float longitude, latitude;
 
 
-    public AvailableRoomsAdapter(final MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO,String arrivalDate,String departureDate) {
+    public AvailableRoomsAdapter(final MaterialNavigationDrawer activity, AvailableRoomsSO availableRooms, ArrayList<SearchRoomSO> searchRoomSO,String arrivalDate,String departureDate, float longitude, float latitude) {
         this.activity = activity;
         this.availableRooms = availableRooms;
         this.searchRoomSO = searchRoomSO;
+        this.longitude = longitude;
+        this.latitude = latitude;
         lInflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         bookFragment = new BookFragment();
@@ -120,7 +123,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bookFragment.setRooms(position,availableRooms, searchRoomSO,arrivalDate,departureDate);
+                bookFragment.setRooms(position,availableRooms, searchRoomSO,arrivalDate,departureDate, longitude, latitude);
                 activity.setFragmentChild(bookFragment, "Book");
 
             }

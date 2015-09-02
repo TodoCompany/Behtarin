@@ -71,6 +71,7 @@ public class CheckAvailabilityFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
     NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+    float longitude, latitude;
 
 
     public CheckAvailabilityFragment() {
@@ -124,6 +125,11 @@ public class CheckAvailabilityFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getData(hotelId, arrivalDate, departureDate, rooms);
+    }
+
+    public void setCoordinates(float longitude, float latitude){
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public void getData(int hotelId, String dateArrival, String dateDeparture, final ArrayList<SearchRoomSO> rooms) {
@@ -305,7 +311,7 @@ public class CheckAvailabilityFragment extends Fragment {
                         }
 
 
-                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
+                        AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate, longitude, latitude);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0) {
                             showError(NO_INTERNET);

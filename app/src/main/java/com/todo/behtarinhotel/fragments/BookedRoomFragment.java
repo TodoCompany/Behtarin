@@ -76,7 +76,7 @@ public class BookedRoomFragment extends Fragment {
         initViews();
         initViewsWithData();
         setOnClickListeners();
-      // TODO coordinates must be not 0;  setUpMapIfNeeded(savedInstanceState);
+        setUpMapIfNeeded(savedInstanceState);
 
 
         return rootView;
