@@ -154,6 +154,18 @@ public class SearchFragment extends Fragment {
         ProgressBar pb = (ProgressBar) view.findViewById(R.id.progress_bar);
         pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
         etLocation.setLoadingIndicator(pb);
+        etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
+        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_white), PorterDuff.Mode.SRC_IN);
+                }else{
+                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
+                }
+            }
+        });
+
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {

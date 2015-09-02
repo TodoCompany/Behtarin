@@ -12,6 +12,7 @@
     <color name="base_gold">#FFD700</color>
     <color name="base_grey">#ff909090</color>
     <color name="base_dark">#232323</color>
+    <color name="base_tint">#46ffffff</color>
 
     <color name="btn_load_more_normal">#4effbd07</color>
     <color name="btn_load_more_presed">#a6ffbf07</color>

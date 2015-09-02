@@ -21,16 +21,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/et_location_search_fragment"
             android:hint="Enter city or hotel name"
-            app:met_floatingLabel="highlight"
-            app:met_floatingLabelText="Location"
-            app:met_primaryColor="@color/base_white"
             android:layout_marginBottom="10dp"
             android:textColor="@color/base_white"
             android:textColorHint="@color/base_white"
             android:text="London"
             android:layout_toLeftOf="@+id/progress_bar"
             android:maxLines="1"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:backgroundTint="#46ffffff" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -58,12 +56,13 @@
                 android:hint="Check in"
                 app:met_floatingLabel="highlight"
                 android:layout_marginRight="10dp"
+                app:met_baseColor="#fff"
                 app:met_primaryColor="@color/base_white"
                 app:met_textColor="@color/base_white"
                 app:met_textColorHint="@color/base_white"
                 android:focusable="false"
                 android:text="09/20/2015"
-                android:textColorHint="@color/base_white" />
+                />
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
@@ -71,6 +70,7 @@
                 android:id="@+id/et_check_out_search_fragment"
                 android:layout_weight="1"
                 android:hint="Check out"
+                app:met_baseColor="#fff"
                 app:met_floatingLabel="highlight"
                 app:met_primaryColor="@color/base_white"
                 app:met_textColor="@color/base_white"
