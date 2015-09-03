@@ -11,19 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.edmodo.rangebar.RangeBar;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
@@ -31,12 +26,11 @@ import com.todo.behtarinhotel.adapters.RoomListAdapter;
 import com.todo.behtarinhotel.adapters.SearchCityAdapter;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
 import com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -202,26 +196,8 @@ public class SearchFragment extends Fragment {
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);
 
-        etCheckIn.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setLinkTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setLinkTextColor(getResources().getColor(R.color.base_white));
+        setTodaysDate();
+
 
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
@@ -297,7 +273,14 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    private void setTodaysDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calender = Calendar.getInstance();
+        etCheckIn.setText(sdf.format(calender.getTime()));
+        calender.add(Calendar.DATE, 1);
+        etCheckOut.setText(sdf.format(calender.getTime()));
 
+    }
 
 
     private void showDatePicker() {

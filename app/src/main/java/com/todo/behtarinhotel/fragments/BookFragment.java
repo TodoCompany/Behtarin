@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.todo.behtarinhotel.adapters.BookingInputsAdapter;
 import com.todo.behtarinhotel.adapters.ConfirmRoomsInfoAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
+import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.CardTypeEnum;
@@ -56,28 +59,31 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  */
 public class BookFragment extends Fragment {
 
-    ArrayList<SearchRoomSO> rooms;
-    ButtonRectangle btnToConfirmPage, btnCancelPay, btnPayForRoom;
-    Button btnCardIo;
-    View rootView;
-    LinearLayout payParametersScreen, confirmPayScreen;
+    private ArrayList<SearchRoomSO> rooms;
+    private ButtonRectangle btnToConfirmPage, btnCancelPay, btnPayForRoom, btnAddNewCard;
+    private Button btnCardIo;
+    private View rootView;
+    private LinearLayout payParametersScreen, confirmPayScreen;
+    private PaymentCardSO currentPaymentCard;
+    private ArrayList<PaymentCardSO> paymentCards;
 
-    EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone, etWizardWorkPhone;
-    EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
-    EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode, etStateProvinceCode;
-    ArrayList<EditText> requiredEditTexts = new ArrayList<>();
-    TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
-    TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
-    TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
-    TextView tvCheckInInstructions, tvCancellationPolicy, tvTotalCost;
-    ImageView ivCardType;
-    ScrollView scroll;
-    AvailableRoomsSO availableRooms;
-    int position;
+    private EditText etWizardEmail, etWizardFirstName, etWizardLastName, etWizardHomePhone, etWizardWorkPhone;
+    private EditText etWizardCity, etWizardAddress, etWizardCountryCode, etWizardPostalCode, etStateProvinceCode;
+    private EditText etWizardCreditCardNumber, etWizardCreditCardIdentifier, etWizardCreditCardExMonth, etWizardCreditCardExYear;
+    private ArrayList<EditText> requiredEditTexts = new ArrayList<>();
+    private TextView tvWizardEmail, tvWizardFirstName, tvWizardLastName, tvWizardPhone;
+    private TextView tvWizardCreditCardNumber, tvWizardCreditCardIdentifier, tvWizardCreditCardExpiration;
+    private TextView tvWizardCity, tvWizardAddress, tvWizardCountryCode, tvWizardPostalCode;
+    private TextView tvCheckInInstructions, tvCancellationPolicy, tvTotalCost;
+    private ImageView ivCardType;
+    private ScrollView scroll;
+    private AvailableRoomsSO availableRooms;
+    private RadioGroup rgroupCreditCard;
+    private int position;
 
-    String apiKey = "&apiKey=RyqEsq69";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + System.currentTimeMillis() / 1000L);
-    String url;
+    private String apiKey = "&apiKey=RyqEsq69";
+    private String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + System.currentTimeMillis() / 1000L);
+    private String url;
 
 
     ListView wizardRoomsList;
@@ -97,7 +103,7 @@ public class BookFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_book, container, false);
 
         initViews();
-        setOnClickListeners();
+        setUiListeners();
         setRequiredEditTexts();
         switchToConfirmPayPage(false);
 
@@ -109,16 +115,17 @@ public class BookFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initCreditCardsRadioGroup();
+    }
+
     private void setRequiredEditTexts() {
         requiredEditTexts.add(etWizardEmail);
         requiredEditTexts.add(etWizardFirstName);
         requiredEditTexts.add(etWizardLastName);
         requiredEditTexts.add(etWizardHomePhone);
-
-        requiredEditTexts.add(etWizardCreditCardNumber);
-        requiredEditTexts.add(etWizardCreditCardIdentifier);
-        requiredEditTexts.add(etWizardCreditCardExMonth);
-        requiredEditTexts.add(etWizardCreditCardExYear);
 
         requiredEditTexts.add(etWizardCity);
         requiredEditTexts.add(etWizardAddress);
@@ -143,6 +150,7 @@ public class BookFragment extends Fragment {
         btnToConfirmPage = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
         btnCancelPay = (ButtonRectangle) rootView.findViewById(R.id.btnCancelPay);
         btnPayForRoom = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
+        btnAddNewCard = (ButtonRectangle) rootView.findViewById(R.id.btnAddNewCard);
         btnCardIo = (Button) rootView.findViewById(R.id.btnCardIo);
 
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
@@ -150,36 +158,6 @@ public class BookFragment extends Fragment {
         etWizardLastName = (EditText) rootView.findViewById(R.id.etWizardLastName);
         etWizardHomePhone = (EditText) rootView.findViewById(R.id.etWizardHomePhone);
         etWizardWorkPhone = (EditText) rootView.findViewById(R.id.etWizardWorkPhone);
-
-        etWizardCreditCardNumber = (EditText) rootView.findViewById(R.id.etWizardCreditCardNumber);
-        etWizardCreditCardNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                switch (CardTypeEnum.detect(s.toString())) {
-                    case VISA:
-                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.visa5));
-                        break;
-                    case MASTERCARD:
-                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.mastercard5));
-                        break;
-                    default:
-                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        etWizardCreditCardIdentifier = (EditText) rootView.findViewById(R.id.etWizardCreditCardIdentifier);
-        etWizardCreditCardExMonth = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationMonth);
-        etWizardCreditCardExYear = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationYear);
 
         etWizardCity = (EditText) rootView.findViewById(R.id.etWizardCity);
         etWizardAddress = (EditText) rootView.findViewById(R.id.etWizardAddress);
@@ -213,6 +191,11 @@ public class BookFragment extends Fragment {
 
         scroll = (ScrollView) rootView.findViewById(R.id.bookingScroll);
 
+        ivCardType = (ImageView) rootView.findViewById(R.id.iv_card_type);
+        etWizardCreditCardNumber = (EditText) rootView.findViewById(R.id.etWizardCreditCardNumber);
+        etWizardCreditCardExMonth = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationMonth);
+        etWizardCreditCardExYear = (EditText) rootView.findViewById(R.id.etWizardCreditCardExpirationYear);
+        etWizardCreditCardIdentifier = (EditText) rootView.findViewById(R.id.etWizardCreditCardIdentifier);
         ivCardType = (ImageView) rootView.findViewById(R.id.iv_card_type);
 
     }
@@ -258,14 +241,18 @@ public class BookFragment extends Fragment {
     }
 
     private void initInfoOnConfirmPage() {
+        if (!isCreditCardInputsFilled()){
+            currentPaymentCard = paymentCards.get(rgroupCreditCard.getCheckedRadioButtonId());
+        }
+
         tvWizardEmail.setText(Html.fromHtml("Email: " + "<b>" + etWizardEmail.getText().toString() + "</b>"));
         tvWizardFirstName.setText(Html.fromHtml("First name: " + "<b>" + etWizardFirstName.getText().toString() + "</b>"));
         tvWizardLastName.setText(Html.fromHtml("Last name: " + "<b>" + etWizardLastName.getText().toString() + "</b>"));
         tvWizardPhone.setText(Html.fromHtml("Phone: " + "<b>" + etWizardHomePhone.getText().toString() + "</b>"));
 
-        tvWizardCreditCardNumber.setText(Html.fromHtml("Credit card number: " + "<b>" + etWizardCreditCardNumber.getText().toString() + "</b>"));
-        tvWizardCreditCardIdentifier.setText(Html.fromHtml("Credit card identifier: " + "<b>" + etWizardCreditCardIdentifier.getText().toString() + "</b>"));
-        tvWizardCreditCardExpiration.setText(Html.fromHtml("Credit card expiration: " + "<b>" + etWizardCreditCardExMonth.getText().toString() + "/" + etWizardCreditCardExYear.getText().toString() + "</b>"));
+        tvWizardCreditCardNumber.setText(Html.fromHtml("Credit card number: " + "<b>" + currentPaymentCard.getHiddenCardNumber() + "</b>"));
+        tvWizardCreditCardIdentifier.setText(Html.fromHtml("Credit card identifier: " + "<b>" + currentPaymentCard.getCvvCode() + "</b>"));
+        tvWizardCreditCardExpiration.setText(Html.fromHtml("Credit card expiration: " + "<b>" + currentPaymentCard.getMonth() + "/" + currentPaymentCard.getYear() + "</b>"));
 
         tvWizardCity.setText(Html.fromHtml("City: " + "<b>" + etWizardCity.getText().toString() + "</b>"));
         tvWizardAddress.setText(Html.fromHtml("Address: " + "<b>" + etWizardAddress.getText().toString() + "</b>"));
@@ -275,17 +262,23 @@ public class BookFragment extends Fragment {
         tvCheckInInstructions.setText(Html.fromHtml(availableRooms.getCheckInInstruction()));
         tvCancellationPolicy.setText(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         tvTotalCost.setText(Html.fromHtml("Total nightly rate : "
-                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getNightlyRateTotal()+ "</b>" + "<br>"+ "<br>"
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getNightlyRateTotal() + "</b>" + "<br>" + "<br>"
                 + "Total surcharges : "
-                +"<b>"+ "$" + availableRooms.getRoomSO().get(position).getSurchargeTotal()+ "</b>" + "<br>"+ "<br>"
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getSurchargeTotal() + "</b>" + "<br>" + "<br>"
                 + "Total : "
-                +"<b>"+ "$" +availableRooms.getRoomSO().get(position).getTotal()+ "</b>"));
+                + "<b>" + "$" + availableRooms.getRoomSO().get(position).getTotal() + "</b>"));
 
         addRoomsInfoToConfirmPage();
 
     }
 
-    private void setOnClickListeners() {
+    private void setUiListeners() {
+        btnAddNewCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(new PaymentCardsFragment(true), "Credit cards");
+            }
+        });
         btnToConfirmPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,7 +309,34 @@ public class BookFragment extends Fragment {
         btnPayForRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 makeBookingRequest();
+
+            }
+        });
+
+        etWizardCreditCardNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                switch (CardTypeEnum.detect(s.toString())) {
+                    case VISA:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.visa5));
+                        break;
+                    case MASTERCARD:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.mastercard5));
+                        break;
+                    default:
+                        ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -363,10 +383,10 @@ public class BookFragment extends Fragment {
                 "&homePhone=" + etWizardHomePhone.getText().toString() +
                 "&workPhone=" + etWizardWorkPhone.getText().toString() +
                 "&creditCardType=CA" +
-                "&creditCardNumber=" + etWizardCreditCardNumber.getText().toString() +
-                "&creditCardIdentifier=" + etWizardCreditCardIdentifier.getText().toString() +
-                "&creditCardExpirationMonth=" + etWizardCreditCardExMonth.getText().toString() +
-                "&creditCardExpirationYear=20" + etWizardCreditCardExYear.getText().toString() +
+                "&creditCardNumber=" + currentPaymentCard.getCreditCardNumber() +
+                "&creditCardIdentifier=" + currentPaymentCard.getCvvCode() +
+                "&creditCardExpirationMonth=" + currentPaymentCard.getMonth() +
+                "&creditCardExpirationYear=20" + currentPaymentCard.getYear() +
                 "&address1=" + etWizardAddress.getText().toString() +
                 "&city=" + etWizardCity.getText().toString() +
                 //"&stateProvinceCode=" + etStateProvinceCode.getText().toString() +
@@ -464,6 +484,9 @@ public class BookFragment extends Fragment {
     }
 
     private boolean isAllRequiredInputsFilled() {
+        if(rgroupCreditCard.getCheckedRadioButtonId() == -1 & !isCreditCardInputsFilled()){
+            return false;
+        }
         for (EditText editText : requiredEditTexts) {
             if (editText.getText().toString().length() == 0) {
                 return false;
@@ -547,4 +570,41 @@ public class BookFragment extends Fragment {
     }
 
 
+    private void initCreditCardsRadioGroup(){
+        paymentCards = AppState.getCreditCards();
+        rgroupCreditCard = (RadioGroup) rootView.findViewById(R.id.rgroupCreditCards);
+        rgroupCreditCard.removeAllViews();
+        for (int i = 0; i < paymentCards.size(); i++){
+            RadioButton radioButton = new RadioButton(getActivity());
+            radioButton.setId(i);
+            radioButton.setText(paymentCards.get(i).getHiddenCardNumber());
+            radioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    etWizardCreditCardNumber.setText("");
+                    etWizardCreditCardExMonth.setText("");
+                    etWizardCreditCardExYear.setText("");
+                    etWizardCreditCardIdentifier.setText("");
+                }
+            });
+            rgroupCreditCard.addView(radioButton);
+        }
+
+    }
+
+
+
+
+    public boolean isCreditCardInputsFilled() {
+        if (etWizardCreditCardNumber.getText().length() == 16 &
+                etWizardCreditCardExYear.getText().length() == 2 &
+                etWizardCreditCardExMonth.getText().length() == 2 &
+                etWizardCreditCardIdentifier.getText().length() == 3){
+
+            currentPaymentCard = new PaymentCardSO(etWizardCreditCardNumber.getText().toString(), etWizardCreditCardExMonth.getText().toString(), etWizardCreditCardExYear.getText().toString(), etWizardCreditCardIdentifier.getText().toString());
+
+            return true;
+        }
+        return false;
+    }
 }

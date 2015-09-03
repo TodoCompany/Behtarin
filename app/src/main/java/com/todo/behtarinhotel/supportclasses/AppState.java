@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
+import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
@@ -428,6 +429,55 @@ public class AppState {
             }
         }
 
+    }
+
+    public static ArrayList<PaymentCardSO> getCreditCards(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+
+        Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
+        }.getType();
+
+        if(sPrefLog.getString("paymentCards", "").length()==0){
+            return new ArrayList<>();
+        }else{
+            return gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+
+        }
+    }
+
+    public static void addPaymentCard(PaymentCardSO paymentCardSO){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
+        }.getType();
+        ArrayList<PaymentCardSO> paymentCards = new ArrayList<>();
+        if(sPrefLog.getString("paymentCards", "").length()==0){
+            paymentCards.add(paymentCardSO);
+        }else{
+            paymentCards = gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+            paymentCards.add(paymentCardSO);
+        }
+        sPrefLog.edit().putString("paymentCards", gson.toJson(paymentCards)).apply();
+
+    }
+
+
+    public static void removePaymentCard(PaymentCardSO paymentCardSO){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
+        }.getType();
+        ArrayList<PaymentCardSO> paymentCards = new ArrayList<>();
+        if (sPrefLog.getString("paymentCards", "").length() != 0) {
+            paymentCards = gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+            for (int i = 0; i < paymentCards.size(); i++){
+                if (paymentCards.get(i).getCreditCardNumber().equals(paymentCardSO.getCreditCardNumber())){
+                    paymentCards.remove(paymentCards.get(i));
+                    sPrefLog.edit().putString("paymentCards", gson.toJson(paymentCards)).apply();
+                }
+            }
+        }
     }
 
 

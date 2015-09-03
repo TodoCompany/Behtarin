@@ -10,6 +10,7 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.MyAccountFragment;
+import com.todo.behtarinhotel.fragments.PaymentCardsFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.WishListFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
@@ -69,6 +70,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new WishListFragment()));
+        addSection(newSection("Credit cards", new PaymentCardsFragment()));
         addSection(newSection("Log out", new MaterialSectionListener() {
             @Override
             public void onClick(MaterialSection materialSection) {

@@ -133,13 +133,11 @@
                         android:id="@+id/btnCardIo"
                         android:layout_gravity="right"
                         android:textColor="@color/base_white" />
-
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:layout_marginTop="16dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/base_white">
 
                         <LinearLayout
                             android:orientation="horizontal"
@@ -154,9 +152,10 @@
                                 android:id="@+id/etWizardCreditCardNumber"
                                 android:textColor="@color/base_text"
                                 android:hint="Credit card number"
-                                android:text="5401999999999999"
                                 android:maxLength="16"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="16sp" />
 
                             <ImageView
                                 android:layout_width="32dp"
@@ -177,26 +176,15 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberSigned"
                                 android:ems="10"
-                                android:id="@+id/etWizardCreditCardIdentifier"
-                                android:textColor="@color/base_text"
-                                android:layout_marginTop="8dp"
-                                android:hint="Credit card identifier"
-                                android:text="123"
-                                android:layout_weight="1"
-                                android:maxLength="3" />
-
-                            <com.rengwuxian.materialedittext.MaterialEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberSigned"
-                                android:ems="10"
                                 android:id="@+id/etWizardCreditCardExpirationMonth"
                                 android:textColor="@color/base_text"
                                 android:layout_marginTop="8dp"
-                                android:hint="Credit card expiration month"
+                                android:hint="Month"
                                 android:layout_weight="1"
                                 android:maxLength="2"
-                                android:text="09" />
+                                android:layout_marginRight="8dp"
+                                android:gravity="center"
+                                android:textSize="16sp" />
 
                             <com.rengwuxian.materialedittext.MaterialEditText
                                 android:layout_width="match_parent"
@@ -206,13 +194,49 @@
                                 android:id="@+id/etWizardCreditCardExpirationYear"
                                 android:textColor="@color/base_text"
                                 android:layout_marginTop="8dp"
-                                android:hint="Credit card expiration year"
+                                android:hint="Year"
                                 android:layout_weight="1"
                                 android:maxLength="2"
-                                android:text="25" />
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardIdentifier"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:layout_weight="1"
+                                android:maxLength="3"
+                                android:layout_marginLeft="8dp"
+                                android:hint="CVV"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
                         </LinearLayout>
 
+
                     </LinearLayout>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/rgroupCreditCards">
+
+                    </RadioGroup>
+
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:id="@+id/btnAddNewCard"
+                        android:background="@color/base_yellow"
+                        android:text="Add new card" />
+
 
                 </LinearLayout>
 
@@ -337,7 +361,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="First name"
                         android:id="@+id/tvWizardFirstName"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -345,7 +369,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Last name"
                         android:id="@+id/tvWizardLastName"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -353,7 +377,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="E-mail"
                         android:id="@+id/tvWizardEmail"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -361,7 +385,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Phone"
                         android:id="@+id/tvWizardPhone"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -380,7 +404,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Credit card number"
                         android:id="@+id/tvWizardCreditCardNumber"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -388,7 +412,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Credit card identifier"
                         android:id="@+id/tvWizardCreditCardIdentifier"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -396,7 +420,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Credit card expiration"
                         android:id="@+id/tvWizardCrediCardExpiration"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -416,7 +440,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Your city"
                         android:id="@+id/tvWizardCity"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -424,7 +448,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Your address"
                         android:id="@+id/tvWizardAddress"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -432,7 +456,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Country code"
                         android:id="@+id/tvWizardCountryCode"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -440,7 +464,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Postal code"
                         android:id="@+id/tvWizardPostalCode"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <ListView
@@ -466,14 +490,16 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Check in instructions"
                         android:id="@+id/textView13"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Small Text"
-                        android:id="@+id/tvCheckInInstructions" />
+                        android:id="@+id/tvCheckInInstructions"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -492,14 +518,16 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Cancellation policy"
                         android:id="@+id/textView12"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Small Text"
-                        android:id="@+id/tvCancellationPolicy" />
+                        android:id="@+id/tvCancellationPolicy"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -518,14 +546,16 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Total cost"
                         android:id="@+id/textView120"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="Small Text"
-                        android:id="@+id/tvTotalCost" />
+                        android:id="@+id/tvTotalCost"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
