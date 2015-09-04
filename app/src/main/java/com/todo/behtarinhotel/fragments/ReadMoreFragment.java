@@ -23,6 +23,8 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.todo.behtarinhotel.R;
@@ -82,6 +84,9 @@ public class ReadMoreFragment extends Fragment {
         hotelImages = new ArrayList<>();
         this.inflater = inflater;
 
+        mapView = (MyMapView) rootView.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+
         initViewsById();
         fillWithData();
         loadImagesUrls();
@@ -91,6 +96,8 @@ public class ReadMoreFragment extends Fragment {
 
         return rootView;
     }
+
+
 
     private void initViewsById() {
         tvHotelName = (TextView) rootView.findViewById(R.id.tv_hotel_name);
@@ -338,8 +345,8 @@ public class ReadMoreFragment extends Fragment {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mapView == null) {
             mapView = (MyMapView) rootView.findViewById(R.id.mapView);
-            mapView.onCreate(savedInstanceState);
             googleMap = mapView.getMap();
+
             if (googleMap != null) {
                 setUpMap();
             }
@@ -347,10 +354,11 @@ public class ReadMoreFragment extends Fragment {
     }
 
     private void setUpMap() {
+        MapsInitializer.initialize(getActivity());
         googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
-
     }
+
 
 
     @Override
@@ -360,22 +368,20 @@ public class ReadMoreFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
-
     }
 }
