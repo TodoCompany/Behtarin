@@ -220,12 +220,14 @@ public class MainFragment extends Fragment {
             }
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
+            final long l = System.currentTimeMillis();
 
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            long l1 = System.currentTimeMillis()-l;
                             Log.d("ExpediaRequest", "First hotels loading from: " + url);
                             expediaBadResponseCounter = 0;
                             try {

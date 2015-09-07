@@ -3,6 +3,7 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DatePickerFragment;
 import com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -152,18 +154,35 @@ public class SearchFragment extends Fragment {
         ProgressBar pb = (ProgressBar) view.findViewById(R.id.progress_bar);
         pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
         etLocation.setLoadingIndicator(pb);
+        etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
+        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_white), PorterDuff.Mode.SRC_IN);
+                }else{
+                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
+                }
+            }
+        });
+
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("MMddyyyy");
+                int currentDate = Integer.valueOf(format.format(calendar.getTime()));
                 if (etLocation.getText().toString().equals("") ||
                         etCheckIn.getText().toString().equals("") ||
                         etCheckOut.getText().toString().equals("")) {
                     Toast.makeText(getActivity().getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >
-                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))) {
+                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >=
+                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", "")) ||
+                            Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", ""))<
+                                    currentDate ) {
                         Toast.makeText(getActivity().getApplicationContext(), "Wrong dates", Toast.LENGTH_SHORT).show();
                     } else {
                         MainActivity parentActivity = (MainActivity) getActivity();
@@ -202,26 +221,6 @@ public class SearchFragment extends Fragment {
         etCheckIn = (MaterialEditText) view.findViewById(R.id.et_check_in_search_fragment);
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);
 
-        etCheckIn.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHelperTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setFloatingLabelTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setMetTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setPrimaryColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setUnderlineColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHintTextColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setErrorColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setHighlightColor(getResources().getColor(R.color.base_white));
-        etCheckIn.setLinkTextColor(getResources().getColor(R.color.base_white));
-        etCheckOut.setLinkTextColor(getResources().getColor(R.color.base_white));
 
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
@@ -302,6 +301,7 @@ public class SearchFragment extends Fragment {
 
     private void showDatePicker() {
         DatePickerFragment date = new DatePickerFragment();
+
         /**
          * Set Up Current Date Into date_picker_dialog
          */

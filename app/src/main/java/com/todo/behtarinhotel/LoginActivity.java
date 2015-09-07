@@ -49,7 +49,7 @@ public class LoginActivity extends Activity {
 
     //reg info
     MaterialEditText etRegUserName, etRegEmail, etRegPassword, etRegFirstName, etRegLastName, etRegConfirmPassword;
-    ButtonRectangle btnSignUp;
+    ButtonRectangle btnSignUp,mEmailSignInButton;
 
     // UI references.
     private MaterialEditText mEmailView;
@@ -75,16 +75,16 @@ public class LoginActivity extends Activity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE) {
+                if (id == EditorInfo.IME_ACTION_SEND) {
                     //LOGIN PROCESS
-                    progressDialog = ProgressDialog.show(LoginActivity.this, "", "Loading...");
                     attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
-        ButtonRectangle mEmailSignInButton = (ButtonRectangle) findViewById(R.id.email_sign_in_button);
+        mPasswordView.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mEmailSignInButton = (ButtonRectangle) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
