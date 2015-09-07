@@ -275,6 +275,9 @@ public class BookFragment extends Fragment {
         tvWizardPostalCode.setText(Html.fromHtml("Postal code: " + "<b>" + etWizardPostalCode.getText().toString() + "</b>"));
 
         tvCheckInInstructions.setText(Html.fromHtml(availableRooms.getCheckInInstruction()));
+        if(tvCheckInInstructions.getText().length()==0){
+            rootView.findViewById(R.id.container_check_in_instructions).setVisibility(View.GONE);
+        }
         tvCancellationPolicy.setText(availableRooms.getRoomSO().get(position).getCancellationPolicy());
         tvTotalCost.setText(Html.fromHtml("Total nightly rate : "
                 + "<b>" + "$" + availableRooms.getRoomSO().get(position).getNightlyRateTotal() + "</b>" + "<br>" + "<br>"
