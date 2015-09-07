@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class SearchFragment extends Fragment {
     LayoutInflater inflater;
     MainFragment mainFragment;
     private String hotelName;
+    ProgressBar pb;
 
 
     boolean isCheckInSelected;
@@ -103,9 +105,14 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        pb.setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_search, null, false);
 
@@ -151,7 +158,8 @@ public class SearchFragment extends Fragment {
         });
         etLocation.setThreshold(2);
         etLocation.setAdapter(new SearchCityAdapter(getActivity()));
-        ProgressBar pb = (ProgressBar) view.findViewById(R.id.progress_bar);
+        pb = (ProgressBar) view.findViewById(R.id.progress_bar);
+        pb.setVisibility(View.GONE);
         pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
         etLocation.setLoadingIndicator(pb);
         etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
