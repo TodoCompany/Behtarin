@@ -1,8 +1,7 @@
 package com.todo.behtarinhotel.searching;
 
 import com.todo.behtarinhotel.searching.expedia.ExpediaSearch;
-import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
-import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+import com.todo.behtarinhotel.simpleobjects.SearchParams;
 
 import java.util.ArrayList;
 
@@ -22,10 +21,10 @@ public class GlobalSearch implements SearchCallBackListener{
         this.globalSearchCallBackListener = globalSearchCallBackListener;
     }
 
-    public void searchingHotelsByParams(SearchParamsSO params){
+    public void searchingHotelsByParams(SearchParams params){
 
         ExpediaSearch eSearch = new ExpediaSearch();
-        eSearch.search(new SearchParamsSO("London", "10/10/2015", "10/12/2015",new ArrayList<SearchRoomSO>(),0));
+        eSearch.search(new SearchParams());
     }
 
     @Override

@@ -1,36 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.todo.behtarinhotel">
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-
-    <!-- Permission to vibrate - recommended, allows vibration feedback on scan -->
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <!-- Permission to use camera - required -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- Camera features - recommended -->
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    package="com.todo.behtarinhotel" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyNavigationDrawerTheme"
-        >
-
-
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"
-            >
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".devices.phone.PhoneMainActivity"
@@ -40,38 +24,6 @@
             android:name=".devices.tablet.TabletMainActivity"
             android:label="@string/title_activity_tablet_main" >
         </activity>
-
-        <!-- PayPal activities and services -->
-        <service
-            android:name="com.paypal.android.sdk.payments.PayPalService"
-            android:exported="false" />
-
-        <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
-        <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
-        <!-- Activities responsible for gathering payment info -->
-        <activity android:name="io.card.payment.CardIOActivity" android:configChanges="keyboardHidden|orientation" />
-        <activity android:name="io.card.payment.DataEntryActivity" />
-
-        <activity
-            android:name=".MainActivity"
-            android:label="MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"
-           >
-        </activity>
-        <activity
-            android:name=".LauncherActivity"
-            android:label="@string/title_activity_launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <uses-library android:name="com.google.android.maps" />
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAeyjTHRNtdI7Mmw7GON83eYjwTE5A8qCU"/>
-
     </application>
 
 </manifest>
