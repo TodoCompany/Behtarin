@@ -303,6 +303,7 @@ public class SearchFragment extends Fragment {
         etCheckIn.setText(sdf.format(calender.getTime()));
         calender.add(Calendar.DATE, 1);
         etCheckOut.setText(sdf.format(calender.getTime()));
+    }
 
 
 
