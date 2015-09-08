@@ -1,0 +1,589 @@
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookingScroll"
+        android:background="@color/base_background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:id="@+id/payParametersScreen"
+                android:background="@null">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your personal info"
+                        android:background="@color/base_yellow"
+                        />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="16dp">
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/base_text"
+                            android:ems="10"
+                            android:id="@+id/etWizardEmail"
+                            android:hint="Email"
+                            android:text="someNiceEmail@gmail.com"
+                            android:textColorHint="@color/base_text" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/base_text"
+                            android:ems="10"
+                            android:id="@+id/etWizardFirstName"
+                            android:layout_marginTop="8dp"
+                            android:hint="First name"
+                            android:text="firstName" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="textPersonName"
+                            android:ems="10"
+                            android:id="@+id/etWizardLastName"
+                            android:layout_marginTop="8dp"
+                            android:hint="Last name"
+                            android:text="lastName" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="phone"
+                            android:ems="10"
+                            android:id="@+id/etWizardHomePhone"
+                            android:layout_marginTop="8dp"
+                            android:hint="Home phone"
+                            android:text="380671111111" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/base_text"
+                            android:inputType="phone"
+                            android:ems="10"
+                            android:id="@+id/etWizardWorkPhone"
+                            android:layout_marginTop="8dp"
+                            android:hint="Work phone" />
+                        android:hint="Phone"
+                        android:text="380999999999" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wizardRoomsList"
+                    android:dividerHeight="0dp" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your credit card info"
+                        android:background="@color/base_yellow"
+
+                        />
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Use camera"
+                        android:id="@+id/btnCardIo"
+                        android:layout_gravity="right"
+                        android:textColor="@color/base_white" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/base_white">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardNumber"
+                                android:textColor="@color/base_text"
+                                android:hint="Credit card number"
+                                android:maxLength="16"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:id="@+id/iv_card_type"
+                                android:src="@drawable/cards4"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginLeft="16dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardExpirationMonth"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:hint="Month"
+                                android:layout_weight="1"
+                                android:maxLength="2"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardExpirationYear"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:hint="Year"
+                                android:layout_weight="1"
+                                android:maxLength="2"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
+                            <com.rengwuxian.materialedittext.MaterialEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberSigned"
+                                android:ems="10"
+                                android:id="@+id/etWizardCreditCardIdentifier"
+                                android:textColor="@color/base_text"
+                                android:layout_marginTop="8dp"
+                                android:layout_weight="1"
+                                android:maxLength="3"
+                                android:layout_marginLeft="8dp"
+                                android:hint="CVV"
+                                android:gravity="center"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/rgroupCreditCards">
+
+                    </RadioGroup>
+
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:id="@+id/btnAddNewCard"
+                        android:background="@color/base_yellow"
+                        android:text="Add new card" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:elevation="6dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.gc.materialdesign.views.ButtonFlat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enter your location info"
+                            android:background="@color/base_yellow"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="16dp">
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardAddress"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="Address"
+                            android:text="travelnow" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardCity"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="City"
+                            android:text="L&apos;viv" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etStateProvinceCode"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="State province code"
+                            android:text="WA" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etWizardCountryCode"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/base_text"
+                            android:hint="Country code"
+                            android:text="UA" />
+
+                        <com.rengwuxian.materialedittext.MaterialEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberSigned"
+                            android:ems="10"
+                            android:id="@+id/etWizardPostalCode"
+                            android:textColor="@color/base_text"
+                            android:hint="Postal code"
+                            android:text="79000" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.gc.materialdesign.views.ButtonRectangle
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnPay"
+                    android:background="@color/base_yellow"
+                    android:text="Pay"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:id="@+id/confirmPayScreen"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Please carefully read your information"
+                    android:id="@+id/textView11"
+                    android:layout_gravity="center_horizontal" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="First name"
+                        android:id="@+id/tvWizardFirstName"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Last name"
+                        android:id="@+id/tvWizardLastName"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="E-mail"
+                        android:id="@+id/tvWizardEmail"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Phone"
+                        android:id="@+id/tvWizardPhone"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Credit card number"
+                        android:id="@+id/tvWizardCreditCardNumber"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Credit card identifier"
+                        android:id="@+id/tvWizardCreditCardIdentifier"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Credit card expiration"
+                        android:id="@+id/tvWizardCrediCardExpiration"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/base_white"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Your city"
+                        android:id="@+id/tvWizardCity"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Your address"
+                        android:id="@+id/tvWizardAddress"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Country code"
+                        android:id="@+id/tvWizardCountryCode"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Postal code"
+                        android:id="@+id/tvWizardPostalCode"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/confirmRoomInfoList"
+                    android:dividerHeight="0dp"
+                    android:divider="@null" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:background="@color/base_white"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Check in instructions"
+                        android:id="@+id/textView13"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Small Text"
+                        android:id="@+id/tvCheckInInstructions"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:background="@color/base_white"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Cancellation policy"
+                        android:id="@+id/textView12"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Small Text"
+                        android:id="@+id/tvCancellationPolicy"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:background="@color/base_white"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Total cost"
+                        android:id="@+id/textView120"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Small Text"
+                        android:id="@+id/tvTotalCost"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                <com.gc.materialdesign.views.ButtonRectangle
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Data wrong. Edit"
+                    android:id="@+id/btnCancelPay"
+                    android:background="#ffdc4000"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1" />
+
+                <com.gc.materialdesign.views.ButtonRectangle
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="All data correct. Pay"
+                    android:id="@+id/btnConfirmPay"
+                    android:background="@color/base_yellow"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+

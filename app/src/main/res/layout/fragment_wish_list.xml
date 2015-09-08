@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.todo.behtarinhotel.fragments.WishListFragment"
+    android:background="@color/base_background"
+    android:orientation="vertical">
+
+    <TabHost android:id="@+id/tab_host"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TabWidget android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/base_text" />
+            <FrameLayout android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/tab_wishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/progressBar"
+                        android:visibility="visible"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Wish list is empty"
+                        android:id="@+id/tv_wish_list_empty"
+                        android:visibility="gone"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:layout_marginTop="100dp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/wishList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent"
+                        android:visibility="gone" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab_booked_rooms"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="There are no booked rooms"
+                        android:id="@+id/tv_booked_rooms_list_empty"
+                        android:visibility="gone"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center"
+                        android:textSize="20sp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bookedRoomsList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab_history"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="History is empty"
+                        android:id="@+id/tv_history_list_empty"
+                        android:visibility="gone"
+                        android:layout_marginTop="100dp"
+                        android:gravity="center"
+                        android:textSize="20sp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/historyList"
+                        android:listSelector="@color/transparent"
+                        android:cacheColorHint="@color/transparent" />
+
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+
+</LinearLayout>

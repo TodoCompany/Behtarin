@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:elevation="6dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_white"
+        android:padding="16dp">
+        <com.gc.materialdesign.views.ButtonFlat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter your credit card info"
+            android:id="@+id/wizardExpandButton" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use camera"
+            android:id="@+id/btnCardIo"
+            android:layout_gravity="right"
+            android:textColor="@color/base_white" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/wizardExpandableContainer"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:id="@+id/etWizardCreditCardNumber"
+                    android:textColor="@color/base_text"
+                    android:hint="Credit card number"
+                    android:text="5401999999999999"
+                    android:maxLength="16"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/iv_card_type"
+                    android:src="@drawable/ic_launcher"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:id="@+id/etWizardCreditCardIdentifier"
+                    android:textColor="@color/base_text"
+                    android:layout_marginTop="8dp"
+                    android:hint="Credit card identifier"
+                    android:text="123"
+                    android:layout_weight="1"
+                    android:maxLength="3" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:id="@+id/etWizardCreditCardExpirationMonth"
+                    android:textColor="@color/base_text"
+                    android:layout_marginTop="8dp"
+                    android:hint="Credit card expiration month"
+                    android:layout_weight="1"
+                    android:maxLength="2"
+                    android:text="09" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:id="@+id/etWizardCreditCardExpirationYear"
+                    android:textColor="@color/base_text"
+                    android:layout_marginTop="8dp"
+                    android:hint="Credit card expiration year"
+                    android:layout_weight="1"
+                    android:maxLength="2"
+                    android:text="25" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

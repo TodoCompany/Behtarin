@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="registration_background">#737373</color>
+    <color name="registration_text">#ffffff</color>
+    <color name="registration_btn">#ffc801</color>
+    <color name="base_yellow">#FFC107</color>
+    <color name="base_text">#696969</color>
+    <color name="base_black">#ff000000</color>
+    <color name="base_white">#FFFFFF</color>
+    <color name="base_background">#E5E5E5</color>
+    <color name="base_hint">#D0D0D0</color>
+    <color name="base_gold">#FFD700</color>
+    <color name="base_grey">#ff909090</color>
+    <color name="base_dark">#232323</color>
+
+    <color name="btn_load_more_normal">#4effbd07</color>
+    <color name="btn_load_more_presed">#a6ffbf07</color>
+
+
+
+</resources>

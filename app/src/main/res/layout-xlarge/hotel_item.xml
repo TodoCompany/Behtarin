@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/hotel_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/base_white"
+        android:elevation="6dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_photo_main_activity_main_list"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_gravity="center_horizontal|top"
+                android:scaleType="fitXY" />
+
+            <CheckBox
+                android:id="@+id/chb_wish_main_activity_main_list"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/btn_favorites"
+                android:checked="false"
+                android:textColor="@color/base_text"
+                android:button="@null"
+                 />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="8dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv_hotel_name_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Best hotel"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/base_black"
+                        android:textSize="16sp"
+                        android:layout_weight="2" />
+
+                    <TextView
+                        android:id="@+id/tv_price_main_activity_main_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:gravity="right"
+                        android:text="300.25 $"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/base_black" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_address_main_activity_main_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adress"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/base_grey"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="8dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_heart" />
+
+                <TextView
+                    android:id="@+id/tv_like_counter_activity_main_main_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="3432"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/base_grey"
+                    android:textSize="12sp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iv_tripadvisor_rate_main_activity_main_list"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:scaleType="fitEnd" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/expandableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="8dp">
+
+                <TextView
+                    android:id="@+id/tv_location_description_main_activity_main_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Best hotel"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/base_text"
+                    android:textSize="14dp"
+                    android:layout_marginTop="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:id="@+id/btn_read_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/base_yellow"
+                        android:gravity="left"
+                        android:text="READ MORE" />
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:id="@+id/btn_check_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/base_yellow"
+                        android:gravity="right"
+                        android:text="CHECK AVAILABILITY" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_line_height"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="16dp"
+                android:background="#EBEBEB" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/base_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_star1_main_activity_main_list"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star2_main_activity_main_list"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star3_main_activity_main_list"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star4_main_activity_main_list"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:scaleType="fitStart" />
+
+                    <ImageView
+                        android:id="@+id/iv_star5_main_activity_main_list"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="8dp"
+                        android:scaleType="fitStart" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btnOpenExpandableLayout"
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_arrow_up" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

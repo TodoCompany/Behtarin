@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:id="@+id/container_search"
+        android:background="#ff909090"
+        android:elevation="8dp"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+        <com.todo.behtarinhotel.supportclasses.DelayAutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_location_search_fragment"
+            android:hint="Enter city or hotel name"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="Location"
+            app:met_primaryColor="@color/base_white"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/base_white"
+            android:textColorHint="@color/base_white"
+            android:text="London"
+            android:layout_toLeftOf="@+id/progress_bar" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            android:layout_alignParentRight="true" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/container_check_in_out"
+            android:layout_below="@+id/et_location_search_fragment"
+            android:layout_marginBottom="10dp"
+            android:focusable="false">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_check_in_search_fragment"
+                android:layout_weight="1"
+                android:hint="Check in"
+                app:met_floatingLabel="highlight"
+                android:layout_marginRight="10dp"
+                app:met_primaryColor="@color/base_white"
+                app:met_textColor="@color/base_white"
+                app:met_textColorHint="@color/base_white"
+                android:focusable="false"
+                android:text="08/28/2015"
+                android:textColorHint="@color/base_white" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_check_out_search_fragment"
+                android:layout_weight="1"
+                android:hint="Check out"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/base_white"
+                app:met_textColor="@color/base_white"
+                app:met_textColorHint="@color/base_white"
+                android:focusable="false"
+                android:text="08/29/2015"
+                android:textColorHint="@color/base_white" />
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_3_search_fragment"
+            android:layout_below="@+id/container_check_in_out"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/star_unselected"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_4_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:layout_toRightOf="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_unselected"
+            android:layout_marginRight="20dp" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_5_search_fragment"
+            android:layout_toRightOf="@+id/ib_star_4_search_fragment"
+            android:layout_alignTop="@+id/ib_star_4_search_fragment"
+            android:background="@drawable/star_unselected"/>
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_2_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:layout_toLeftOf="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_unselected"
+            android:layout_marginLeft="20dp" />
+
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ib_star_1_search_fragment"
+            android:layout_toLeftOf="@+id/ib_star_2_search_fragment"
+            android:layout_alignTop="@+id/ib_star_3_search_fragment"
+            android:background="@drawable/star_selected"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/container_search"
+        android:background="#76cacaca"
+        android:layout_alignParentBottom="false">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lv_room_fragment_search"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="36dp"
+            android:clipToPadding="false"/>
+    </FrameLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/right_labels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        fab:fab_labelsPosition="right"
+        fab:fab_addButtonColorNormal="@color/base_gold"
+        fab:fab_addButtonColorPressed="@color/base_grey"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            fab:fab_icon="@drawable/abc_ic_search_api_mtrl_alpha"
+            android:id="@+id/fab_search_fragment_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/base_gold"
+            fab:fab_colorPressed="@color/base_grey"
+            fab:fab_size="mini"
+
+            fab:fab_title="Label on the right"
+           />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            fab:fab_icon="@drawable/adult"
+            android:id="@+id/fab_add_room_fragment_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            fab:fab_colorPressed="@color/base_grey"
+            fab:fab_size="mini"
+            fab:fab_title="Another one on the right"
+            fab:fab_colorNormal="@color/base_gold" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</RelativeLayout>

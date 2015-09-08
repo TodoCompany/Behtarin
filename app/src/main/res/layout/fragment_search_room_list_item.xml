@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00cacaca">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_white"
+        android:elevation="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="right|top">
+
+
+        <TextView
+            android:id="@+id/tv_room_fragment_search_room_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textColor="@color/base_black"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp" />
+
+        <ImageButton
+            android:id="@+id/ib_delete_fragment_search_room_list"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="false"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="32dp"
+            android:layout_toLeftOf="@+id/ib_edit_fragment_search_room_list"
+            android:background="@null"
+            android:src="@drawable/ic_remove"
+            android:scaleType="fitCenter" />
+
+        <ImageButton
+            android:id="@+id/ib_edit_fragment_search_room_list"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_edit_pencil"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="10dp"
+            android:layout_alignParentTop="false"
+            android:src="@drawable/ic_edit_pencil"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/tv_room_fragment_search_room_list"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="#76cacaca" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lv_guests_fragment_search_list"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:choiceMode="none" />
+
+
+    </RelativeLayout>
+</FrameLayout>
