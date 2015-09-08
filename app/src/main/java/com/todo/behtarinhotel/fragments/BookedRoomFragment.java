@@ -29,6 +29,7 @@ import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -138,13 +139,15 @@ public class BookedRoomFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LinearLayout ll = new LinearLayout(getActivity());
+                ll.setOrientation(LinearLayout.VERTICAL);
                 TextView tvMessage = new TextView(getActivity());
                 tvMessage.setText(bookedRoomSO.getCancellationPolicy());
                 tvMessage.setTextColor(getResources().getColor(R.color.base_white));
                 tvMessage.setBackgroundColor(getResources().getColor(R.color.base_text));
                 tvMessage.setPadding(16, 16, 16, 16);
                 tvMessage.setTextSize(12);
-                EditText et = new EditText(getActivity());
+                final EditText et = new EditText(getActivity());
+                et.setText(AppState.getLoggedUser().getEmail());
                 ll.addView(tvMessage);
                 ll.addView(et);
                 new AlertDialog.Builder(getActivity())
@@ -171,7 +174,7 @@ public class BookedRoomFragment extends Fragment {
                                         locale +
                                         itineraryId + bookedRoomSO.getItineraryId() +
                                         confirmationNumber + bookedRoomSO.getConfirmationNumber() +
-                                        email + "someNiceEmail@gmail.com";
+                                        email + et.getText().toString();
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                                         url,
                                         new Response.Listener<JSONObject>() {
@@ -179,13 +182,16 @@ public class BookedRoomFragment extends Fragment {
                                             public void onResponse(JSONObject response) {
                                                 Log.d("ExpediaRequest", "First hotels loading from: " + url);
                                                 try {
-                                                    response.getJSONObject("HotelRoomCancellationResponse");
+                                                    String str = response.getJSONObject("HotelRoomCancellationResponse").getString("cancellationNumber");
                                                     AppState.removeRoomFromBooking(bookedRoomSO);
                                                     getActivity().onBackPressed();
-                                                    Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getActivity(), "Successfully canceled", Toast.LENGTH_SHORT).show();
                                                 } catch (Exception e) {
-                                                    Toast.makeText(getActivity(), "Bad", Toast.LENGTH_SHORT).show();
-                                                    getActivity().onBackPressed();
+                                                    try {
+                                                        Toast.makeText(getActivity(), response.getJSONObject("HotelRoomCancellationResponse").getJSONObject("EanWsError").getString("presentationMessage"), Toast.LENGTH_SHORT).show();
+                                                    } catch (JSONException e1) {
+                                                        e1.printStackTrace();
+                                                    }
                                                     dialog.dismiss();
                                                 }
 
