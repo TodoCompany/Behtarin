@@ -350,20 +350,20 @@ public class AppState {
         }
     }
 
-    public static void saveBookedRoom(BookedRoomSO roomToBook){
+    public static void saveBookedRoom(ArrayList<BookedRoomSO> roomsToBook){
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         if(sPrefLog.getString("bookedRooms", "").length()==0){
-            bookedRooms.add(roomToBook);
+            bookedRooms.addAll(roomsToBook);
         }else{
             bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
-            bookedRooms.add(roomToBook);
+            bookedRooms.addAll(roomsToBook);
         }
         sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
-        addToHistory(roomToBook);
+        addToHistory(roomsToBook);
 
     }
 
@@ -397,17 +397,17 @@ public class AppState {
         }
     }
 
-    public static void addToHistory(BookedRoomSO roomToAdd){
+    public static void addToHistory(ArrayList<BookedRoomSO> roomsToAdd){
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
         ArrayList<BookedRoomSO> history = new ArrayList<>();
         if(sPrefLog.getString("history", "").length()==0){
-            history.add(roomToAdd);
+            history.addAll(roomsToAdd);
         }else{
             history = gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
-            history.add(roomToAdd);
+            history.addAll(roomsToAdd);
         }
         sPrefLog.edit().putString("history", gson.toJson(history)).apply();
 

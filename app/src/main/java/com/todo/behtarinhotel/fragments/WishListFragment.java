@@ -51,6 +51,9 @@ public class WishListFragment extends Fragment {
     ProgressBar pb;
     WishListAdapter adapter;
     View rootView;
+    TabHost host;
+    boolean isRoomBooked = false;
+
 
     private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
     private static final String CID = "55505";
@@ -192,7 +195,7 @@ public class WishListFragment extends Fragment {
     }
 
     private void initTabs(){
-        TabHost host = (TabHost) rootView.findViewById(R.id.tab_host);
+        host = (TabHost) rootView.findViewById(R.id.tab_host);
         host.setup();
 
 
@@ -216,5 +219,13 @@ public class WishListFragment extends Fragment {
             TextView tv = (TextView) host.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             tv.setTextColor(getResources().getColor(R.color.base_white));
         }
+        if(isRoomBooked){
+            host.setCurrentTab(1);
+            isRoomBooked = false;
+        }
+    }
+
+    public void switchTab(){
+        isRoomBooked = true;
     }
 }
