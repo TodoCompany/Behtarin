@@ -133,41 +133,6 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_line_height"
-                    android:layout_marginTop="16dp"
-                    android:background="#EBEBEB"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="First name"
-                        android:id="@+id/tv_name"
-                        android:layout_weight="1"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Non Smoking"
-                        android:id="@+id/tv_smoking_preferences"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/divider_line_height"
                     android:layout_marginBottom="16dp"
                     android:background="#EBEBEB"
                     android:layout_marginTop="8dp"

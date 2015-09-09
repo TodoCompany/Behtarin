@@ -93,6 +93,9 @@
                     android:layout_height="wrap_content"
                     android:hint="my secret password"
                     sothree:met_floatingLabel="normal"
+                    android:imeActionId="@+id/login"
+                    android:imeActionLabel="Sign"
+                    android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"/>

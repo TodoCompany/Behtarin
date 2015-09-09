@@ -37,6 +37,8 @@ public class AppState {
 
     public static final int MY_SCAN_REQUEST_CODE = 1;
 
+    private static final String LOG_STATUS = "LogStatus";
+    //API data
     private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
     private static final String CID = "55505";
     public static int screenWidth;
@@ -51,11 +53,11 @@ public class AppState {
         if (userSO != null) {
             logEditor = sPrefLog.edit();
             loggedUser = userSO;
+            logEditor.putBoolean(LOG_STATUS, true);
             logEditor.putString("firstName", loggedUser.getFirstName());
             logEditor.putString("lastName", loggedUser.getLastName());
             logEditor.putString("email", loggedUser.getEmail());
             logEditor.putString("password", loggedUser.getPassword());
-            logEditor.putString("username", loggedUser.getUsername());
             logEditor.putInt("userID", loggedUser.getUserID());
             logEditor.apply();
         }
@@ -68,7 +70,6 @@ public class AppState {
         user.setLastName(sPrefLog.getString("lastName", " "));
         user.setEmail(sPrefLog.getString("email", " "));
         user.setPassword(sPrefLog.getString("password", ""));
-        user.setUsername(sPrefLog.getString("username", ""));
         return user;
     }
 
@@ -93,17 +94,12 @@ public class AppState {
 
     public static void userLoggedOut() {
         logEditor = sPrefLog.edit();
-        logEditor.putString("firstName", "");
-        logEditor.putString("lastName", "");
-        logEditor.putString("email", "");
-        logEditor.putString("password", "");
-        logEditor.putString("username", "");
+        logEditor.putBoolean(LOG_STATUS, false);
         logEditor.apply();
     }
 
     public static boolean isUserLoggedIn() {
-        return !(sPrefLog.getString("username", "").equals("") &
-                sPrefLog.getString("password", "").equals(""));
+        return sPrefLog.getBoolean(LOG_STATUS, false);
     }
 
     public static String generateUrlForHotelAvailability(int hotelIdNumber, String arrDate, String depDate, ArrayList<SearchRoomSO> rooms) {
@@ -354,20 +350,20 @@ public class AppState {
         }
     }
 
-    public static void saveBookedRoom(ArrayList<BookedRoomSO> roomsToBook){
+    public static void saveBookedRoom(BookedRoomSO roomToBook){
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         if(sPrefLog.getString("bookedRooms", "").length()==0){
-            bookedRooms.addAll(roomsToBook);
+            bookedRooms.add(roomToBook);
         }else{
             bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
-            bookedRooms.addAll(roomsToBook);
+            bookedRooms.add(roomToBook);
         }
         sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
-        addToHistory(roomsToBook);
+        addToHistory(roomToBook);
 
     }
 
@@ -401,17 +397,17 @@ public class AppState {
         }
     }
 
-    public static void addToHistory(ArrayList<BookedRoomSO> roomsToAdd){
+    public static void addToHistory(BookedRoomSO roomToAdd){
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
         ArrayList<BookedRoomSO> history = new ArrayList<>();
         if(sPrefLog.getString("history", "").length()==0){
-            history.addAll(roomsToAdd);
+            history.add(roomToAdd);
         }else{
             history = gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
-            history.addAll(roomsToAdd);
+            history.add(roomToAdd);
         }
         sPrefLog.edit().putString("history", gson.toJson(history)).apply();
 

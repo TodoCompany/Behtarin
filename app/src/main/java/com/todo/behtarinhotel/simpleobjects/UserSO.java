@@ -9,19 +9,16 @@ public class UserSO {
     private int userID;
     private String email;
     private String password;
-    private String username;
 
     public UserSO() {
     }
 
-    public UserSO(String firstName, String lastName, int userID, String email, String password, String username) {
+    public UserSO(String firstName, String lastName, int userID, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userID = userID;
         this.email = email;
         this.password = password;
-        this.username = username;
-
     }
 
     public String getFirstName() {
@@ -62,14 +59,6 @@ public class UserSO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }
 

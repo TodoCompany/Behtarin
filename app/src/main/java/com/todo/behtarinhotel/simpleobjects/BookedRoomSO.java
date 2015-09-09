@@ -11,6 +11,8 @@ public class BookedRoomSO {
 
     public static final int BOOKED = 1, ACTIVE = 2, OUT_OF_DATE = 3, CANCELLED = 4;
 
+    private final String PHOTO_URL_END = "z.jpg";
+
     String arrivalDate;
     String departureDate;
     String hotelAddress;
@@ -23,7 +25,7 @@ public class BookedRoomSO {
     ArrayList<String> valueAdds;
     boolean isCancellable;
     int orderState = BOOKED;
-    int confirmationNumber;
+    int[] confirmationNumber;
     String email;
     float SumPrice;
     String currency;
@@ -145,11 +147,11 @@ public class BookedRoomSO {
         this.email = email;
     }
 
-    public int getConfirmationNumber() {
+    public int[] getConfirmationNumber() {
         return confirmationNumber;
     }
 
-    public void setConfirmationNumber(int confirmationNumber) {
+    public void setConfirmationNumber(int[] confirmationNumber) {
         this.confirmationNumber = confirmationNumber;
     }
 
@@ -217,7 +219,6 @@ public class BookedRoomSO {
         if(photoUrl!=null){
             String temp = photoUrl
                     .substring(0, photoUrl.length() - 5);
-            String PHOTO_URL_END = "z.jpg";
             this.photoUrl = temp + PHOTO_URL_END;
         }
     }
