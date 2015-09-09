@@ -228,7 +228,7 @@ public class LoginActivity extends Activity {
                 }
             }
             );
-            int socketTimeout = 3000;//about 10 seconds
+            int socketTimeout = 10000;//about 10 seconds
             RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);

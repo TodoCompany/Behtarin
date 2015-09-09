@@ -17,10 +17,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -106,6 +108,7 @@ public class LauncherActivity extends ActionBarActivity {
                                 ArrayList<Integer> wishList = new ArrayList<>();
                                 wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                                 AppState.setWishList(wishList);
+
                                 startWorkActivity();
                                 finish();
                             }else{
@@ -124,10 +127,26 @@ public class LauncherActivity extends ActionBarActivity {
             }
         }
         );
-        int socketTimeout = 5000;
+        int socketTimeout = 30000;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(policy);
         VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    private ArrayList<BookedRoomSO> parseBookedRooms(JSONArray jsonArray) throws JSONException {
+        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++){
+            JSONObject object = jsonArray.getJSONObject(i);
+            BookedRoomSO bookedRoomSO = new BookedRoomSO();
+            bookedRoomSO.setItineraryId(object.getInt("ItineraryID"));
+            bookedRoomSO.setAdult(object.getInt("adult"));
+            bookedRoomSO.setUserID(object.getInt("u_id"));
+            bookedRoomSO.setLastName(object.getString("LastName"));
+            bookedRoomSO.setPhotoUrl(object.getString("Photo"));
+            bookedRoomSO.setPhotoUrl(object.getString("Photo"));
+        }
+        return bookedRooms;
 
     }
 
