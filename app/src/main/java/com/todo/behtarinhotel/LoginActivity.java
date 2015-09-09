@@ -267,7 +267,8 @@ public class LoginActivity extends Activity {
                                         user.getInt("id"),
                                         user.getString("email"),
                                         password,
-                                        user.getString("username")));
+                                        user.getString("username"),
+                                        user.getString("key")));
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
@@ -321,11 +322,7 @@ public class LoginActivity extends Activity {
                         progressDialog.dismiss();
                         try {
                             if (response.getString("status").equals("ok")) {
-//                                AppState.userLoggedIn(new UserSO(userName, email, password));
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                userLoginTask(userName, password);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

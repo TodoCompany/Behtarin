@@ -32,8 +32,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.adapters.BookingInputsAdapter;
 import com.todo.behtarinhotel.adapters.ConfirmRoomsInfoAdapter;
@@ -49,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -596,7 +595,11 @@ public class BookFragment extends Fragment {
 
 
     private void initCreditCardsRadioGroup(){
-        paymentCards = AppState.getCreditCards();
+        try {
+            paymentCards = AppState.getCreditCards();
+        } catch (GeneralSecurityException e) {
+            // Key is not valid
+        }
         rgroupCreditCard = (RadioGroup) rootView.findViewById(R.id.rgroupCreditCards);
         rgroupCreditCard.removeAllViews();
         for (int i = 0; i < paymentCards.size(); i++){

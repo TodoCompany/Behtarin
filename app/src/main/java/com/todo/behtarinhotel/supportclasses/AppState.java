@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.scottyab.aescrypt.AESCrypt;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class AppState {
 
     public static UserSO getLoggedUser() {
         UserSO user = new UserSO();
-        user.setUserID(sPrefLog.getInt("userID",0));
+        user.setUserID(sPrefLog.getInt("userID", 0));
         user.setFirstName(sPrefLog.getString("firstName", " "));
         user.setLastName(sPrefLog.getString("lastName", " "));
         user.setEmail(sPrefLog.getString("email", " "));
@@ -435,7 +437,7 @@ public class AppState {
 
     }
 
-    public static ArrayList<PaymentCardSO> getCreditCards(){
+    public static ArrayList<PaymentCardSO> getCreditCards() throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
 
@@ -445,12 +447,15 @@ public class AppState {
         if(sPrefLog.getString("paymentCards", "").length()==0){
             return new ArrayList<>();
         }else{
-            return gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+            String encrypted = sPrefLog.getString("paymentCards", "");
+            String decrypted = AESCrypt.decrypt(loggedUser.getKey(), encrypted);
+
+            return gson.fromJson(decrypted, listOfTestObject);
 
         }
     }
 
-    public static void addPaymentCard(PaymentCardSO paymentCardSO){
+    public static void addPaymentCard(PaymentCardSO paymentCardSO) throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
@@ -459,26 +464,26 @@ public class AppState {
         if(sPrefLog.getString("paymentCards", "").length()==0){
             paymentCards.add(paymentCardSO);
         }else{
-            paymentCards = gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+            paymentCards = gson.fromJson(AESCrypt.decrypt(loggedUser.getKey(), sPrefLog.getString("paymentCards", "")), listOfTestObject);
             paymentCards.add(paymentCardSO);
         }
-        sPrefLog.edit().putString("paymentCards", gson.toJson(paymentCards)).apply();
+        sPrefLog.edit().putString("paymentCards", AESCrypt.encrypt(loggedUser.getKey(), gson.toJson(paymentCards))).apply();
 
     }
 
 
-    public static void removePaymentCard(PaymentCardSO paymentCardSO){
+    public static void removePaymentCard(PaymentCardSO paymentCardSO) throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
         }.getType();
         ArrayList<PaymentCardSO> paymentCards = new ArrayList<>();
         if (sPrefLog.getString("paymentCards", "").length() != 0) {
-            paymentCards = gson.fromJson(sPrefLog.getString("paymentCards", ""), listOfTestObject);
+            paymentCards = gson.fromJson(AESCrypt.decrypt(loggedUser.getKey(), sPrefLog.getString("paymentCards", "")), listOfTestObject);
             for (int i = 0; i < paymentCards.size(); i++){
                 if (paymentCards.get(i).getCreditCardNumber().equals(paymentCardSO.getCreditCardNumber())){
                     paymentCards.remove(paymentCards.get(i));
-                    sPrefLog.edit().putString("paymentCards", gson.toJson(paymentCards)).apply();
+                    sPrefLog.edit().putString("paymentCards", AESCrypt.encrypt(loggedUser.getKey(), gson.toJson(paymentCards))).apply();
                 }
             }
         }

@@ -23,6 +23,8 @@ import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.CardTypeEnum;
 
+import java.security.GeneralSecurityException;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -120,7 +122,12 @@ public class PaymentCardsFragment extends Fragment {
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
                         if (isRequiredFieldsFilled()) {
-                            AppState.addPaymentCard(new PaymentCardSO(etCreditCardNumber.getText().toString(), etCreditCardExMonth.getText().toString(), etCreditCardExYear.getText().toString(), etCreditCardIdentifier.getText().toString()));
+                            try {
+                                AppState.addPaymentCard(new PaymentCardSO(etCreditCardNumber.getText().toString(), etCreditCardExMonth.getText().toString(), etCreditCardExYear.getText().toString(), etCreditCardIdentifier.getText().toString()));
+                            } catch (GeneralSecurityException e) {
+                                dialog.dismiss();
+                                //Key is invalid
+                            }
                             paymentCardsAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getActivity(), "Wrong card number", Toast.LENGTH_SHORT).show();

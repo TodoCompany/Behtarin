@@ -90,7 +90,8 @@ public class LauncherActivity extends ActionBarActivity {
                                         user.getInt("id"),
                                         user.getString("email"),
                                         password,
-                                        user.getString("username")));
+                                        user.getString("username"),
+                                        user.getString("key")));
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
