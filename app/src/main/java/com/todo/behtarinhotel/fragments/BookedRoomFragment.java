@@ -50,7 +50,7 @@ public class BookedRoomFragment extends Fragment {
     String email = "&email=";
 
     ImageView roomImage;
-    TextView tvHotelName, tvRoomDescription, tvHotelLocation, tvArrival, tvDeparture, tvRoomPrice, tvName, tvSmokingPreferences;
+    TextView tvHotelName, tvRoomDescription, tvHotelLocation, tvArrival, tvDeparture, tvRoomPrice;
     ButtonRectangle btnCancelBooking;
     View rootView;
 
@@ -82,8 +82,6 @@ public class BookedRoomFragment extends Fragment {
         tvArrival = (TextView) rootView.findViewById(R.id.tvArrival);
         tvDeparture = (TextView) rootView.findViewById(R.id.tvDeparture);
         tvRoomPrice = (TextView) rootView.findViewById(R.id.tvRoomPrice);
-        tvName = (TextView) rootView.findViewById(R.id.tv_name);
-        tvSmokingPreferences = (TextView) rootView.findViewById(R.id.tv_smoking_preferences);
         btnCancelBooking = (ButtonRectangle) rootView.findViewById(R.id.btnCancelBooking);
     }
 
@@ -116,19 +114,6 @@ public class BookedRoomFragment extends Fragment {
         tvArrival.setText(bookedRoomSO.getArrivalDate());
         tvDeparture.setText(bookedRoomSO.getDepartureDate());
         tvRoomPrice.setText("$" + bookedRoomSO.getRoomPrice());
-        tvName.setText(bookedRoomSO.getFirstName() + " " + bookedRoomSO.getLastName());
-
-        switch (bookedRoomSO.getSmokingPreference()) {
-            case "NS":
-                tvSmokingPreferences.setText("Non smoking");
-                break;
-            case "S":
-                tvSmokingPreferences.setText("Smoking");
-                break;
-            case "E":
-                tvSmokingPreferences.setText("Either");
-                break;
-        }
     }
 
     private void setOnClickListeners() {

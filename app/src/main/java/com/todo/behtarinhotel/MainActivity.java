@@ -64,8 +64,8 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
         disableLearningPattern();
         addAccount(new MaterialAccount(
                 getResources(),
-                AppState.getLoggedUser().getFirstName() + " " + AppState.getLoggedUser().getLastName(), "",
-                R.drawable.behtarin_logo_b,
+                AppState.getLoggedUser().getFirstName() + " " + AppState.getLoggedUser().getFirstName(), "",
+                R.mipmap.icon_profile,
                 R.drawable.dubai));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));

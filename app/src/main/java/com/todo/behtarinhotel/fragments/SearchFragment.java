@@ -3,12 +3,10 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +62,6 @@ public class SearchFragment extends Fragment {
     LayoutInflater inflater;
     MainFragment mainFragment;
     private String hotelName;
-    ProgressBar pb;
 
 
     boolean isCheckInSelected;
@@ -98,14 +95,9 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        pb.setVisibility(View.GONE);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_search, null, false);
 
@@ -151,44 +143,27 @@ public class SearchFragment extends Fragment {
         });
         etLocation.setThreshold(2);
         etLocation.setAdapter(new SearchCityAdapter(getActivity()));
-        pb = (ProgressBar) view.findViewById(R.id.progress_bar);
-        pb.setVisibility(View.GONE);
+        ProgressBar pb = (ProgressBar) view.findViewById(R.id.progress_bar);
         pb.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.base_gold), PorterDuff.Mode.SRC_IN);
         etLocation.setLoadingIndicator(pb);
-        etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
-        etLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_white), PorterDuff.Mode.SRC_IN);
-                }else{
-                    etLocation.getBackground().setColorFilter(getResources().getColor(R.color.base_tint), PorterDuff.Mode.SRC_IN);
-                }
-            }
-        });
 
         fabSearch = (FloatingActionButton) view.findViewById(R.id.fab_search_fragment_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat format = new SimpleDateFormat("MMddyyyy");
-                int currentDate = Integer.valueOf(format.format(calendar.getTime()));
                 if (etLocation.getText().toString().equals("") ||
                         etCheckIn.getText().toString().equals("") ||
                         etCheckOut.getText().toString().equals("")) {
                     Toast.makeText(getActivity().getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >=
-                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", "")) ||
-                            Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", ""))<
-                                    currentDate ) {
+                    if (Integer.valueOf(etCheckIn.getText().toString().replaceAll("[^0-9]", "")) >
+                            Integer.valueOf(etCheckOut.getText().toString().replaceAll("[^0-9]", ""))) {
                         Toast.makeText(getActivity().getApplicationContext(), "Wrong dates", Toast.LENGTH_SHORT).show();
                     } else {
                         MainActivity parentActivity = (MainActivity) getActivity();
                         mainFragment = new MainFragment();
                         parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-                        SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString().replaceAll(" ","%20"),
+                        SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString(),
                                 etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
 
                         mainFragment.setSearchParams(searchParamsSO, isSearchWithHotelId, hotelID);
@@ -222,6 +197,7 @@ public class SearchFragment extends Fragment {
         etCheckOut = (MaterialEditText) view.findViewById(R.id.et_check_out_search_fragment);
 
         setTodaysDate();
+
 
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
@@ -303,8 +279,8 @@ public class SearchFragment extends Fragment {
         etCheckIn.setText(sdf.format(calender.getTime()));
         calender.add(Calendar.DATE, 1);
         etCheckOut.setText(sdf.format(calender.getTime()));
-    }
 
+    }
 
 
     private void showDatePicker() {

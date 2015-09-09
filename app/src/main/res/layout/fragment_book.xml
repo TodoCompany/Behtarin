@@ -54,9 +54,7 @@
                             android:id="@+id/etWizardEmail"
                             android:hint="Email"
                             android:text="someNiceEmail@gmail.com"
-                            android:textColorHint="@color/base_text"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:textColorHint="@color/base_text" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -67,9 +65,7 @@
                             android:id="@+id/etWizardFirstName"
                             android:layout_marginTop="8dp"
                             android:hint="First name"
-                            android:text="firstName"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="firstName" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -80,9 +76,7 @@
                             android:id="@+id/etWizardLastName"
                             android:layout_marginTop="8dp"
                             android:hint="Last name"
-                            android:text="lastName"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="lastName" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -93,9 +87,7 @@
                             android:id="@+id/etWizardHomePhone"
                             android:layout_marginTop="8dp"
                             android:hint="Home phone"
-                            android:text="380671111111"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="380671111111" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -105,11 +97,9 @@
                             android:ems="10"
                             android:id="@+id/etWizardWorkPhone"
                             android:layout_marginTop="8dp"
-                            android:hint="Work phone"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            />
-
+                            android:hint="Work phone" />
+                        android:hint="Phone"
+                        android:text="380999999999" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -165,8 +155,7 @@
                                 android:maxLength="16"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:textSize="16sp"                                
-                                android:maxLines="1" />
+                                android:textSize="16sp" />
 
                             <ImageView
                                 android:layout_width="32dp"
@@ -230,6 +219,7 @@
 
                         </LinearLayout>
 
+
                     </LinearLayout>
 
                     <RadioGroup
@@ -287,9 +277,7 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="Address"
-                            android:text="travelnow"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="travelnow" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -298,9 +286,7 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="City"
-                            android:text="L&apos;viv"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="L&apos;viv" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -309,9 +295,7 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="State province code"
-                            android:text="WA"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="WA" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -320,9 +304,7 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="Country code"
-                            android:text="UA"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="UA" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -332,9 +314,7 @@
                             android:id="@+id/etWizardPostalCode"
                             android:textColor="@color/base_text"
                             android:hint="Postal code"
-                            android:text="79000"
-                            android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:text="79000" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -502,8 +482,7 @@
                     android:background="@color/base_white"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:elevation="6dp"
-                    android:id="@+id/container_check_in_instructions">
+                    android:elevation="6dp">
 
                     <TextView
                         android:layout_width="wrap_content"
