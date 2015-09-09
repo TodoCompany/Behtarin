@@ -47,6 +47,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +64,6 @@ public class BookFragment extends Fragment {
 
     private ArrayList<SearchRoomSO> rooms;
     private ButtonRectangle btnToConfirmPage, btnCancelPay, btnPayForRoom, btnAddNewCard;
-    private Button btnCardIo;
     private View rootView;
     private LinearLayout payParametersScreen, confirmPayScreen;
     private PaymentCardSO currentPaymentCard;
@@ -78,7 +80,7 @@ public class BookFragment extends Fragment {
     private ImageView ivCardType;
     private ScrollView scroll;
     private AvailableRoomsSO availableRooms;
-    private RadioGroup rgroupCreditCard;
+    private RadioGroup rGroupCreditCard;
     private int position;
 
     private String apiKey = "&apiKey=RyqEsq69";
@@ -135,24 +137,12 @@ public class BookFragment extends Fragment {
         requiredEditTexts.add(etWizardCountryCode);
     }
 
-    private void payWithCardIo() {
-        Intent scanIntent = new Intent(getActivity(), CardIOActivity.class);
-
-        // customize these values to suit your needs.
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-
-        // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
-        startActivityForResult(scanIntent, AppState.MY_SCAN_REQUEST_CODE);
-    }
-
     private void initViews() {
         btnToConfirmPage = (ButtonRectangle) rootView.findViewById(R.id.btnPay);
         btnCancelPay = (ButtonRectangle) rootView.findViewById(R.id.btnCancelPay);
         btnPayForRoom = (ButtonRectangle) rootView.findViewById(R.id.btnConfirmPay);
         btnAddNewCard = (ButtonRectangle) rootView.findViewById(R.id.btnAddNewCard);
-        btnCardIo = (Button) rootView.findViewById(R.id.btnCardIo);
+
 
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
         etWizardFirstName = (EditText) rootView.findViewById(R.id.etWizardFirstName);
@@ -243,7 +233,7 @@ public class BookFragment extends Fragment {
 
     private void initInfoOnConfirmPage() {
         if (!isCreditCardInputsFilled()){
-            currentPaymentCard = paymentCards.get(rgroupCreditCard.getCheckedRadioButtonId());
+            currentPaymentCard = paymentCards.get(rGroupCreditCard.getCheckedRadioButtonId());
         }
 
         tvWizardEmail.setText(Html.fromHtml("Email: " + "<b>" + etWizardEmail.getText().toString() + "</b>"));
@@ -294,12 +284,7 @@ public class BookFragment extends Fragment {
                 }
             }
         });
-        btnCardIo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                payWithCardIo();
-            }
-        });
+
         btnCancelPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -508,7 +493,7 @@ public class BookFragment extends Fragment {
     }
 
     private boolean isAllRequiredInputsFilled() {
-        if(rgroupCreditCard.getCheckedRadioButtonId() == -1 & !isCreditCardInputsFilled()){
+        if(rGroupCreditCard.getCheckedRadioButtonId() == -1 & !isCreditCardInputsFilled()){
             return false;
         }
         for (EditText editText : requiredEditTexts) {
@@ -544,26 +529,9 @@ public class BookFragment extends Fragment {
             map.put("cancellationNumber", "");
             map.put("cancellationDate", 0);
             map.put("u_id", 1);
-
             orderedRooms.add(map);
         }
-        HashMap<String, Object> expedia = new HashMap<>();
-
-        expedia.put("ItineraryID", bookedRooms.get(0).getItineraryId());
-        expedia.put("RoomName", bookedRooms.get(0).getRoomDescription());
-        expedia.put("SumPrice", bookedRooms.get(0).getSumPrice());
-        expedia.put("Currency", bookedRooms.get(0).getCurrency());
-        expedia.put("StartDate", bookedRooms.get(0).getArrivalDate());
-        expedia.put("EndDate", bookedRooms.get(0).getDepartureDate());
-        expedia.put("Nights", bookedRooms.get(0).getNights());
-        expedia.put("UserID", bookedRooms.get(0).getUserID());
-        expedia.put("HotelID", bookedRooms.get(0).getHotelID());
-
-        //booking.put("expedia_order", expedia);
         booking.put("ordered_room", orderedRooms);
-
-        JSONObject obj = new JSONObject(booking);
-        String str = obj.toString();
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
                 new JSONObject(booking),
@@ -590,7 +558,52 @@ public class BookFragment extends Fragment {
         int socketTimeout = 30000;//30 seconds - change to what you want
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         req.setRetryPolicy(policy);
+
+        booking.clear();
+        DateFormat dfm = new SimpleDateFormat("mm/dd/yyyy");
+        HashMap<String, Object> expedia = new HashMap<>();
+
+        expedia.put("ItineraryID", bookedRooms.get(0).getItineraryId());
+        expedia.put("RoomName", bookedRooms.get(0).getRoomDescription());
+        expedia.put("SumPrice", bookedRooms.get(0).getSumPrice());
+        expedia.put("Currency", bookedRooms.get(0).getCurrency());
+        try {
+            expedia.put("StartDate", dfm.parse(bookedRooms.get(0).getArrivalDate()).getTime()/1000);
+            expedia.put("EndDate", dfm.parse(bookedRooms.get(0).getDepartureDate()).getTime()/1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        expedia.put("Nights", bookedRooms.get(0).getNights());
+        expedia.put("UserID", bookedRooms.get(0).getUserID());
+        expedia.put("HotelID", bookedRooms.get(0).getHotelID());
+        expedia.put("mail", etWizardEmail.getText().toString());
+        booking.put("expedia_order", expedia);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
+                new JSONObject(booking),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // response :"status":200,"success":"Yep"
+
+                            Log.i("Response :", response.toString());
+
+                            if (response.getInt("status") == 200) {
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+        request.setRetryPolicy(policy);
         VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(req);
+        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(request);
     }
 
 
@@ -600,8 +613,8 @@ public class BookFragment extends Fragment {
         } catch (GeneralSecurityException e) {
             // Key is not valid
         }
-        rgroupCreditCard = (RadioGroup) rootView.findViewById(R.id.rgroupCreditCards);
-        rgroupCreditCard.removeAllViews();
+        rGroupCreditCard = (RadioGroup) rootView.findViewById(R.id.rgroupCreditCards);
+        rGroupCreditCard.removeAllViews();
         for (int i = 0; i < paymentCards.size(); i++){
             RadioButton radioButton = new RadioButton(getActivity());
             radioButton.setId(i);
@@ -615,7 +628,7 @@ public class BookFragment extends Fragment {
                     etWizardCreditCardIdentifier.setText("");
                 }
             });
-            rgroupCreditCard.addView(radioButton);
+            rGroupCreditCard.addView(radioButton);
         }
 
     }

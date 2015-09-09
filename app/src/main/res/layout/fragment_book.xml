@@ -133,16 +133,8 @@
                         android:text="Enter your credit card info"
                         android:background="@color/base_yellow"
 
-                        />
+                        android:layout_marginBottom="16dp" />
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Use camera"
-                        android:id="@+id/btnCardIo"
-                        android:layout_gravity="right"
-                        android:textColor="@color/base_white" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
