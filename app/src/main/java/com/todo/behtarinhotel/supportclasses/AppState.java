@@ -49,14 +49,14 @@ public class AppState {
     private static SharedPreferences.Editor logEditor;
     private static boolean isTablet;
 
-    public static void userLoggedIn(UserSO userSO) {
+    public static void userLoggedIn(UserSO userSO){
         if (userSO != null) {
             logEditor = sPrefLog.edit();
             loggedUser = userSO;
             logEditor.putString("firstName", loggedUser.getFirstName());
             logEditor.putString("lastName", loggedUser.getLastName());
             logEditor.putString("email", loggedUser.getEmail());
-            logEditor.putString("password", loggedUser.getPassword());
+            logEditor.putString("password",loggedUser.getPassword());
             logEditor.putString("username", loggedUser.getUsername());
             logEditor.putInt("userID", loggedUser.getUserID());
             logEditor.apply();
@@ -94,13 +94,8 @@ public class AppState {
     }
 
     public static void userLoggedOut() {
-        logEditor = sPrefLog.edit();
-        logEditor.putString("firstName", "");
-        logEditor.putString("lastName", "");
-        logEditor.putString("email", "");
-        logEditor.putString("password", "");
-        logEditor.putString("username", "");
-        logEditor.apply();
+        sPrefLog.edit().clear().apply();
+
     }
 
     public static boolean isUserLoggedIn() {
@@ -206,7 +201,7 @@ public class AppState {
 
         HashMap<String, Object> params = new HashMap<>();
         HashMap<String, Object> values = new HashMap<>();
-        values.put("userID", getLoggedUser().getUserID());
+        values.put("userID", loggedUser.getUserID());
         values.put("hotelID", hotel);
         params.put("addWishList",values);
 
@@ -292,7 +287,7 @@ public class AppState {
 
         HashMap<String, Object> params = new HashMap<>();
         HashMap<String, Object> values = new HashMap<>();
-        values.put("userID", getLoggedUser().getUserID());
+        values.put("userID", loggedUser.getUserID());
         values.put("hotelID", hotelID);
         params.put("deleteWishList",values);
 

@@ -92,8 +92,13 @@ public class LoginActivity extends Activity {
         });
 
         if (getIntent().getBooleanExtra("autoFill", false)){
-            mEmailView.setText(AppState.getLoggedUser().getUsername());
-            mPasswordView.setText(AppState.getLoggedUser().getPassword());
+
+
+                UserSO user = AppState.getLoggedUser();
+                mEmailView.setText(user.getUsername());
+                mPasswordView.setText(user.getPassword());
+
+
         }
     }
 
@@ -262,13 +267,13 @@ public class LoginActivity extends Activity {
                         try {
                             if (response.getString("status").equals("ok")) {
                                 JSONObject user = response.getJSONObject("user");
-                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                        user.getString("lastname"),
-                                        user.getInt("id"),
-                                        user.getString("email"),
-                                        password,
-                                        user.getString("username"),
-                                        user.getString("key")));
+                                    AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                            user.getString("lastname"),
+                                            user.getInt("id"),
+                                            user.getString("email"),
+                                            password,
+                                            user.getString("username"),
+                                            user.getString("key")));
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
@@ -319,7 +324,6 @@ public class LoginActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        progressDialog.dismiss();
                         try {
                             if (response.getString("status").equals("ok")) {
                                 userLoginTask(userName, password);

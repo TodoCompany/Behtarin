@@ -17,6 +17,7 @@ import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
+import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
 import org.json.JSONException;
@@ -62,11 +63,12 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
-        addAccount(new MaterialAccount(
-                getResources(),
-                AppState.getLoggedUser().getFirstName() + " " + AppState.getLoggedUser().getLastName(), "",
-                R.drawable.behtarin_logo_b,
-                R.drawable.dubai));
+            UserSO user = AppState.getLoggedUser();
+            addAccount(new MaterialAccount(
+                    getResources(),
+                    user.getFirstName() + " " + user.getLastName(), "",
+                    R.drawable.behtarin_logo_b,
+                    R.drawable.dubai));
         addAccountSection(newSection("Profile", new MyAccountFragment()));
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new WishListFragment()));

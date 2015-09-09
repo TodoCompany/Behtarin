@@ -43,7 +43,13 @@ public class LauncherActivity extends ActionBarActivity {
         AppState.setupAppState(this);
 
         if (AppState.isUserLoggedIn()) {
-            userLoginTask(AppState.getLoggedUser().getUsername(), AppState.getLoggedUser().getPassword());
+
+
+            UserSO user;
+            user = AppState.getLoggedUser();
+            userLoginTask(user.getUsername(), user.getPassword());
+
+
         } else {
             startLoginActivity(false);
         }
@@ -85,13 +91,14 @@ public class LauncherActivity extends ActionBarActivity {
                         try {
                             if (response.getString("status").equals("ok")) {
                                 JSONObject user = response.getJSONObject("user");
-                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                        user.getString("lastname"),
-                                        user.getInt("id"),
-                                        user.getString("email"),
-                                        password,
-                                        user.getString("username"),
-                                        user.getString("key")));
+                                    AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                            user.getString("lastname"),
+                                            user.getInt("id"),
+                                            user.getString("email"),
+                                            password,
+                                            user.getString("username"),
+                                            user.getString("key")));
+
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
