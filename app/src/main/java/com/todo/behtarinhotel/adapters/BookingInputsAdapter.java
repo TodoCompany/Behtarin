@@ -125,19 +125,15 @@ public class BookingInputsAdapter extends BaseAdapter {
             }else if(smoke[i].equals("S")){
                 rb.setText("Smoking");
                 rb.setId(1);
+            }else if (smoke[i].equals("S")){
+                rb.setText("Either");
+                rb.setId(2);
             }
             rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
             radioGroupSmoking.addView(rb);
             if(i==0){
                 rb.setChecked(true);
             }
-        }
-        if(smoke.length == 2){
-            RadioButton rbEither = (RadioButton)inflater.inflate(R.layout.radio_button,null);
-            rbEither.setText("Either");
-            rbEither.setTextColor(ctx.getResources().getColor(R.color.base_text));
-            radioGroupSmoking.addView(rbEither);
-            rbEither.setId(2);
         }
 
 

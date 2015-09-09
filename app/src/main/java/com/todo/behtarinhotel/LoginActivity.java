@@ -1,13 +1,10 @@
 package com.todo.behtarinhotel;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,14 +24,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
-import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +42,7 @@ public class LoginActivity extends Activity {
 
     //reg info
     MaterialEditText etRegUserName, etRegEmail, etRegPassword, etRegFirstName, etRegLastName, etRegConfirmPassword;
-    ButtonRectangle btnSignUp;
+    ButtonRectangle btnSignUp,mEmailSignInButton;
 
     // UI references.
     private MaterialEditText mEmailView;
@@ -75,16 +68,16 @@ public class LoginActivity extends Activity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE) {
+                if (id == EditorInfo.IME_ACTION_SEND) {
                     //LOGIN PROCESS
-                    progressDialog = ProgressDialog.show(LoginActivity.this, "", "Loading...");
                     attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
-        ButtonRectangle mEmailSignInButton = (ButtonRectangle) findViewById(R.id.email_sign_in_button);
+        mPasswordView.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        mEmailSignInButton = (ButtonRectangle) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +90,11 @@ public class LoginActivity extends Activity {
                 attemptRegister();
             }
         });
+
+        if (getIntent().getBooleanExtra("autoFill", false)){
+            mEmailView.setText(AppState.getLoggedUser().getUsername());
+            mPasswordView.setText(AppState.getLoggedUser().getPassword());
+        }
     }
 
     /**
@@ -225,7 +223,7 @@ public class LoginActivity extends Activity {
                 }
             }
             );
-            int socketTimeout = 10000;//30 seconds - change to what you want
+            int socketTimeout = 3000;//about 10 seconds
             RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
@@ -250,9 +248,9 @@ public class LoginActivity extends Activity {
      * the user.
      */
 
-    private void userLoginTask(final String email, final String password) {
+    private void userLoginTask(final String username, final String password) {
         String url = "http://dev.behtarinhotel.com/api/user/generate_auth_cookie/?" +
-                "username=" + email +
+                "username=" + username +
                 "&password=" + password +
                 "&seconds=60";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -268,7 +266,8 @@ public class LoginActivity extends Activity {
                                         user.getString("lastname"),
                                         user.getInt("id"),
                                         user.getString("email"),
-                                        password));
+                                        password,
+                                        user.getString("username")));
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
