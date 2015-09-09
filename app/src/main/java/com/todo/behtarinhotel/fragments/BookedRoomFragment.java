@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,14 +137,18 @@ public class BookedRoomFragment extends Fragment {
         btnCancelBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LinearLayout ll = new LinearLayout(getActivity());
                 TextView tvMessage = new TextView(getActivity());
                 tvMessage.setText(bookedRoomSO.getCancellationPolicy());
                 tvMessage.setTextColor(getResources().getColor(R.color.base_white));
                 tvMessage.setBackgroundColor(getResources().getColor(R.color.base_text));
                 tvMessage.setPadding(16, 16, 16, 16);
                 tvMessage.setTextSize(12);
+                EditText et = new EditText(getActivity());
+                ll.addView(tvMessage);
+                ll.addView(et);
                 new AlertDialog.Builder(getActivity())
-                        .setView(tvMessage)
+                        .setView(ll)
                         .setTitle("Cancel booking?")
                         .setNegativeButton("No, don't cancel booking", new DialogInterface.OnClickListener() {
                             @Override
