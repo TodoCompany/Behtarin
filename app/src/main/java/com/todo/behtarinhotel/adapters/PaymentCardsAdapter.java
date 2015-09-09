@@ -9,11 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +33,12 @@ public class PaymentCardsAdapter extends BaseAdapter {
     public PaymentCardsAdapter(Context context){
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        paymentCards = AppState.getCreditCards();
+        try {
+            paymentCards = AppState.getCreditCards();
+        } catch (GeneralSecurityException e) {
+            paymentCards = new ArrayList<>();
+            //Key is invalid
+        }
 
 
     }
@@ -83,7 +88,12 @@ public class PaymentCardsAdapter extends BaseAdapter {
         btnDeleteCreditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppState.removePaymentCard(paymentCards.get(i));
+                try {
+                    AppState.removePaymentCard(paymentCards.get(i));
+                } catch (GeneralSecurityException e) {
+                    //Key is invalid
+                    paymentCards = new ArrayList<PaymentCardSO>();
+                }
                 notifyDataSetChanged();
             }
         });
@@ -93,7 +103,12 @@ public class PaymentCardsAdapter extends BaseAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        paymentCards = AppState.getCreditCards();
+        try {
+            paymentCards = AppState.getCreditCards();
+        } catch (GeneralSecurityException e) {
+            paymentCards = new ArrayList<>();
+            //Key is invalid
+        }
         super.notifyDataSetChanged();
 
     }

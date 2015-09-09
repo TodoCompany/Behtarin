@@ -10,17 +10,19 @@ public class UserSO {
     private String email;
     private String password;
     private String username;
+    private String key;
 
     public UserSO() {
     }
 
-    public UserSO(String firstName, String lastName, int userID, String email, String password, String username) {
+    public UserSO(String firstName, String lastName, int userID, String email, String password, String username, String key) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userID = userID;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.key = key;
 
     }
 
@@ -70,6 +72,14 @@ public class UserSO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
 

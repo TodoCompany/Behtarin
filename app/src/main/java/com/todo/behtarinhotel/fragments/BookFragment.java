@@ -50,6 +50,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -607,7 +608,11 @@ public class BookFragment extends Fragment {
 
 
     private void initCreditCardsRadioGroup(){
-        paymentCards = AppState.getCreditCards();
+        try {
+            paymentCards = AppState.getCreditCards();
+        } catch (GeneralSecurityException e) {
+            // Key is not valid
+        }
         rGroupCreditCard = (RadioGroup) rootView.findViewById(R.id.rgroupCreditCards);
         rGroupCreditCard.removeAllViews();
         for (int i = 0; i < paymentCards.size(); i++){

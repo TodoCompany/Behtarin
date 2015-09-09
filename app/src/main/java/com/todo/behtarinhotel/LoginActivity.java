@@ -92,8 +92,13 @@ public class LoginActivity extends Activity {
         });
 
         if (getIntent().getBooleanExtra("autoFill", false)){
-            mEmailView.setText(AppState.getLoggedUser().getUsername());
-            mPasswordView.setText(AppState.getLoggedUser().getPassword());
+
+
+                UserSO user = AppState.getLoggedUser();
+                mEmailView.setText(user.getUsername());
+                mPasswordView.setText(user.getPassword());
+
+
         }
     }
 
@@ -223,7 +228,7 @@ public class LoginActivity extends Activity {
                 }
             }
             );
-            int socketTimeout = 3000;//about 10 seconds
+            int socketTimeout = 10000;//about 10 seconds
             RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
             VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
@@ -262,12 +267,13 @@ public class LoginActivity extends Activity {
                         try {
                             if (response.getString("status").equals("ok")) {
                                 JSONObject user = response.getJSONObject("user");
-                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                        user.getString("lastname"),
-                                        user.getInt("id"),
-                                        user.getString("email"),
-                                        password,
-                                        user.getString("username")));
+                                    AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                            user.getString("lastname"),
+                                            user.getInt("id"),
+                                            user.getString("email"),
+                                            password,
+                                            user.getString("username"),
+                                            user.getString("key")));
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
@@ -318,14 +324,9 @@ public class LoginActivity extends Activity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        progressDialog.dismiss();
                         try {
                             if (response.getString("status").equals("ok")) {
-//                                AppState.userLoggedIn(new UserSO(userName, email, password));
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                userLoginTask(userName, password);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
