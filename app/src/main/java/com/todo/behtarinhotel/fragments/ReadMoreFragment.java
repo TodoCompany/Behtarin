@@ -23,7 +23,6 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonFloat;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -248,6 +247,8 @@ public class ReadMoreFragment extends Fragment {
                             fillHotelImages();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (NullPointerException e){
+                            // we getting nullpointer when response comes after we stopped this fragment
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -326,6 +327,7 @@ public class ReadMoreFragment extends Fragment {
         secondRow.addView(photos.get(3));
         secondRow.addView(photos.get(4));
         secondRow.addView(photos.get(5));
+
 
         for (View view : photos) {
 
