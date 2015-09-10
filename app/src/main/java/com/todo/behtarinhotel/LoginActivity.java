@@ -281,6 +281,7 @@ public class LoginActivity extends Activity {
                                 ArrayList<Integer> wishList = new ArrayList<>();
                                 wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                                 AppState.setWishList(wishList);
+
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);

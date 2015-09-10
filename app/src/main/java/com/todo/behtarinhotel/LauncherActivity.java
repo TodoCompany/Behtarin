@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -31,6 +32,19 @@ import java.util.ArrayList;
 
 
 public class LauncherActivity extends ActionBarActivity {
+
+    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
+    private static final String CID = "55505";
+    String apiKey = "&apiKey=";
+    String cid = "&cid=";
+    String locale = "&locale=enUS";
+    String customerSessionID = "&customerSessionID=1";
+    String customerIpAddress = "&customerIpAddress=193.93.219.63";
+    String currencyCode = "&currencyCode=USD";
+    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
+    String minorRev = "&minorRev=30";
+    String hotelIdList = "&hotelIdList=";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +122,7 @@ public class LauncherActivity extends ActionBarActivity {
                                 ArrayList<Integer> wishList = new ArrayList<>();
                                 wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                                 AppState.setWishList(wishList);
-
+                                getBookedRooms(user.getJSONArray("rooms"));
                                 startWorkActivity();
                                 finish();
                             }else{
@@ -134,7 +148,7 @@ public class LauncherActivity extends ActionBarActivity {
 
     }
 
-    private ArrayList<BookedRoomSO> parseBookedRooms(JSONArray jsonArray) throws JSONException {
+    private void getBookedRooms(JSONArray jsonArray) throws JSONException {
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++){
             JSONObject object = jsonArray.getJSONObject(i);
@@ -144,11 +158,79 @@ public class LauncherActivity extends ActionBarActivity {
             bookedRoomSO.setUserID(object.getInt("u_id"));
             bookedRoomSO.setLastName(object.getString("LastName"));
             bookedRoomSO.setPhotoUrl(object.getString("Photo"));
-            bookedRoomSO.setPhotoUrl(object.getString("Photo"));
+            bookedRoomSO.setConfirmationNumber(object.getInt("ConfirmationNumber"));
+            bookedRoomSO.setBedType(object.getInt("BedType"));
+            bookedRoomSO.setSmokingPreference(object.getString("SmokingPreference"));
+            bookedRoomSO.setFirstName(object.getString("FirstName"));
+            bookedRoomSO.setRoomDescription(object.getString("Description"));
+            bookedRoomSO.setHotelID(object.getInt("HotelID"));
+            bookedRoomSO.setArrivalDate(object.getString("StartDate"));
+            bookedRoomSO.setDepartureDate(object.getString("EndDate"));
+
+            bookedRooms.add(bookedRoomSO);
         }
-        return bookedRooms;
+            getHotelDataFromExpedia(bookedRooms);
+    }
+
+    private void getHotelDataFromExpedia(final ArrayList<BookedRoomSO> rooms){
+        String hotelIDs = "";
+        final int num = rooms.size();
+        for (BookedRoomSO room : rooms){
+            hotelIDs = hotelIDs + room.getHotelID() + ",";
+        }
+        String url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
+                apiKey + API_KEY +
+                cid + CID +
+                sig +
+                customerIpAddress +
+                currencyCode +
+                customerSessionID +
+                minorRev +
+                locale +
+                hotelIdList + hotelIDs
+        ;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("onResponse", "123");
+                        if(num==1){
+                            try {
+                                JSONObject obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
+                                rooms.get(0).setHotelName(obj.getString("name"));
+                                rooms.get(0).setHotelAddress(obj.getString("address1"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            try {
+                                JSONArray arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                                for(int i=0; i<arr.length();i++){
+                                    rooms.get(i).setHotelName(arr.getJSONObject(i).getString("name"));
+                                    rooms.get(i).setHotelAddress(arr.getJSONObject(i).getString("address1"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        AppState.saveBookedRoom(rooms);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }
+
+        );
+        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
 
     }
+
+
 
 
 }
