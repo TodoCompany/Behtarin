@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,7 +123,7 @@ public class BookedRoomFragment extends Fragment {
         }
         tvHotelName.setText(bookedRoomSO.getHotelName());
         tvRoomDescription.setText(bookedRoomSO.getRoomDescription());
-        tvHotelLocation.setText(bookedRoomSO.getHotelAddress());
+        tvHotelLocation.setText(Html.fromHtml(bookedRoomSO.getHotelAddress()));
         tvArrival.setText(bookedRoomSO.getArrivalDate());
         tvDeparture.setText(bookedRoomSO.getDepartureDate());
         tvRoomPrice.setText("$" + bookedRoomSO.getRoomPrice());

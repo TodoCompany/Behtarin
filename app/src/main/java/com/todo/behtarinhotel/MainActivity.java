@@ -9,7 +9,6 @@ import android.widget.PopupMenu;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.todo.behtarinhotel.fragments.MainFragment;
-import com.todo.behtarinhotel.fragments.MyAccountFragment;
 import com.todo.behtarinhotel.fragments.PaymentCardsFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.WishListFragment;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialAccount;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
-import it.neokree.materialnavigationdrawer.elements.listeners.MaterialAccountListener;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 
@@ -48,17 +46,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
 
     private void initDrawer() {
 
-        setAccountListener(new MaterialAccountListener() {
-            @Override
-            public void onAccountOpening(MaterialAccount materialAccount) {
-                setFragment(new MyAccountFragment(), "Profile");
-            }
 
-            @Override
-            public void onChangeAccount(MaterialAccount materialAccount) {
-
-            }
-        });
 
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
@@ -69,7 +57,7 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
                     user.getFirstName() + " " + user.getLastName(), "",
                     R.drawable.behtarin_logo_b,
                     R.drawable.dubai));
-        addAccountSection(newSection("Profile", new MyAccountFragment()));
+
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new WishListFragment()));
         addSection(newSection("Credit cards", new PaymentCardsFragment()));
