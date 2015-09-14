@@ -2,14 +2,11 @@ package com.todo.behtarinhotel.fragments;
 
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v7.internal.widget.ActivityChooserView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,34 +18,15 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
-import com.todo.behtarinhotel.MainActivity;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.FilterSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FilterFragment extends Fragment {
 
     TextView tvFrom;
@@ -59,13 +37,9 @@ public class FilterFragment extends Fragment {
     CheckBox[] arrStar;
     CheckBox[] arrTrip;
 
-    GsonBuilder gsonBuilder;
-    Gson gson;
-    private ArrayList<SearchResultSO> searchResultSOArrayList;
     FilterSO filterParams;
     MainFragment parentFragment;
     Button btnApply;
-
 
 
     public FilterFragment() {
@@ -119,7 +93,7 @@ public class FilterFragment extends Fragment {
                 setArr();
             }
         };
-        for(int i = 0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             arrStar[i].setOnClickListener(oclStars);
             arrTrip[i].setOnClickListener(oclStars);
         }
@@ -136,9 +110,9 @@ public class FilterFragment extends Fragment {
 
 
         });
-        if(filterParams!=null){
-            tvFrom.setText(filterParams.getMinPrice()+"");
-            tvTo.setText(filterParams.getMaxPrice()+"");
+        if (filterParams != null) {
+            tvFrom.setText(filterParams.getMinPrice() + "");
+            tvTo.setText(filterParams.getMaxPrice() + "");
             setArr();
         }
     }
@@ -155,9 +129,9 @@ public class FilterFragment extends Fragment {
         final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
         np.setMaxValue(50); // max value 100
         np.setMinValue(0);   // min value 0
-        if(view.getId() == R.id.tv_from_filter_fragment){
+        if (view.getId() == R.id.tv_from_filter_fragment) {
             et.setText(tvFrom.getText().toString());
-        }else{
+        } else {
             et.setText(tvTo.getText().toString());
         }
 
@@ -175,7 +149,7 @@ public class FilterFragment extends Fragment {
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                et.setText("" + i1*100);
+                et.setText("" + i1 * 100);
             }
         });
         b1.setOnClickListener(new View.OnClickListener() {
@@ -183,9 +157,9 @@ public class FilterFragment extends Fragment {
             public void onClick(View v) {
                 //set the value to textview
                 ((TextView) view).setText(et.getText().toString());
-                if(v.getId() == R.id.tv_from_filter_fragment){
+                if (v.getId() == R.id.tv_from_filter_fragment) {
                     filterParams.setMinPrice(Integer.valueOf(et.getText().toString()));
-                }else{
+                } else {
                     filterParams.setMaxPrice(Integer.valueOf(et.getText().toString()));
                 }
                 d.dismiss();
@@ -249,7 +223,7 @@ public class FilterFragment extends Fragment {
     }
 
 
-    public void setFilterParams(FilterSO filterParams,MainFragment fragment){
+    public void setFilterParams(FilterSO filterParams, MainFragment fragment) {
         this.filterParams = filterParams;
         parentFragment = fragment;
     }
@@ -257,44 +231,44 @@ public class FilterFragment extends Fragment {
     private void collectData() {
         filterParams.setMinPrice(Integer.valueOf(tvFrom.getText().toString()));
         filterParams.setMaxPrice(Integer.valueOf(tvTo.getText().toString()));
-        boolean isMinStarSet=false;
-        boolean isMinTripSet=false;
-        for(int i = 0; i<5;i++){
-            if(!isMinStarSet){
-                if(arrStar[i].isChecked()){
+        boolean isMinStarSet = false;
+        boolean isMinTripSet = false;
+        for (int i = 0; i < 5; i++) {
+            if (!isMinStarSet) {
+                if (arrStar[i].isChecked()) {
                     filterParams.setMinStarRate(i);
                     filterParams.setMaxStarRate(i);
                     isMinStarSet = true;
                 }
-            }else{
-                if(arrStar[i].isChecked()){
+            } else {
+                if (arrStar[i].isChecked()) {
                     filterParams.setMaxStarRate(i);
                 }
             }
         }
-        for(int i = 0; i<5;i++){
-            if(!isMinTripSet){
-                if(arrTrip[i].isChecked()){
+        for (int i = 0; i < 5; i++) {
+            if (!isMinTripSet) {
+                if (arrTrip[i].isChecked()) {
                     filterParams.setMinTripRate(i);
                     filterParams.setMaxTripRate(i);
                     isMinTripSet = true;
                 }
-            }else{
-                if(arrTrip[i].isChecked()){
+            } else {
+                if (arrTrip[i].isChecked()) {
                     filterParams.setMaxTripRate(i);
                 }
             }
         }
     }
 
-    private void setArr(){
-        for(int i = 0; i < 5; i++){
-            if(i>=filterParams.getMinStarRate()&&i<=filterParams.getMaxStarRate()){
-                    arrStar[i].setChecked(true);
+    private void setArr() {
+        for (int i = 0; i < 5; i++) {
+            if (i >= filterParams.getMinStarRate() && i <= filterParams.getMaxStarRate()) {
+                arrStar[i].setChecked(true);
             }
         }
-        for(int i = 0; i < 5; i++){
-            if(i >= filterParams.getMinTripRate()&& i <= filterParams.getMaxTripRate()){
+        for (int i = 0; i < 5; i++) {
+            if (i >= filterParams.getMinTripRate() && i <= filterParams.getMaxTripRate()) {
                 arrTrip[i].setChecked(true);
             }
         }

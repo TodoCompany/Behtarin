@@ -22,9 +22,6 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by Andriy on 13.07.2015.
- */
 public class AvailableRoomsAdapter extends BaseAdapter {
 
     ImageView roomImage;

@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * Created by Andriy on 13.08.2015.
- */
 public class HistoryAdapter extends BaseAdapter {
 
     ArrayList<BookedRoomSO> history;
@@ -31,7 +28,7 @@ public class HistoryAdapter extends BaseAdapter {
     LayoutInflater inflater;
     RequestListener listener;
 
-    public HistoryAdapter(final Context context){
+    public HistoryAdapter(final Context context) {
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -79,9 +76,9 @@ public class HistoryAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        if (convertView != null){
+        if (convertView != null) {
             view = convertView;
-        }else{
+        } else {
             view = inflater.inflate(R.layout.history_item, null, false);
         }
         TextView tvHotelName = (TextView) view.findViewById(R.id.tvHotelName);
@@ -111,7 +108,7 @@ public class HistoryAdapter extends BaseAdapter {
                 .listener(listener)
                 .into(image);
 
-        switch (historyRoom.getOrderState()){
+        switch (historyRoom.getOrderState()) {
             case BookedRoomSO.BOOKED:
                 grayImage.setVisibility(View.GONE);
                 btnState.setText("Booked");
@@ -129,7 +126,6 @@ public class HistoryAdapter extends BaseAdapter {
                 btnState.setText("Cancelled");
                 break;
         }
-
 
         return view;
     }

@@ -16,13 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -30,32 +24,14 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BookedRoomFragment extends Fragment {
-
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
-
-    String apiKey = "&apiKey=";
-    String cid = "&cid=";
-    String locale = "&locale=enUS";
-    String customerSessionID = "&customerSessionID=1";
-    String customerIpAddress = "&customerIpAddress=193.93.219.63";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String minorRev = "&minorRev=30";
-    String currencyCode = "&currencyCode=USD";
-    String itineraryId = "&itineraryId=";
-    String confirmationNumber = "&confirmationNumber=";
-    String email = "&email=";
 
     ImageView roomImage;
     TextView tvHotelName, tvRoomDescription, tvHotelLocation, tvArrival, tvDeparture, tvRoomPrice, tvName, tvSmokingPreferences;
@@ -66,7 +42,6 @@ public class BookedRoomFragment extends Fragment {
     RequestListener listener;
     AlertDialog dialog;
     EditText et;
-    RetryPolicy policy;
 
     public BookedRoomFragment() {
         // Required empty public constructor
@@ -80,7 +55,6 @@ public class BookedRoomFragment extends Fragment {
         initViews();
         initViewsWithData();
         setOnClickListeners();
-
 
         return rootView;
     }
@@ -170,7 +144,7 @@ public class BookedRoomFragment extends Fragment {
                         .setPositiveButton("Yes, cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialog, int which) {
-                                makeCancelationRequest();
+                                makeCancellationRequest();
                             }
                         })
                         .show();
@@ -192,124 +166,83 @@ public class BookedRoomFragment extends Fragment {
         data.put("chargeableRateInfo", obj);
         cancellation.put("ordered_cancellation", data);
 
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
-                new JSONObject(cancellation),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            // response :"status":200,"success":"Yep"
-
-                            Log.i("Response :", response.toString());
-
-                            if (response.getInt("status") == 200) {
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-            }
-        });
-        request.setRetryPolicy(policy);
-        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(request);
+            public void onResponse(JSONObject response) {
 
+            }
+        };
+
+        DataLoader.makeRequest(true, DataLoader.apiUrl, new JSONObject(cancellation), listener);
     }
 
     private void makeItineraryRequest(final int cancellationNumber) {
 
         final String itineraryUrl = "http://api.ean.com/ean-services/rs/hotel/v3/cancel?" +
-                apiKey + API_KEY +
-                cid + CID +
-                sig +
-                customerIpAddress +
-                currencyCode +
-                customerSessionID +
-                minorRev +
-                itineraryId + bookedRoomSO.getItineraryId() +
-                email + et.getText().toString();
-        JsonObjectRequest itineraryRequest = new JsonObjectRequest(Request.Method.GET,
-                itineraryUrl,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("ExpediaRequest", "First hotels loading from: ");
-                        try {
-                            JSONObject obj = response.getJSONObject("Itinerary").getJSONObject("HotelConfirmation").getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
-                            sendDataToApi(obj,cancellationNumber);
-                        } catch (Exception e) {
-                            try {
-                                Toast.makeText(AppState.getMyContext(), response.getJSONObject("HotelRoomCancellationResponse").getJSONObject("EanWsError").getString("presentationMessage"), Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                            dialog.dismiss();
-                        }
+                DataLoader.apiKey + DataLoader.API_KEY +
+                DataLoader.cid + DataLoader.CID +
+                DataLoader.sig +
+                DataLoader.customerIpAddress +
+                DataLoader.currencyCode +
+                DataLoader.customerSessionID +
+                DataLoader.minorRev +
+                DataLoader.itineraryId + bookedRoomSO.getItineraryId() +
+                DataLoader.email + et.getText().toString();
 
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+            public void onResponse(JSONObject response) {
+                Log.d("ExpediaRequest", "First hotels loading from: ");
+                try {
+                    JSONObject obj = response.getJSONObject("Itinerary").getJSONObject("HotelConfirmation").getJSONObject("RateInfos").getJSONObject("RateInfo").getJSONObject("ChargeableRateInfo");
+                    sendDataToApi(obj, cancellationNumber);
+                } catch (Exception e) {
+                    try {
+                        Toast.makeText(AppState.getMyContext(), response.getJSONObject("HotelRoomCancellationResponse").getJSONObject("EanWsError").getString("presentationMessage"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
             }
-        }
-        );
-        itineraryRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(itineraryRequest);
+        };
+        DataLoader.makeRequest(itineraryUrl, listener);
     }
 
-    private void makeCancelationRequest() {
-        int socketTimeout = 30000;//30 seconds - change to what you want
-        policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        //TODO cancel booking
+    private void makeCancellationRequest() {
+
         final String url = "http://api.ean.com/ean-services/rs/hotel/v3/cancel?" +
-                apiKey + API_KEY +
-                cid + CID +
-                sig +
-                customerIpAddress +
-                currencyCode +
-                customerSessionID +
-                minorRev +
-                locale +
-                itineraryId + bookedRoomSO.getItineraryId() +
-                confirmationNumber + bookedRoomSO.getConfirmationNumber() +
-                email + et.getText().toString();
+                DataLoader.apiKey + DataLoader.API_KEY +
+                DataLoader.cid + DataLoader.CID +
+                DataLoader.sig +
+                DataLoader.customerIpAddress +
+                DataLoader.currencyCode +
+                DataLoader.customerSessionID +
+                DataLoader.minorRev +
+                DataLoader.locale +
+                DataLoader.itineraryId + bookedRoomSO.getItineraryId() +
+                DataLoader.confirmationNumber + bookedRoomSO.getConfirmationNumber() +
+                DataLoader.email + et.getText().toString();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("ExpediaRequest", "First hotels loading from: " + url);
-                        try {
-                            int cancelaltionNumber = response.getJSONObject("HotelRoomCancellationResponse").getInt("cancellationNumber");
-                            AppState.removeRoomFromBooking(bookedRoomSO);
-                            getActivity().onBackPressed();
-                            Toast.makeText(getActivity(), "Successfully canceled", Toast.LENGTH_SHORT).show();
-                            makeItineraryRequest(cancelaltionNumber);
-                        } catch (Exception e) {
-                            try {
-                                Toast.makeText(AppState.getMyContext(), response.getJSONObject("HotelRoomCancellationResponse").getJSONObject("EanWsError").getString("presentationMessage"), Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                            dialog.dismiss();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-
+            public void onResponse(JSONObject response) {
+                try {
+                    int cancellationNumber = response.getJSONObject("HotelRoomCancellationResponse").getInt("cancellationNumber");
+                    AppState.removeRoomFromBooking(bookedRoomSO);
+                    getActivity().onBackPressed();
+                    Toast.makeText(getActivity(), "Successfully canceled", Toast.LENGTH_SHORT).show();
+                    makeItineraryRequest(cancellationNumber);
+                } catch (Exception e) {
+                    try {
+                        Toast.makeText(AppState.getMyContext(), response.getJSONObject("HotelRoomCancellationResponse").getJSONObject("EanWsError").getString("presentationMessage"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
             }
-        }
-        );
-        jsonObjectRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+        };
+        DataLoader.makeRequest(url, listener);
     }
 }

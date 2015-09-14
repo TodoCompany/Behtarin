@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONException;
@@ -42,7 +43,7 @@ public class LoginActivity extends Activity {
 
     //reg info
     MaterialEditText etRegUserName, etRegEmail, etRegPassword, etRegFirstName, etRegLastName, etRegConfirmPassword;
-    ButtonRectangle btnSignUp,mEmailSignInButton;
+    ButtonRectangle btnSignUp, mEmailSignInButton;
 
     // UI references.
     private MaterialEditText mEmailView;
@@ -91,12 +92,12 @@ public class LoginActivity extends Activity {
             }
         });
 
-        if (getIntent().getBooleanExtra("autoFill", false)){
+        if (getIntent().getBooleanExtra("autoFill", false)) {
 
 
-                UserSO user = AppState.getLoggedUser();
-                mEmailView.setText(user.getUsername());
-                mPasswordView.setText(user.getPassword());
+            UserSO user = AppState.getLoggedUser();
+            mEmailView.setText(user.getUsername());
+            mPasswordView.setText(user.getPassword());
 
 
         }
@@ -206,35 +207,31 @@ public class LoginActivity extends Activity {
             progressDialog.setMessage("Loading");
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                    "http://dev.behtarinhotel.com/api/get_nonce/?controller=user&method=register",
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            progressDialog.dismiss();
-                            try {
-                                String nonce = response.getString("nonce");
-                                userRegisterTask(userName, firstName, lastName, email, password, nonce);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
+
+            Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String nonce = response.getString("nonce");
+                        userRegisterTask(userName, firstName, lastName, email, password, nonce);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Something wrong with your internet connection", Toast.LENGTH_SHORT).show();
                 }
-            }
-            );
-            int socketTimeout = 10000;//about 10 seconds
-            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            jsonObjectRequest.setRetryPolicy(policy);
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            };
 
-
-
+            String url = "http://dev.behtarinhotel.com/api/get_nonce/?controller=user&method=register";
+            DataLoader.makeRequest(url, listener, errorListener);
         }
     }
 
@@ -258,55 +255,52 @@ public class LoginActivity extends Activity {
                 "username=" + username +
                 "&password=" + password +
                 "&seconds=60";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        progressDialog.dismiss();
-                        try {
-                            if (response.getString("status").equals("ok")) {
-                                JSONObject user = response.getJSONObject("user");
-                                    AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                            user.getString("lastname"),
-                                            user.getInt("id"),
-                                            user.getString("email"),
-                                            password,
-                                            user.getString("username"),
-                                            user.getString("key")));
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                Gson gson = gsonBuilder.create();
-                                Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
-                                }.getType();
-                                ArrayList<Integer> wishList = new ArrayList<>();
-                                wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
-                                AppState.setWishList(wishList);
 
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Invalid username or password",Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.dismiss();
+                try {
+                    if (response.getString("status").equals("ok")) {
+                        JSONObject user = response.getJSONObject("user");
+                        AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                user.getString("lastname"),
+                                user.getInt("id"),
+                                user.getString("email"),
+                                password,
+                                user.getString("username"),
+                                user.getString("key")));
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        Gson gson = gsonBuilder.create();
+                        Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
+                        }.getType();
+                        ArrayList<Integer> wishList = new ArrayList<>();
+                        wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
+                        AppState.setWishList(wishList);
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_SHORT).show();
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Something wrong with your internet connection", Toast.LENGTH_SHORT).show();
             }
-        }
-        );
-        int socketTimeout = 10000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        };
 
+        DataLoader.makeRequest(url, listener, errorListener);
     }
 
     private void userRegisterTask(final String userName, String firstName, String lastName, final String email, final String password, String nonce) {
@@ -320,38 +314,30 @@ public class LoginActivity extends Activity {
                 "&first_name=" + firstName +
                 "&last_name=" + lastName;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getString("status").equals("ok")) {
-                                userLoginTask(userName, password);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.dismiss();
+                try {
+                    if (response.getString("status").equals("ok")) {
+                        userLoginTask(userName, password);
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 VolleyLog.e("Error: ", error.getMessage());
-                Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Something wrong with your internet connection", Toast.LENGTH_SHORT).show();
             }
-        }
+        };
 
-        );
-        int socketTimeout = 10000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        DataLoader.makeRequest(url, listener, errorListener);
     }
-
-
-
-
-
 }
 

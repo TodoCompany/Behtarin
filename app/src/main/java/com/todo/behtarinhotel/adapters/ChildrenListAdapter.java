@@ -26,12 +26,8 @@ import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-/**
- * Created by dmytro on 7/29/15.
- */
 public class ChildrenListAdapter extends BaseAdapter {
 
-    static Dialog d ;
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<RoomQueryGuestSO> childrenSOArrayList;
@@ -40,15 +36,13 @@ public class ChildrenListAdapter extends BaseAdapter {
     ImageButton btnRemoveChild;
     int position;
 
-    public ChildrenListAdapter(Context ctx, ArrayList<RoomQueryGuestSO> childrenSOArrayList,RoomBuilderFragment fragment,int position) {
+    public ChildrenListAdapter(Context ctx, ArrayList<RoomQueryGuestSO> childrenSOArrayList, RoomBuilderFragment fragment, int position) {
         this.ctx = ctx;
         this.childrenSOArrayList = childrenSOArrayList;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.fragment = fragment;
         this.position = position;
     }
-
-
 
     @Override
     public int getCount() {
@@ -68,21 +62,19 @@ public class ChildrenListAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
-        if(view == null){
+        if (view == null) {
             view = lInflater.inflate(R.layout.fragment_room_builder_list_item, null);
         }
-            childCounter = (TextView) view.findViewById(R.id.tv_counter_room_builder_fragment_item_child);
-        if(childrenSOArrayList.get(i).getAge() == 0){
+        childCounter = (TextView) view.findViewById(R.id.tv_counter_room_builder_fragment_item_child);
+        if (childrenSOArrayList.get(i).getAge() == 0) {
             childCounter.setText("Age");
-        }else if(childrenSOArrayList.get(i).getAge() == 1){
+        } else if (childrenSOArrayList.get(i).getAge() == 1) {
             childCounter.setText(childrenSOArrayList.get(i).getAge() + " year");
-        }else{
+        } else {
             childCounter.setText(childrenSOArrayList.get(i).getAge() + " years");
         }
 
         childCounter.setTag(i);
-
-
         childCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,17 +92,15 @@ public class ChildrenListAdapter extends BaseAdapter {
             }
         });
 
-
         return view;
     }
 
-    public void show(final View view, final int i)
-    {
+    public void show(final View view, final int i) {
 
         final Dialog d = new Dialog(fragment.getActivity());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.date_picker_dialog);
-        MaterialEditText editText = (MaterialEditText)d.findViewById(R.id.editText);
+        MaterialEditText editText = (MaterialEditText) d.findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
         Button b1 = (Button) d.findViewById(R.id.button1);
         Button b2 = (Button) d.findViewById(R.id.button2);
@@ -119,7 +109,7 @@ public class ChildrenListAdapter extends BaseAdapter {
         np.setMinValue(1);   // min value 0
         np.setWrapSelectorWheel(false);
         setNumberPickerTextColor(np, ctx.getResources().getColor(R.color.base_black));
-        setDividerColor(np,ctx.getResources().getColor(R.color.base_black));
+        setDividerColor(np, ctx.getResources().getColor(R.color.base_black));
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -148,30 +138,26 @@ public class ChildrenListAdapter extends BaseAdapter {
         d.show();
     }
 
-    private boolean setNumberPickerTextColor(NumberPicker numberPicker, int color)
-    {
+    private boolean setNumberPickerTextColor(NumberPicker numberPicker, int color) {
         final int count = numberPicker.getChildCount();
-        for(int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             View child = numberPicker.getChildAt(i);
-            if(child instanceof EditText){
-                try{
+            if (child instanceof EditText) {
+                try {
                     Field selectorWheelPaintField = numberPicker.getClass()
                             .getDeclaredField("mSelectorWheelPaint");
                     selectorWheelPaintField.setAccessible(true);
-                    ((Paint)selectorWheelPaintField.get(numberPicker)).setColor(color);
-                    ((EditText)child).setTextColor(color);
-                    ((EditText)child).setFocusable(false);
-                    ((EditText)child).setEnabled(false);
+                    ((Paint) selectorWheelPaintField.get(numberPicker)).setColor(color);
+                    ((EditText) child).setTextColor(color);
+                    ((EditText) child).setFocusable(false);
+                    ((EditText) child).setEnabled(false);
 
                     return true;
-                }
-                catch(NoSuchFieldException e){
+                } catch (NoSuchFieldException e) {
                     Log.w("setNumberPickerTextColo", e);
-                }
-                catch(IllegalAccessException e){
+                } catch (IllegalAccessException e) {
                     Log.w("setNumberPickerTextColo", e);
-                }
-                catch(IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     Log.w("setNumberPickerTextColo", e);
                 }
             }
@@ -192,14 +178,12 @@ public class ChildrenListAdapter extends BaseAdapter {
                     e.printStackTrace();
                 } catch (Resources.NotFoundException e) {
                     e.printStackTrace();
-                }
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 break;
             }
         }
     }
-
 
 }

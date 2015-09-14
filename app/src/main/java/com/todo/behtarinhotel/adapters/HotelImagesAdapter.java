@@ -16,9 +16,6 @@ import com.todo.behtarinhotel.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andriy on 03.08.2015.
- */
 public class HotelImagesAdapter extends BaseAdapter {
 
     public static final int PHOTOS_GRID_SIZE = 6;
@@ -87,7 +84,6 @@ public class HotelImagesAdapter extends BaseAdapter {
                     .into(imageView);
             view = imageView;
         }
-
 
         return view;
     }

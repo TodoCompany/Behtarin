@@ -17,9 +17,6 @@ import java.util.ArrayList;
 
 import it.sephiroth.android.library.widget.AbsHListView;
 
-/**
- * Created by Andriy on 05.08.2015.
- */
 public class PhotoListAdapter extends BaseAdapter {
 
     ArrayList<String> imageUrls;
@@ -28,7 +25,7 @@ public class PhotoListAdapter extends BaseAdapter {
     Context context;
     RequestListener listener;
 
-    public PhotoListAdapter(final Context context, ArrayList<String> urls){
+    public PhotoListAdapter(final Context context, ArrayList<String> urls) {
         imageUrls = urls;
         this.context = context;
         listener = new RequestListener() {
@@ -50,7 +47,6 @@ public class PhotoListAdapter extends BaseAdapter {
 
     }
 
-
     @Override
     public int getCount() {
         return imageUrls.size();
@@ -71,7 +67,7 @@ public class PhotoListAdapter extends BaseAdapter {
         final ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-        }else{
+        } else {
             imageView = (ImageView) convertView;
         }
 
@@ -79,10 +75,10 @@ public class PhotoListAdapter extends BaseAdapter {
         imageView.setLayoutParams(params);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setPadding(3, 3, 3, 3);
-        if (checkedItem == position){
+        if (checkedItem == position) {
             Log.d("Adapter", "Setting yellow " + position + " item");
             imageView.setBackgroundColor(context.getResources().getColor(R.color.base_yellow));
-        }else{
+        } else {
             Log.d("Adapter", "Setting inactive " + position + " item");
             imageView.setBackgroundColor(context.getResources().getColor(R.color.base_dark));
         }

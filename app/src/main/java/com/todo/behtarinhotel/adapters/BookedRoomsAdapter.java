@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by Andriy on 13.08.2015.
- */
 public class BookedRoomsAdapter extends BaseAdapter {
 
     ArrayList<BookedRoomSO> bookedRooms;

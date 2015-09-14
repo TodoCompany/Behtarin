@@ -17,16 +17,11 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.RoomBuilderFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.MyListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by dmytro on 7/28/15.
- */
 public class RoomListAdapter extends BaseAdapter {
 
     Context ctx;
@@ -39,7 +34,6 @@ public class RoomListAdapter extends BaseAdapter {
     SearchFragment parentFragment;
     private boolean doubleBackToExitPressedOnce;
     private Handler mHandler = new Handler();
-
 
     public RoomListAdapter(Context ctx, ArrayList<SearchRoomSO> roomGuests, SearchFragment fragment) {
         this.ctx = ctx;
@@ -98,8 +92,8 @@ public class RoomListAdapter extends BaseAdapter {
                     doubleBackToExitPressedOnce = true;
                     Toast.makeText(ctx, "Please click again to delete", Toast.LENGTH_SHORT).show();
                     mHandler.postDelayed(mRunnable, 2000);
-                }else {
-                    Toast.makeText(ctx, "Must be at least one room",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ctx, "Must be at least one room", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -134,7 +128,6 @@ public class RoomListAdapter extends BaseAdapter {
             }
             linearLayout.addView(ll);
         }
-
 
         return view;
     }

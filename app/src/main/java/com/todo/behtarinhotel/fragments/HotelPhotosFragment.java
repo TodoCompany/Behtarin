@@ -19,16 +19,11 @@ import java.util.ArrayList;
 import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HotelPhotosFragment extends Fragment {
 
+public class HotelPhotosFragment extends Fragment {
 
     ArrayList<String> imagesUrls;
     int positionToShow;
-
-    PhotoPagerAdapter photoPagerAdapter;
 
     ViewPager pager;
     HListView horizontalPhotosList;
@@ -36,7 +31,6 @@ public class HotelPhotosFragment extends Fragment {
     public HotelPhotosFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +48,7 @@ public class HotelPhotosFragment extends Fragment {
             if (positionToShow != -1) {
                 pager.setCurrentItem(positionToShow);
                 photoListAdapter.setCheckedItem(positionToShow);
-            }else{
+            } else {
                 pager.setCurrentItem(0);
                 photoListAdapter.setCheckedItem(0);
             }
@@ -88,10 +82,9 @@ public class HotelPhotosFragment extends Fragment {
         return rootView;
     }
 
-    public void setHotelId(ArrayList<String> imagesUrls, int positionToShow){
+    public void setHotelId(ArrayList<String> imagesUrls, int positionToShow) {
         this.imagesUrls = imagesUrls;
         this.positionToShow = positionToShow;
     }
-
 
 }

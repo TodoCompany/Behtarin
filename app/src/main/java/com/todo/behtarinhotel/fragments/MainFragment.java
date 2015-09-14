@@ -41,6 +41,7 @@ import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -54,13 +55,8 @@ import java.util.Comparator;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MainFragment extends Fragment {
 
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
+public class MainFragment extends Fragment {
 
     private static final int NO_SORTING = 0;
     private static final int SORT_BY_HIGHEST_PRICE = 1;
@@ -71,20 +67,6 @@ public class MainFragment extends Fragment {
     private static final int NO_INTERNET = 1, NO_HOTELS = 2;
 
     String url;
-    String apiKey = "&apiKey=";
-    String cid = "&cid=";
-    String locale = "&locale=enUS";
-    String customerSessionID = "&customerSessionID=1";
-    String customerIpAddress = "&customerIpAddress=193.93.219.63";
-    String arrivalDate = "&arrivalDate=";
-    String currencyCode = "&currencyCode=USD";
-    String departureDate = "&departureDate=";
-    String city = "&destinationString=";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String minorRev = "&minorRev=30";
-    String hotelIdList = "&hotelIdList=";
-    String minStar = "&minStarRating=";
-    String limit = "&numberOfResults=";
     String cacheKey, cacheLocation;
     int hotelId;
 
@@ -113,12 +95,13 @@ public class MainFragment extends Fragment {
 
     JsonObjectRequest nextPageRequest;
     View ll;
+    Response.ErrorListener errorListener;
 
     // Used to count "null" responses from expedia and start new requests
     int expediaBadResponseCounter = 0;
 
     boolean isFiltersChanged = false;
-    boolean isErorShowing = false;
+    boolean isErrorShowing = false;
     private boolean isWishListSearch;
 
 
@@ -181,126 +164,119 @@ public class MainFragment extends Fragment {
         this.hotelId = hotelId;
     }
 
-
     public void loadDataFromExpedia() {
         if (searchParams != null) {
             if (isWishListSearch) {
                 url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-                        apiKey + API_KEY +
-                        cid + CID +
-                        sig +
-                        customerIpAddress +
-                        currencyCode +
-                        customerSessionID +
-                        minorRev +
-                        locale +
-                        hotelIdList + hotelId +
-                        arrivalDate + searchParams.getArrivalDate() +
-                        departureDate + searchParams.getDepartureDate() +
+                        DataLoader.apiKey + DataLoader.API_KEY +
+                        DataLoader.cid + DataLoader.CID +
+                        DataLoader.sig +
+                        DataLoader.customerIpAddress +
+                        DataLoader.currencyCode +
+                        DataLoader.customerSessionID +
+                        DataLoader.minorRev +
+                        DataLoader.locale +
+                        DataLoader.hotelIdList + hotelId +
+                        DataLoader.arrivalDate + searchParams.getArrivalDate() +
+                        DataLoader.departureDate + searchParams.getDepartureDate() +
                         makeRoomString(searchParams.getRooms())
                 ;
 
             } else {
                 url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-                        apiKey + API_KEY +
-                        cid + CID +
-                        sig +
-                        customerIpAddress +
-                        currencyCode +
-                        customerSessionID +
-                        minorRev +
-                        locale +
-                        city + searchParams.getCity() +
-                        arrivalDate + searchParams.getArrivalDate() +
-                        departureDate + searchParams.getDepartureDate() +
+                        DataLoader.apiKey + DataLoader.API_KEY +
+                        DataLoader.cid + DataLoader.CID +
+                        DataLoader.sig +
+                        DataLoader.customerIpAddress +
+                        DataLoader.currencyCode +
+                        DataLoader.customerSessionID +
+                        DataLoader.minorRev +
+                        DataLoader.locale +
+                        DataLoader.city + searchParams.getCity() +
+                        DataLoader.arrivalDate + searchParams.getArrivalDate() +
+                        DataLoader.departureDate + searchParams.getDepartureDate() +
                         makeRoomString(searchParams.getRooms()) +
-                        limit + 200 +
+                        DataLoader.limit + 200 +
                         makeFilterString()
                 ;
             }
             gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.create();
-            final long l = System.currentTimeMillis();
-
-            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                    url,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            long l1 = System.currentTimeMillis()-l;
-                            Log.d("ExpediaRequest", "First hotels loading from: " + url);
-                            expediaBadResponseCounter = 0;
-                            try {
-                                cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
-                                cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            JSONArray arr = null;
-                            JSONObject obj = null;
-                            try {
-                                arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                            } catch (JSONException e) {
-                                try {
-                                    obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
-                                } catch (JSONException e1) {
-                                    e1.printStackTrace();
-                                }
-                                e.printStackTrace();
-                            }
-                            Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-                            }.getType();
-
-                            if (isWishListSearch) {
-                                SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
-                                searchResultSOArrayList = new ArrayList<>();
-                                searchResultSOArrayList.add(so);
-                                if (getActivity() != null) {
-                                    adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                                    slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                                    listView.setAdapter(slideExpandableListAdapter);
-                                    clearLoadingScreen();
-                                }
-                            } else {
-                                if (arr == null || arr.length() == 0) {
-                                    showError(NO_HOTELS);
-                                    return;
-                                }
-
-                                if (getActivity() != null) {
-                                    searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
-                                    Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
-                                    loadNextHotels();
-
-                                }
-                            }
 
 
+            final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("ExpediaRequest", "First hotels loading from: " + url);
+                    expediaBadResponseCounter = 0;
+                    try {
+                        cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                        cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    JSONArray arr = null;
+                    JSONObject obj = null;
+                    try {
+                        arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                    } catch (JSONException e) {
+                        try {
+                            obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
+                        e.printStackTrace();
+                    }
+                    Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                    }.getType();
+
+                    if (isWishListSearch) {
+                        SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
+                        searchResultSOArrayList = new ArrayList<>();
+                        searchResultSOArrayList.add(so);
+                        if (getActivity() != null) {
+                            adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                            slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                            listView.setAdapter(slideExpandableListAdapter);
+                            clearLoadingScreen();
+                        }
+                    } else {
+                        if (arr == null || arr.length() == 0) {
+                            showError(NO_HOTELS);
+                            return;
+                        }
+
+                        if (getActivity() != null) {
+                            searchResultSOArrayList = gson.fromJson(arr.toString(), listOfTestObject);
+                            Log.d("ExpediaRequest", "There was " + searchResultSOArrayList.size() + " hotels");
+                            loadNextHotels();
+                        }
+                    }
+                }
+            };
+
+            errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     VolleyLog.e("Error: ", error.getMessage());
                     expediaBadResponseCounter++;
-                    if (expediaBadResponseCounter > 3){
+                    if (expediaBadResponseCounter > 3) {
                         showError(NO_INTERNET);
-                    }else{
-                        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+                    } else {
+                        DataLoader.makeRequest(url, listener, errorListener);
                     }
                 }
-            }
+            };
 
-            );
-            VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+            DataLoader.makeRequest(url,listener,errorListener);
         }
-
     }
 
     private void showError(int errorCode) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             listView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
-            isErorShowing = true;
+            isErrorShowing = true;
             progressBar.setVisibility(View.GONE);
             swipeContainer.setRefreshing(false);
 
@@ -311,7 +287,8 @@ public class MainFragment extends Fragment {
                     break;
                 case NO_HOTELS:
                     tvError.setText("Error: No hotels for query.");
-                    buttonFlat.setVisibility(View.GONE);;
+                    buttonFlat.setVisibility(View.GONE);
+                    ;
                     break;
             }
 
@@ -319,10 +296,8 @@ public class MainFragment extends Fragment {
         }
     }
 
-
-
     private void clearLoadingScreen() {
-        isErorShowing = false;
+        isErrorShowing = false;
         errorLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         tvError.setText("No hotels found");
@@ -366,57 +341,47 @@ public class MainFragment extends Fragment {
         String tempUrl = url +
                 cacheKey +
                 cacheLocation;
-        nextPageRequest = new JsonObjectRequest(Request.Method.GET,
-                tempUrl,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
-                            cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        JSONArray arr = null;
-                        try {
-                            arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
-                        }.getType();
-
-                        if (arr != null && arr.length() > 0) {
-                            ArrayList<SearchResultSO> temp;
-                            temp = gson.fromJson(arr.toString(), listOfTestObject);
-                            searchResultSOArrayList.addAll(temp);
-                            loadNextHotels();
-                            Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
-
-                        } else {
-                            if (getActivity() != null) {
-                                adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
-                                slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
-                                listView.setAdapter(slideExpandableListAdapter);
-                                clearLoadingScreen();
-                            }
-                            sortData();
-                            Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
-                            isFiltersChanged = false;
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
-            }
-        }
+            public void onResponse(JSONObject response) {
+                try {
+                    cacheLocation = "&cacheLocation=" + response.getJSONObject("HotelListResponse").getString("cacheLocation");
+                    cacheKey = "&cacheKey=" + response.getJSONObject("HotelListResponse").getString("cacheKey");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        );
-        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(nextPageRequest);
+                JSONArray arr = null;
+                try {
+                    arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Type listOfTestObject = new TypeToken<ArrayList<SearchResultSO>>() {
+                }.getType();
+
+                if (arr != null && arr.length() > 0) {
+                    ArrayList<SearchResultSO> temp;
+                    temp = gson.fromJson(arr.toString(), listOfTestObject);
+                    searchResultSOArrayList.addAll(temp);
+                    loadNextHotels();
+                    Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", loading more");
+
+                } else {
+                    if (getActivity() != null) {
+                        adapter = new MainActivityMainListAdapter(getActivity(), searchResultSOArrayList, searchParams.getArrivalDate(), searchParams.getDepartureDate(), searchParams.getRooms(), cacheKey, cacheLocation, url);
+                        slideExpandableListAdapter = new SlideExpandableListAdapter(adapter, R.id.hotel_layout, R.id.expandableLayout);
+                        listView.setAdapter(slideExpandableListAdapter);
+                        clearLoadingScreen();
+                    }
+                    sortData();
+                    Log.d("ExpediaRequest", "All hotels: " + searchResultSOArrayList.size() + ", no more hotels");
+                    isFiltersChanged = false;
+                }
+            }
+        };
+
+        DataLoader.makeRequest(tempUrl,listener);
     }
 
 
@@ -461,7 +426,6 @@ public class MainFragment extends Fragment {
                     }
                 });
 
-
         popupMenu.show();
     }
 
@@ -501,17 +465,17 @@ public class MainFragment extends Fragment {
     public class NetworkStateReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             Log.d("app", "Network connectivity change");
-            if(intent.getExtras()!=null) {
-                NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-                if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
-                    Log.i("app","Network "+ni.getTypeName()+" connected");
-                    if(isErorShowing){
+            if (intent.getExtras() != null) {
+                NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
+                    Log.i("app", "Network " + ni.getTypeName() + " connected");
+                    if (isErrorShowing) {
                         progressBar.setVisibility(View.VISIBLE);
                         loadDataFromExpedia();
                     }
                 }
             }
-            if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
+            if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
                 showError(NO_INTERNET);

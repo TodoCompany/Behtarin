@@ -30,6 +30,7 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 import com.todo.behtarinhotel.views.MyMapView;
 
@@ -90,8 +91,6 @@ public class ReadMoreFragment extends Fragment {
         fillWithData();
         loadImagesUrls();
         setUpMapIfNeeded(savedInstanceState);
-
-
 
         return rootView;
     }
@@ -229,37 +228,29 @@ public class ReadMoreFragment extends Fragment {
     }
 
     private void loadImagesUrls() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                AppState.getHotelImagesUrl(searchResultSO.getHotelId()),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        hotelImagesUrls = new ArrayList<>();
-
-                        try {
-                            JSONArray imagesArray = response
-                                    .getJSONObject("HotelInformationResponse")
-                                    .getJSONObject("HotelImages")
-                                    .getJSONArray("HotelImage");
-                            for (int i = 0; i < imagesArray.length(); i++) {
-                                hotelImagesUrls.add(imagesArray.getJSONObject(i).getString("url"));
-                            }
-                            fillHotelImages();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (NullPointerException e){
-                            // we getting nullpointer when response comes after we stopped this fragment
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onResponse(JSONObject response) {
+                hotelImagesUrls = new ArrayList<>();
 
+                try {
+                    JSONArray imagesArray = response
+                            .getJSONObject("HotelInformationResponse")
+                            .getJSONObject("HotelImages")
+                            .getJSONArray("HotelImage");
+                    for (int i = 0; i < imagesArray.length(); i++) {
+                        hotelImagesUrls.add(imagesArray.getJSONObject(i).getString("url"));
+                    }
+                    fillHotelImages();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e){
+                    // we getting nullpointer when response comes after we stopped this fragment
+                }
             }
-        }
+        };
 
-        );
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+        DataLoader.makeRequest(DataLoader.getHotelImagesUrl(searchResultSO.getHotelId()),listener);
     }
 
     private void fillHotelImages() {
@@ -320,14 +311,12 @@ public class ReadMoreFragment extends Fragment {
             photos.add(view);
         }
 
-
         firstRow.addView(photos.get(0));
         firstRow.addView(photos.get(1));
         firstRow.addView(photos.get(2));
         secondRow.addView(photos.get(3));
         secondRow.addView(photos.get(4));
         secondRow.addView(photos.get(5));
-
 
         for (View view : photos) {
 
@@ -340,7 +329,6 @@ public class ReadMoreFragment extends Fragment {
                 }
             });
         }
-
     }
 
     private void setUpMapIfNeeded(Bundle savedInstanceState) {
@@ -360,8 +348,6 @@ public class ReadMoreFragment extends Fragment {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
     }
-
-
 
     @Override
     public void onResume() {

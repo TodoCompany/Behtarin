@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
@@ -34,8 +33,7 @@ import com.todo.behtarinhotel.adapters.MainActivityMainListAdapter;
 import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,13 +44,9 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CheckAvailabilityFragment extends Fragment {
 
     private static final int NO_INTERNET = 1;
-
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -71,7 +65,6 @@ public class CheckAvailabilityFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
     NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
-
 
     public CheckAvailabilityFragment() {
     }
@@ -132,12 +125,12 @@ public class CheckAvailabilityFragment extends Fragment {
         this.departureDate = dateDeparture;
         this.rooms = rooms;
 
-        final String url = AppState.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
+        final String url = DataLoader.generateUrlForHotelAvailability(hotelId, dateArrival, dateDeparture, rooms);
 
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                //todo this method calls 2 times
                 Log.d("API", "Request was: " + url + "; Response: " + response.toString());
                 try {
                     if (getActivity() != null) {
@@ -304,7 +297,6 @@ public class CheckAvailabilityFragment extends Fragment {
                             availableRoomsSO.getRoomSO().get(0).setBed(beds);
                         }
 
-
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
                         roomsListView.setAdapter(adapter);
                         if (availableRoomsSO.getRoomSO().size() == 0) {
@@ -320,18 +312,21 @@ public class CheckAvailabilityFragment extends Fragment {
                 }
                 Log.d("API", "parsing done");
             }
-        }, new Response.ErrorListener() {
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("API", "Request was: " + url + "; Error response: " + error.toString());
                 showError(NO_INTERNET);
             }
-        });
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+        };
+
+        DataLoader.makeRequest(url, listener, errorListener);
     }
 
     private void showError(int errorCode) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             roomsListView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
             isErrorShowing = true;
             progressBar.setVisibility(View.GONE);
@@ -348,8 +343,6 @@ public class CheckAvailabilityFragment extends Fragment {
         }
     }
 
-
-
     private void clearLoadingScreen() {
         isErrorShowing = false;
         errorLayout.setVisibility(View.GONE);
@@ -359,21 +352,20 @@ public class CheckAvailabilityFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
-
     public class NetworkStateReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             Log.d("app", "Network connectivity change");
-            if(intent.getExtras()!=null) {
-                NetworkInfo ni=(NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
-                if(ni!=null && ni.getState()==NetworkInfo.State.CONNECTED) {
-                    Log.i("app","Network "+ni.getTypeName()+" connected");
-                    if(isErrorShowing){
+            if (intent.getExtras() != null) {
+                NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
+                if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
+                    Log.i("app", "Network " + ni.getTypeName() + " connected");
+                    if (isErrorShowing) {
                         progressBar.setVisibility(View.VISIBLE);
                         getData(hotelId, arrivalDate, departureDate, rooms);
                     }
                 }
             }
-            if(intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY,Boolean.FALSE)) {
+            if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
                 showError(NO_INTERNET);
@@ -381,6 +373,5 @@ public class CheckAvailabilityFragment extends Fragment {
             }
         }
     }
-
 
 }

@@ -17,18 +17,13 @@ import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andriy on 07.08.2015.
- */
 public class BookingInputsAdapter extends BaseAdapter {
 
     Context ctx;
     LayoutInflater inflater;
 
-
     private ArrayList<SearchRoomSO> rooms;
     AvailableRoomsSO.RoomSO roomInfo;
-
 
     public BookingInputsAdapter(Context context, ArrayList<SearchRoomSO> rooms, AvailableRoomsSO.RoomSO roomInfo) {
         ctx = context;
@@ -97,8 +92,6 @@ public class BookingInputsAdapter extends BaseAdapter {
             }
         });
 
-
-
         RadioGroup radioGroupSmoking = (RadioGroup) view.findViewById(R.id.radioGroupSmoking);
         radioGroupSmoking.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -136,7 +129,6 @@ public class BookingInputsAdapter extends BaseAdapter {
             }
         }
 
-
         RadioGroup radioGroupBeds = (RadioGroup) view.findViewById(R.id.radioGroupBeds);
         radioGroupBeds.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -146,7 +138,6 @@ public class BookingInputsAdapter extends BaseAdapter {
                 rooms.get(position).setBedType(checkedRadioButton.getText().toString());
             }
         });
-
 
         boolean temp = true;
         for(AvailableRoomsSO.Bed bed : roomInfo.getBeds()){
@@ -167,6 +158,5 @@ public class BookingInputsAdapter extends BaseAdapter {
     public ArrayList<SearchRoomSO> getRooms() {
         return rooms;
     }
-
 
 }

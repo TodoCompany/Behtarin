@@ -32,6 +32,7 @@ import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -69,16 +70,10 @@ public class WishListAdapter extends BaseAdapter {
     ArrayList<SearchResultSO> searchResultSOArrayList;
     String tripAdvisorWebURL;
     String tripAdvisorApiURL;
-    String arrivalDate, departureDate;
-
 
     int visibleItems = 20;
     int visibleItemsStep = 20;
 
-    GsonBuilder gsonBuilder;
-    Gson gson;
-
-    String url;
     private int posForLoading = 19;
     CheckBox chbWishList;
     RequestListener listener;
@@ -138,7 +133,6 @@ public class WishListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.hotel_item, null);
         }
 
-
         btnReadMore = (ButtonFlat) view.findViewById(R.id.btn_read_more);
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +169,6 @@ public class WishListAdapter extends BaseAdapter {
         imageViews.add(ivStar4);
         imageViews.add(ivStar5);
 
-
         ivTripAdvisorRate = (ImageView) view.findViewById(R.id.iv_tripadvisor_rate_main_activity_main_list);
 
         tvHotelName = (TextView) view.findViewById(R.id.tv_hotel_name_main_activity_main_list);
@@ -211,8 +204,6 @@ public class WishListAdapter extends BaseAdapter {
                     .error(R.mipmap.ic_launcher)
                     .into(ivTripAdvisorRate);
         }
-
-
 
         rate = searchResultSO.getStars();
         for (int i = 0; i < 5; i++) {
@@ -261,30 +252,21 @@ public class WishListAdapter extends BaseAdapter {
 
         tripAdvisorApiURL = "http://api.tripadvisor.com/api/partner/2.0/map/" + searchResultSO.getLatitude() +
                 "," + searchResultSO.getLongitude() + "/hotels?key=cc1fb67fbf9c4c4592a1b7071a926087";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                tripAdvisorApiURL,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray data = response.getJSONArray("data");
-                            JSONObject obj = data.getJSONObject(0);
-                            tripAdvisorWebURL = obj.getString("web_url");
-                            Log.d("MainListAdapter", tripAdvisorWebURL);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray data = response.getJSONArray("data");
+                    JSONObject obj = data.getJSONObject(0);
+                    tripAdvisorWebURL = obj.getString("web_url");
+                    Log.d("MainListAdapter", tripAdvisorWebURL);
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        );
-        VolleySingleton.getInstance(activity).addToRequestQueue(jsonObjectRequest);
+        };
+        DataLoader.makeRequest(tripAdvisorApiURL,listener);
 
         if (position == posForLoading) {
             loadNextHotels();

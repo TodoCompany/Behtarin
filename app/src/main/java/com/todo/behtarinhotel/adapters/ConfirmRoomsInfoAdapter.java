@@ -12,15 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.simpleobjects.AvailableRoomsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
 import java.util.ArrayList;
 
-/**
- * Created by Andriy on 11.08.2015.
- */
+
 public class ConfirmRoomsInfoAdapter extends BaseAdapter {
 
     ArrayList<SearchRoomSO> rooms;

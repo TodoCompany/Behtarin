@@ -16,9 +16,6 @@ import com.todo.behtarinhotel.supportclasses.AppState;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-/**
- * Created by Andriy on 9/3/2015.
- */
 public class PaymentCardsAdapter extends BaseAdapter {
 
     Context context;
@@ -39,8 +36,6 @@ public class PaymentCardsAdapter extends BaseAdapter {
             paymentCards = new ArrayList<>();
             //Key is invalid
         }
-
-
     }
 
     @Override

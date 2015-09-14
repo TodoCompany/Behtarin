@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -32,19 +33,6 @@ import java.util.ArrayList;
 
 
 public class LauncherActivity extends ActionBarActivity {
-
-    private static final String API_KEY = "7tuermyqnaf66ujk2dk3rkfk";
-    private static final String CID = "55505";
-    String apiKey = "&apiKey=";
-    String cid = "&cid=";
-    String locale = "&locale=enUS";
-    String customerSessionID = "&customerSessionID=1";
-    String customerIpAddress = "&customerIpAddress=193.93.219.63";
-    String currencyCode = "&currencyCode=USD";
-    String sig = "&sig=" + AppState.getMD5EncryptedString(apiKey + "RyqEsq69" + System.currentTimeMillis() / 1000L);
-    String minorRev = "&minorRev=30";
-    String hotelIdList = "&hotelIdList=";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +47,17 @@ public class LauncherActivity extends ActionBarActivity {
         AppState.setupAppState(this);
 
         if (AppState.isUserLoggedIn()) {
-
-
             UserSO user;
             user = AppState.getLoggedUser();
             userLoginTask(user.getUsername(), user.getPassword());
-
-
         } else {
             startLoginActivity(false);
         }
-
     }
 
     public void startWorkActivity() {
         Intent in = new Intent(this, MainActivity.class);
         startActivityByIntent(in);
-
     }
 
     public void startLoginActivity(boolean autoFill) {
@@ -107,27 +89,40 @@ public class LauncherActivity extends ActionBarActivity {
                         try {
                             if (response.getString("status").equals("ok")) {
                                 JSONObject user = response.getJSONObject("user");
-                                    AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                            user.getString("lastname"),
-                                            user.getInt("id"),
-                                            user.getString("email"),
-                                            password,
-                                            user.getString("username"),
-                                            user.getString("key")));
+                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                        user.getString("lastname"),
+                                        user.getInt("id"),
+                                        user.getString("email"),
+                                        password,
+                                        user.getString("username"),
+                                        user.getString("key")));
 
                                 GsonBuilder gsonBuilder = new GsonBuilder();
                                 Gson gson = gsonBuilder.create();
                                 Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
                                 }.getType();
+                                Type historyType = new TypeToken<ArrayList<BookedRoomSO>>() {
+                                }.getType();
                                 ArrayList<Integer> wishList = new ArrayList<>();
+                                ArrayList<BookedRoomSO> historyList = new ArrayList<>();
                                 wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                                 AppState.setWishList(wishList);
-                                getBookedRooms(user.getJSONArray("rooms"));
+//                                JSONArray arr = user.getJSONArray("history");
+//                                getBookedRooms(arr);
+//                                historyList = gson.fromJson(user.getString("history"), historyType);
+//                                for (int i = 0; i< arr.length();i++){
+//                                    switch (arr.getJSONObject(i).getInt("Status")){
+//                                        case 0 : historyList.get(i).setOrderState(BookedRoomSO.CANCELLED);break;
+//                                        case 1 : historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
+//                                        default: historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
+//                                    }
+//                                }
+//                                AppState.addToHistory(historyList);
                                 startWorkActivity();
                                 finish();
-                            }else{
+                            } else {
                                 startLoginActivity(false);
-                                Toast.makeText(getApplicationContext(),"Your login or password is incorrect",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Your login or password is incorrect", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -137,7 +132,7 @@ public class LauncherActivity extends ActionBarActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 startLoginActivity(true);
-                Toast.makeText(getApplicationContext(),"Something wrong with your internet connection",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Something wrong with your internet connection", Toast.LENGTH_SHORT).show();
             }
         }
         );
@@ -150,87 +145,74 @@ public class LauncherActivity extends ActionBarActivity {
 
     private void getBookedRooms(JSONArray jsonArray) throws JSONException {
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
-            BookedRoomSO bookedRoomSO = new BookedRoomSO();
-            bookedRoomSO.setItineraryId(object.getInt("ItineraryID"));
-            bookedRoomSO.setAdult(object.getInt("adult"));
-            bookedRoomSO.setUserID(object.getInt("u_id"));
-            bookedRoomSO.setLastName(object.getString("LastName"));
-            bookedRoomSO.setPhotoUrl(object.getString("Photo"));
-            bookedRoomSO.setConfirmationNumber(object.getInt("ConfirmationNumber"));
-            bookedRoomSO.setBedType(object.getInt("BedType"));
-            bookedRoomSO.setSmokingPreference(object.getString("SmokingPreference"));
-            bookedRoomSO.setFirstName(object.getString("FirstName"));
-            bookedRoomSO.setRoomDescription(object.getString("Description"));
-            bookedRoomSO.setHotelID(object.getInt("HotelID"));
-            bookedRoomSO.setArrivalDate(object.getString("StartDate"));
-            bookedRoomSO.setDepartureDate(object.getString("EndDate"));
+            if (object.getInt("Status") == 1) {
+                BookedRoomSO bookedRoomSO = new BookedRoomSO();
+                bookedRoomSO.setItineraryId(object.getInt("ItineraryID"));
+                bookedRoomSO.setAdult(object.getInt("adult"));
+                bookedRoomSO.setUserID(object.getInt("u_id"));
+                bookedRoomSO.setLastName(object.getString("LastName"));
+                bookedRoomSO.setPhotoUrl(object.getString("Photo"));
+                bookedRoomSO.setConfirmationNumber(object.getInt("ConfirmationNumber"));
+                bookedRoomSO.setBedType(object.getInt("BedType"));
+                bookedRoomSO.setSmokingPreference(object.getString("SmokingPreference"));
+                bookedRoomSO.setFirstName(object.getString("FirstName"));
+                bookedRoomSO.setRoomDescription(object.getString("Description"));
+                bookedRoomSO.setHotelID(object.getInt("HotelID"));
+                bookedRoomSO.setArrivalDate(object.getString("StartDate"));
+                bookedRoomSO.setDepartureDate(object.getString("EndDate"));
 
-            bookedRooms.add(bookedRoomSO);
+                bookedRooms.add(bookedRoomSO);
+            }
         }
-            getHotelDataFromExpedia(bookedRooms);
+        getHotelDataFromExpedia(bookedRooms);
     }
 
-    private void getHotelDataFromExpedia(final ArrayList<BookedRoomSO> rooms){
+    private void getHotelDataFromExpedia(final ArrayList<BookedRoomSO> rooms) {
         String hotelIDs = "";
         final int num = rooms.size();
-        for (BookedRoomSO room : rooms){
+        for (BookedRoomSO room : rooms) {
             hotelIDs = hotelIDs + room.getHotelID() + ",";
         }
         String url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
-                apiKey + API_KEY +
-                cid + CID +
-                sig +
-                customerIpAddress +
-                currencyCode +
-                customerSessionID +
-                minorRev +
-                locale +
-                hotelIdList + hotelIDs
-        ;
+                DataLoader.apiKey + DataLoader.API_KEY +
+                DataLoader.cid + DataLoader.CID +
+                DataLoader.sig +
+                DataLoader.customerIpAddress +
+                DataLoader.currencyCode +
+                DataLoader.customerSessionID +
+                DataLoader.minorRev +
+                DataLoader.locale +
+                DataLoader.hotelIdList + hotelIDs;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("onResponse", "123");
-                        if(num==1){
-                            try {
-                                JSONObject obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
-                                rooms.get(0).setHotelName(obj.getString("name"));
-                                rooms.get(0).setHotelAddress(obj.getString("address1"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            try {
-                                JSONArray arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
-                                for(int i=0; i<arr.length();i++){
-                                    rooms.get(i).setHotelName(arr.getJSONObject(i).getString("name"));
-                                    rooms.get(i).setHotelAddress(arr.getJSONObject(i).getString("address1"));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        AppState.saveBookedRoom(rooms);
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+            public void onResponse(JSONObject response) {
+                Log.d("onResponse", "123");
+                if (num == 1) {
+                    try {
+                        JSONObject obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
+                        rooms.get(0).setHotelName(obj.getString("name"));
+                        rooms.get(0).setHotelAddress(obj.getString("address1"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        JSONArray arr = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONArray("HotelSummary");
+                        for (int i = 0; i < arr.length(); i++) {
+                            rooms.get(i).setHotelName(arr.getJSONObject(i).getString("name"));
+                            rooms.get(i).setHotelAddress(arr.getJSONObject(i).getString("address1"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                AppState.saveBookedRoom(rooms);
             }
-        }
+        };
 
-        );
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
-
+        DataLoader.makeRequest(url, listener);
     }
-
-
-
-
 }

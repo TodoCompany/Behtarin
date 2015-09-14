@@ -27,15 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Dmytro on 07.08.2015.
- */
 public class SearchCityAdapter extends BaseAdapter implements Filterable {
-
 
     private final Context mContext;
     private List<String> mResults;
-
 
     public SearchCityAdapter(Context context) {
         mContext = context;
@@ -102,7 +97,7 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
     }
 
     /**
-     * Returns a search result for the given book title.
+     * Returns a search result for the given city.
      */
     private List<String> findClients(String city) {
         HashMap<String, String> params = new HashMap<>();
