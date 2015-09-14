@@ -13,7 +13,6 @@ import com.todo.behtarinhotel.fragments.PaymentCardsFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.WishListFragment;
 import com.todo.behtarinhotel.payment.MyPayPall;
-import com.todo.behtarinhotel.searching.GlobalSearch;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
@@ -29,7 +28,7 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionListener;
 
 
-public class MainActivity extends BaseMainActivity implements GlobalSearch.GlobalSearchCallBackListener {
+public class MainActivity extends MaterialNavigationDrawer {
 
     MyPayPall myPayPall;
     public SearchFragment searchFragment;
@@ -78,52 +77,6 @@ public class MainActivity extends BaseMainActivity implements GlobalSearch.Globa
     public void setMainSearchFragment(MainFragment mainFragment) {
         this.mainFragment = mainFragment;
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//
-//
-//        //initDrawer();
-//
-//        // PayPall call payment
-////        PayPallParams payPallParams = new PayPallParams(new Product("Sample product", "45.54", Product.USD));
-////        myPayPall = new MyPayPall();
-////        myPayPall.makeAPayment(this, payPallParams);
-//
-//
-//
-//
-//        GlobalSearch globalSearch = new GlobalSearch();
-//
-//        ListView listView = (ListView) findViewById(R.id.lv_main_list_main_activity);
-//SearchResultSO searchResultSO = new SearchResultSO("http://images.travelnow.com//hotels/3000000/2840000/2831600/2831521/2831521_59_b.jpg",
-//        "Hostel 639",
-//        "London",
-//        "639 Harrow Road",
-//        100,
-//        3.5f,
-//        10,
-//        "http://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/2.0-12345-4.gif",
-//        "Bla Bla Bla",
-//        42.33f,
-//        -71.111336f);
-
-//
-//        ArrayList<SearchResultSO> searchResultSOArrayList = new ArrayList<>();
-//        searchResultSOArrayList.add(searchResultSO);
-//
-//        listView.setAdapter(new MainActivityMainListAdapter(this, searchResultSOArrayList));
-//    }
-
-
-    @Override
-    public void onResult(ArrayList<Object> result) {
-
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

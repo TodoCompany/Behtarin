@@ -107,17 +107,17 @@ public class LauncherActivity extends ActionBarActivity {
                                 ArrayList<BookedRoomSO> historyList = new ArrayList<>();
                                 wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                                 AppState.setWishList(wishList);
-//                                JSONArray arr = user.getJSONArray("history");
-//                                getBookedRooms(arr);
-//                                historyList = gson.fromJson(user.getString("history"), historyType);
-//                                for (int i = 0; i< arr.length();i++){
-//                                    switch (arr.getJSONObject(i).getInt("Status")){
-//                                        case 0 : historyList.get(i).setOrderState(BookedRoomSO.CANCELLED);break;
-//                                        case 1 : historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
-//                                        default: historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
-//                                    }
-//                                }
-//                                AppState.addToHistory(historyList);
+                                JSONArray arr = user.getJSONArray("history");
+                                getBookedRooms(arr);
+                                historyList = gson.fromJson(user.getString("history"), historyType);
+                                for (int i = 0; i< arr.length();i++){
+                                    switch (arr.getJSONObject(i).getInt("Status")){
+                                        case 0 : historyList.get(i).setOrderState(BookedRoomSO.CANCELLED);break;
+                                        case 1 : historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
+                                        default: historyList.get(i).setOrderState(BookedRoomSO.BOOKED);break;
+                                    }
+                                }
+                                AppState.addToHistory(historyList);
                                 startWorkActivity();
                                 finish();
                             } else {
