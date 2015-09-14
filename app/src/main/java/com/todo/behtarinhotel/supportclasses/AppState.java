@@ -49,13 +49,17 @@ public class AppState {
     }
 
     public static UserSO getLoggedUser() {
-        UserSO user = new UserSO();
-        user.setUserID(sPrefLog.getInt("userID", 0));
-        user.setFirstName(sPrefLog.getString("firstName", " "));
-        user.setLastName(sPrefLog.getString("lastName", " "));
-        user.setEmail(sPrefLog.getString("email", " "));
-        user.setPassword(sPrefLog.getString("password", ""));
-        user.setUsername(sPrefLog.getString("username", ""));
+        UserSO user = null;
+        if (sPrefLog.getInt("userID", -1) != -1){
+            user = new UserSO();
+            user.setUserID(sPrefLog.getInt("userID", -1));
+            user.setFirstName(sPrefLog.getString("firstName", " "));
+            user.setLastName(sPrefLog.getString("lastName", " "));
+            user.setEmail(sPrefLog.getString("email", " "));
+            user.setPassword(sPrefLog.getString("password", ""));
+            user.setUsername(sPrefLog.getString("username", ""));
+        }
+
         return user;
     }
 
@@ -148,6 +152,10 @@ public class AppState {
         }
     }
 
+    public static void clearWishlist(){
+        sPrefLog.edit().remove("wishlist").apply();
+    }
+
     public static boolean isInWishList(int hotelID) {
         boolean is = false;
         ArrayList<Integer> wishList = getWishList();
@@ -166,6 +174,7 @@ public class AppState {
 
     public static void removeFromWishList(int hotelID) {
         ArrayList<Integer> wishList = getWishList();
+        if (wishList == null) return;
         for (int i = 0; i < wishList.size(); i++) {
             if (wishList.get(i) == hotelID) {
                 wishList.remove(i);
@@ -285,6 +294,10 @@ public class AppState {
         }
     }
 
+    public static void clearBookedRooms(){
+        sPrefLog.edit().remove("bookedRooms").apply();
+    }
+
     public static ArrayList<BookedRoomSO> getHistory() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
@@ -330,6 +343,10 @@ public class AppState {
         }
     }
 
+    public static void clearHistory(){
+        sPrefLog.edit().remove("history").apply();
+    }
+
     public static ArrayList<PaymentCardSO> getCreditCards() throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
@@ -361,7 +378,6 @@ public class AppState {
         }
         sPrefLog.edit().putString("paymentCards", AESCrypt.encrypt(loggedUser.getKey(), gson.toJson(paymentCards))).apply();
     }
-
 
     public static void removePaymentCard(PaymentCardSO paymentCardSO) throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
