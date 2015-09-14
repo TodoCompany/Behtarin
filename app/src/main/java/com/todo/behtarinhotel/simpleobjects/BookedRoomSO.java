@@ -1,5 +1,7 @@
 package com.todo.behtarinhotel.simpleobjects;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class BookedRoomSO {
     String smokingPreference;
     int BedType;
     int adult;
+    @SerializedName("child")
     int[] children;
 
     JSONObject prices;
