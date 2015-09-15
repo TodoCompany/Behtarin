@@ -310,9 +310,7 @@ public class AppState {
         sPrefLog.edit().putString("history","").apply();
     }
 
-    public static void clearBookedRooms(){
-        sPrefLog.edit().remove("bookedRooms").apply();
-    }
+
 
     public static ArrayList<BookedRoomSO> getHistory() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -359,9 +357,7 @@ public class AppState {
         }
     }
 
-    public static void clearHistory(){
-        sPrefLog.edit().remove("history").apply();
-    }
+
 
     public static ArrayList<PaymentCardSO> getCreditCards() throws GeneralSecurityException {
         GsonBuilder gsonBuilder = new GsonBuilder();
