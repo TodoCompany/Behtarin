@@ -13,11 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +24,6 @@ import com.todo.behtarinhotel.adapters.WishListAdapter;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,9 +34,6 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class WishListFragment extends Fragment {
 
     ArrayList<Integer> wishListItems = new ArrayList<>();

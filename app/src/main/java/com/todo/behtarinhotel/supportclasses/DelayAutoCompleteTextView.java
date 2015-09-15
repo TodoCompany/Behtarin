@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 
-/**
- * Created by Dmytro on 07.08.2015.
- */
 public class DelayAutoCompleteTextView extends AutoCompleteTextView {
 
     private static final int MESSAGE_TEXT_CHANGED = 100;

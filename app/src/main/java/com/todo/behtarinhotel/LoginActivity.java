@@ -12,13 +12,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +23,6 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -236,12 +231,10 @@ public class LoginActivity extends Activity {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@") && email.length() > 5;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -274,7 +267,7 @@ public class LoginActivity extends Activity {
                         Gson gson = gsonBuilder.create();
                         Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
                         }.getType();
-                        ArrayList<Integer> wishList = new ArrayList<>();
+                        ArrayList<Integer> wishList;
                         wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                         AppState.setWishList(wishList);
 

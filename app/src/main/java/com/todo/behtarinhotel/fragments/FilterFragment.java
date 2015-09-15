@@ -3,7 +3,6 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,14 +17,10 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.FilterSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class FilterFragment extends Fragment {
 
@@ -185,15 +180,11 @@ public class FilterFragment extends Fragment {
                     selectorWheelPaintField.setAccessible(true);
                     ((Paint) selectorWheelPaintField.get(numberPicker)).setColor(color);
                     ((EditText) child).setTextColor(color);
-                    ((EditText) child).setFocusable(false);
-                    ((EditText) child).setEnabled(false);
+                    child.setFocusable(false);
+                    child.setEnabled(false);
 
                     return true;
-                } catch (NoSuchFieldException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalAccessException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     Log.w("setNumberPickerTextColo", e);
                 }
             }
@@ -210,11 +201,7 @@ public class FilterFragment extends Fragment {
                 try {
                     ColorDrawable colorDrawable = new ColorDrawable(color);
                     pf.set(picker, colorDrawable);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;

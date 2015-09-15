@@ -10,14 +10,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RetryPolicy;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,10 +63,11 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+
+        return new Filter() {
             @Override
-            protected Filter.FilterResults performFiltering(CharSequence constraint) {
-                Filter.FilterResults filterResults = new Filter.FilterResults();
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     List<String> cities = findClients(constraint.toString());
                     // Assign the data to the FilterResults
@@ -93,8 +89,6 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
                 }
             }
         };
-
-        return filter;
     }
 
     /**
@@ -107,7 +101,7 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
         String url;
         url = "http://dev.behtarinhotel.com/api/user/booking/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        DataLoader.makeRequest(true,url,new JSONObject(params),future);
+        DataLoader.makeRequest(true, url, new JSONObject(params), future);
 
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS); // this will block (forever)
@@ -121,14 +115,14 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
                     e.printStackTrace();
                 }
 
-                if(arr!=null){
-                    for(int i = 0; i<arr.length();i++){
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
                         try {
                             JSONObject tempObj = arr.getJSONObject(i);
                             String tempStr;
-                            if(tempObj.getString("StateProvince").length()!=0){
+                            if (tempObj.getString("StateProvince").length() != 0) {
                                 tempStr = tempObj.getString("City") + (",") + tempObj.getString("StateProvince") + (",") + tempObj.getString("Country");
-                            }else{
+                            } else {
                                 tempStr = tempObj.getString("City") + (",") + tempObj.getString("Country");
                             }
                             results.add(tempStr);

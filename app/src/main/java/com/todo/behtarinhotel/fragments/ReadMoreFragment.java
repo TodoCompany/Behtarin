@@ -12,10 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -31,7 +28,6 @@ import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 import com.todo.behtarinhotel.views.MyMapView;
 
 import org.json.JSONArray;
@@ -57,7 +53,6 @@ public class ReadMoreFragment extends Fragment {
     LayoutInflater inflater;
     private MyMapView mapView;
     private GoogleMap googleMap;
-    LatLng markerPosition = new LatLng(49.840550, 24.028200);
 
     SearchResultSO searchResultSO;
     float rate;
@@ -68,7 +63,7 @@ public class ReadMoreFragment extends Fragment {
     ArrayList<ImageView> imageViews;
     ArrayList<ImageView> hotelImages;
     ArrayList<String> hotelImagesUrls;
-    int checkedImageNumber;
+
     RequestListener listener;
 
 
@@ -152,7 +147,6 @@ public class ReadMoreFragment extends Fragment {
         imageViews.add(hotelStar5);
 
         tvHotelName.setText(Html.fromHtml(searchResultSO.getHotelName()));
-//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvHotelAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
         tvHotelDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvHotelPrice.setText(searchResultSO.getMinPrice() + " $");

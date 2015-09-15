@@ -3,18 +3,13 @@ package com.todo.behtarinhotel;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -22,7 +17,6 @@ import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
-public class LauncherActivity extends ActionBarActivity {
+public class LauncherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +95,7 @@ public class LauncherActivity extends ActionBarActivity {
                         Gson gson = gsonBuilder.create();
                         Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
                         }.getType();
-                        Type historyType = new TypeToken<ArrayList<BookedRoomSO>>() {
-                        }.getType();
-                        ArrayList<Integer> wishList = new ArrayList<>();
-                        ArrayList<BookedRoomSO> historyList = new ArrayList<>();
+                        ArrayList<Integer> wishList;
                         wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
                         AppState.setWishList(wishList);
                         AppState.clearBookedRooms();

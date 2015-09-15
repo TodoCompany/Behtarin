@@ -305,10 +305,8 @@ public class CheckAvailabilityFragment extends Fragment {
                             clearLoadingScreen();
                         }
                     }
-                } catch (JSONException e) {
+                } catch (JSONException | IllegalStateException e) {
                     e.printStackTrace();
-                } catch (IllegalStateException ie) {
-                    ie.printStackTrace();
                 }
                 Log.d("API", "parsing done");
             }
@@ -365,7 +363,7 @@ public class CheckAvailabilityFragment extends Fragment {
                     }
                 }
             }
-            if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
+            if (intent.getExtras()!=null && intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
                 showError(NO_INTERNET);

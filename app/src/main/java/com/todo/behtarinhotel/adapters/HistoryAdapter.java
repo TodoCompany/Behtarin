@@ -17,9 +17,6 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
-import org.json.JSONException;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,12 +75,11 @@ public class HistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("mm/dd/yyyy");
         View view;
         if (convertView != null) {
             view = convertView;
         } else {
-            view = inflater.inflate(R.layout.history_item, null, false);
+            view = inflater.inflate(R.layout.history_item, parent, false);
         }
         TextView tvHotelName = (TextView) view.findViewById(R.id.tvHotelName);
         TextView tvHotelAddress = (TextView) view.findViewById(R.id.tvHotelAddress);

@@ -15,18 +15,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.gc.materialdesign.views.ButtonFlat;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.fragments.ReadMoreFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
@@ -43,9 +37,7 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by dmytro on 7/8/15.
- */
+
 public class WishListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
@@ -130,7 +122,7 @@ public class WishListAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.hotel_item, null);
+            view = lInflater.inflate(R.layout.hotel_item, viewGroup,false);
         }
 
         btnReadMore = (ButtonFlat) view.findViewById(R.id.btn_read_more);
