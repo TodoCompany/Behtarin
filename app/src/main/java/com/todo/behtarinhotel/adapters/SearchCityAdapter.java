@@ -16,6 +16,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.todo.behtarinhotel.R;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
@@ -100,25 +101,17 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
      * Returns a search result for the given city.
      */
     private List<String> findClients(String city) {
+
         HashMap<String, String> params = new HashMap<>();
         params.put("getCity", city);
-        JSONObject obj = new JSONObject(params);
-        String str = obj.toString();
         String url;
         url = "http://dev.behtarinhotel.com/api/user/booking/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params), future, future);
-        int socketTimeout = 30000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        VolleySingleton.getInstance(mContext).addToRequestQueue(request);
-        long l = System.currentTimeMillis();
+        DataLoader.makeRequest(true,url,new JSONObject(params),future);
 
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS); // this will block (forever)
-
             if (response != null) {
-                long l1 = System.currentTimeMillis()-l;
                 Log.d("Response", response.toString());
                 ArrayList<String> results = new ArrayList<>();
                 JSONArray arr = new JSONArray();

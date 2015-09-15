@@ -82,68 +82,65 @@ public class LauncherActivity extends ActionBarActivity {
                 "username=" + username +
                 "&password=" + password +
                 "&seconds=60";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                url,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getString("status").equals("ok")) {
-                                JSONObject user = response.getJSONObject("user");
-                                AppState.userLoggedIn(new UserSO(user.getString("firstname"),
-                                        user.getString("lastname"),
-                                        user.getInt("id"),
-                                        user.getString("email"),
-                                        password,
-                                        user.getString("username"),
-                                        user.getString("key")));
 
-                                GsonBuilder gsonBuilder = new GsonBuilder();
-                                Gson gson = gsonBuilder.create();
-                                Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
-                                }.getType();
-                                Type historyType = new TypeToken<ArrayList<BookedRoomSO>>() {
-                                }.getType();
-                                ArrayList<Integer> wishList = new ArrayList<>();
-                                ArrayList<BookedRoomSO> historyList = new ArrayList<>();
-                                wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
-                                AppState.setWishList(wishList);
-                                AppState.clearBookedRooms();
-                                AppState.clearHistory();
-                                JSONArray arr = user.getJSONArray("history");
-                                AppState.setBookedRooms(getRoomsFromJson(arr,false));
-                                AppState.addToHistory(getRoomsFromJson(arr,true));
-                                startWorkActivity();
-                                finish();
-                            } else {
-                                startLoginActivity(false);
-                                Toast.makeText(getApplicationContext(), "Your login or password is incorrect", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("status").equals("ok")) {
+                        JSONObject user = response.getJSONObject("user");
+                        AppState.userLoggedIn(new UserSO(user.getString("firstname"),
+                                user.getString("lastname"),
+                                user.getInt("id"),
+                                user.getString("email"),
+                                password,
+                                user.getString("username"),
+                                user.getString("key")));
+
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        Gson gson = gsonBuilder.create();
+                        Type listOfTestObject = new TypeToken<ArrayList<Integer>>() {
+                        }.getType();
+                        Type historyType = new TypeToken<ArrayList<BookedRoomSO>>() {
+                        }.getType();
+                        ArrayList<Integer> wishList = new ArrayList<>();
+                        ArrayList<BookedRoomSO> historyList = new ArrayList<>();
+                        wishList = gson.fromJson(user.getString("wish_list"), listOfTestObject);
+                        AppState.setWishList(wishList);
+                        AppState.clearBookedRooms();
+                        AppState.clearHistory();
+                        JSONArray arr = user.getJSONArray("history");
+                        AppState.setBookedRooms(getRoomsFromJson(arr, false));
+                        AppState.addToHistory(getRoomsFromJson(arr, true));
+                        startWorkActivity();
+                        finish();
+                    } else {
+                        startLoginActivity(false);
+                        Toast.makeText(getApplicationContext(), "Your login or password is incorrect", Toast.LENGTH_SHORT).show();
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 startLoginActivity(true);
                 Toast.makeText(getApplicationContext(), "Something wrong with your internet connection", Toast.LENGTH_SHORT).show();
             }
-        }
-        );
-        int socketTimeout = 10000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        VolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        };
 
+        DataLoader.makeRequest(url, listener, errorListener);
     }
 
-    private ArrayList<BookedRoomSO> getRoomsFromJson(JSONArray jsonArray,boolean isHistory) throws JSONException {
+    private ArrayList<BookedRoomSO> getRoomsFromJson(JSONArray jsonArray, boolean isHistory) throws JSONException {
         SimpleDateFormat sdfDate = new SimpleDateFormat("mm/dd/yyyy");
         ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
-            if (isHistory||object.getInt("Status") == 1) {
+            if (isHistory || object.getInt("Status") == 1) {
                 BookedRoomSO bookedRoomSO = new BookedRoomSO();
                 bookedRoomSO.setItineraryId(object.getInt("ItineraryID"));
                 bookedRoomSO.setAdult(object.getInt("adult"));
@@ -162,10 +159,16 @@ public class LauncherActivity extends ActionBarActivity {
                 bookedRoomSO.setRoomPrice((float) obj.getDouble("@averageRate"));
                 bookedRoomSO.setHotelName(object.getString("hotelName"));
                 bookedRoomSO.setHotelAddress(object.getString("hotelAddress"));
-                switch (object.getInt("Status")){
-                    case 0 : bookedRoomSO.setOrderState(BookedRoomSO.CANCELLED);break;
-                    case 1 : bookedRoomSO.setOrderState(BookedRoomSO.BOOKED);break;
-                    default: bookedRoomSO.setOrderState(BookedRoomSO.BOOKED);break;
+                switch (object.getInt("Status")) {
+                    case 0:
+                        bookedRoomSO.setOrderState(BookedRoomSO.CANCELLED);
+                        break;
+                    case 1:
+                        bookedRoomSO.setOrderState(BookedRoomSO.BOOKED);
+                        break;
+                    default:
+                        bookedRoomSO.setOrderState(BookedRoomSO.BOOKED);
+                        break;
                 }
                 bookedRooms.add(bookedRoomSO);
             }
