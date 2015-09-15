@@ -130,8 +130,11 @@ public class BookFragment extends Fragment {
         btnAddNewCard = (ButtonRectangle) rootView.findViewById(R.id.btnAddNewCard);
 
         etWizardEmail = (EditText) rootView.findViewById(R.id.etWizardEmail);
+        etWizardEmail.setText(AppState.getLoggedUser().getEmail());
         etWizardFirstName = (EditText) rootView.findViewById(R.id.etWizardFirstName);
+        etWizardFirstName.setText(AppState.getLoggedUser().getFirstName());
         etWizardLastName = (EditText) rootView.findViewById(R.id.etWizardLastName);
+        etWizardLastName.setText(AppState.getLoggedUser().getLastName());
         etWizardHomePhone = (EditText) rootView.findViewById(R.id.etWizardHomePhone);
         etWizardWorkPhone = (EditText) rootView.findViewById(R.id.etWizardWorkPhone);
 
@@ -365,7 +368,6 @@ public class BookFragment extends Fragment {
         progressDialog.setMessage("Loading");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-
         Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -405,7 +407,7 @@ public class BookFragment extends Fragment {
             }
         };
 
-        DataLoader.makeRequest(url, listener, errorListener);
+        DataLoader.makeRequest(true, url, listener, errorListener);
     }
 
     private ArrayList<BookedRoomSO> parseResponseIntoSO(JSONObject response) throws JSONException {
@@ -436,7 +438,7 @@ public class BookFragment extends Fragment {
             bookedRoomSO.setRoomDescription(response.getString("roomDescription"));
             bookedRoomSO.setItineraryId(response.getInt("itineraryId"));
             bookedRoomSO.setCancellationPolicy(availableRooms.getRoomSO().get(position).getCancellationPolicy());
-            bookedRoomSO.setRoomPrice("" + availableRooms.getRoomSO().get(position).getAverageRate());
+            bookedRoomSO.setRoomPrice(availableRooms.getRoomSO().get(position).getAverageRate());
             if (rooms.size() > 1) {
                 JSONArray arr = response.getJSONArray("confirmationNumbers");
                 bookedRoomSO.setConfirmationNumber(arr.getInt(i));
@@ -482,6 +484,8 @@ public class BookFragment extends Fragment {
         ArrayList<HashMap> orderedRooms = new ArrayList<>();
         for (int i = 0; i < rooms.size(); i++) {
             HashMap<String, Object> map = new HashMap<>();
+
+
             map.put("ItineraryID", bookedRooms.get(i).getItineraryId());
             map.put("FirstName", rooms.get(i).getFirstName());
             map.put("LastName", rooms.get(i).getLastName());
@@ -517,6 +521,8 @@ public class BookFragment extends Fragment {
         DateFormat dfm = new SimpleDateFormat("mm/dd/yyyy");
         HashMap<String, Object> expedia = new HashMap<>();
 
+        expedia.put("hotelName",bookedRooms.get(0).getHotelName());
+        expedia.put("hotelAddress",bookedRooms.get(0).getHotelAddress());
         expedia.put("ItineraryID", bookedRooms.get(0).getItineraryId());
         expedia.put("RoomName", bookedRooms.get(0).getRoomDescription());
         expedia.put("SumPrice", bookedRooms.get(0).getSumPrice());

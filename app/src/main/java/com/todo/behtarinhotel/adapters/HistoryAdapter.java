@@ -17,6 +17,9 @@ import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -75,6 +78,7 @@ public class HistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("mm/dd/yyyy");
         View view;
         if (convertView != null) {
             view = convertView;

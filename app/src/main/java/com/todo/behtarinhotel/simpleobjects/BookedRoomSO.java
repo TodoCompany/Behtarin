@@ -1,5 +1,7 @@
 package com.todo.behtarinhotel.simpleobjects;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class BookedRoomSO {
     String roomDescription;
     String cancellationPolicy;
     String photoUrl;
-    String roomPrice;
+    float roomPrice;
     int itineraryId;
     ArrayList<String> valueAdds;
     boolean isCancellable;
@@ -35,6 +37,7 @@ public class BookedRoomSO {
     String smokingPreference;
     int BedType;
     int adult;
+    @SerializedName("child")
     int[] children;
 
     JSONObject prices;
@@ -222,11 +225,11 @@ public class BookedRoomSO {
         }
     }
 
-    public String getRoomPrice() {
+    public float getRoomPrice() {
         return roomPrice;
     }
 
-    public void setRoomPrice(String roomPrice) {
+    public void setRoomPrice(float roomPrice) {
         this.roomPrice = roomPrice;
     }
 
