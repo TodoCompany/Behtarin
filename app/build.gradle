@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    testCompile "org.robolectric:robolectric:3.0"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.2'
     compile files('libs/PayPalAndroidSDK-2.9.8.jar')
