@@ -20,7 +20,7 @@ public class BookedRoomSO {
     String roomDescription;
     String cancellationPolicy;
     String photoUrl;
-    String roomPrice;
+    float roomPrice;
     int itineraryId;
     ArrayList<String> valueAdds;
     boolean isCancellable;
@@ -225,11 +225,11 @@ public class BookedRoomSO {
         }
     }
 
-    public String getRoomPrice() {
+    public float getRoomPrice() {
         return roomPrice;
     }
 
-    public void setRoomPrice(String roomPrice) {
+    public void setRoomPrice(float roomPrice) {
         this.roomPrice = roomPrice;
     }
 

@@ -58,7 +58,6 @@ public class WishListFragment extends Fragment {
     Gson gson;
 
 
-
     public WishListFragment() {
         // Required empty public constructor
     }
@@ -87,9 +86,9 @@ public class WishListFragment extends Fragment {
         initTabs();
 
         wishListItems = AppState.getWishList();
-        if(wishListItems!=null){
+        if (wishListItems != null && wishListItems.size() != 0) {
             loadHotelsFromExpedia();
-        }else{
+        } else {
             pb.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
             listView.setEmptyView(tvWishlistEmpty);
@@ -97,7 +96,7 @@ public class WishListFragment extends Fragment {
         return rootView;
     }
 
-    private void loadHotelsFromExpedia(){
+    private void loadHotelsFromExpedia() {
         url = "http://api.ean.com/ean-services/rs/hotel/v3/list?" +
                 DataLoader.apiKey + DataLoader.API_KEY +
                 DataLoader.cid + DataLoader.CID +
@@ -134,19 +133,19 @@ public class WishListFragment extends Fragment {
                 }.getType();
 
                 if (getActivity() != null) {
-                    if(arr != null){
+                    if (arr != null) {
                         hotels = gson.fromJson(arr.toString(), listOfTestObject);
                         Log.d("ExpediaRequest", "There was " + hotels.size() + " hotels");
-                        adapter = new WishListAdapter(getActivity(),hotels);
+                        adapter = new WishListAdapter(getActivity(), hotels);
                         listView.setAdapter(adapter);
                         pb.setVisibility(View.GONE);
                         listView.setVisibility(View.VISIBLE);
-                    }else if(obj!=null){
+                    } else if (obj != null) {
                         hotels.clear();
-                        SearchResultSO so = gson.fromJson(obj.toString(),SearchResultSO.class);
+                        SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
                         hotels.add(so);
                         Log.d("ExpediaRequest", "There was " + hotels.size() + " hotels");
-                        adapter = new WishListAdapter(getActivity(),hotels);
+                        adapter = new WishListAdapter(getActivity(), hotels);
                         listView.setAdapter(adapter);
                         pb.setVisibility(View.GONE);
                         listView.setVisibility(View.VISIBLE);
@@ -156,18 +155,18 @@ public class WishListFragment extends Fragment {
             }
         };
 
-        DataLoader.makeRequest(url,listener);
+        DataLoader.makeRequest(url, listener);
     }
 
-    private String makeHotelIdString(){
+    private String makeHotelIdString() {
         String hotelSting = "";
-        for(Integer item : wishListItems){
+        for (Integer item : wishListItems) {
             hotelSting = hotelSting + item + ",";
         }
         return hotelSting;
     }
 
-    private void initTabs(){
+    private void initTabs() {
         host = (TabHost) rootView.findViewById(R.id.tab_host);
         host.setup();
 
@@ -187,18 +186,17 @@ public class WishListFragment extends Fragment {
         spec.setIndicator("History");
         host.addTab(spec);
 
-        for(int i=0;i<host.getTabWidget().getChildCount();i++)
-        {
+        for (int i = 0; i < host.getTabWidget().getChildCount(); i++) {
             TextView tv = (TextView) host.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
             tv.setTextColor(getResources().getColor(R.color.base_white));
         }
-        if(isRoomBooked){
+        if (isRoomBooked) {
             host.setCurrentTab(1);
             isRoomBooked = false;
         }
     }
 
-    public void switchTab(){
+    public void switchTab() {
         isRoomBooked = true;
     }
 }

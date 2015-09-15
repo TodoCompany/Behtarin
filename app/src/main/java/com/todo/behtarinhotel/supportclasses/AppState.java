@@ -264,7 +264,15 @@ public class AppState {
         }
         sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
         addToHistory(roomsToBook);
+    }
 
+    public static void setBookedRooms(ArrayList<BookedRoomSO> bookedRooms){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
+        }.getType();
+
+        sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
     }
 
     public static void removeRoomFromBooking(BookedRoomSO roomToDelete) {
@@ -283,6 +291,14 @@ public class AppState {
                 }
             }
         }
+    }
+
+    public static void clearBookedRooms(){
+        sPrefLog.edit().putString("bookedRooms","").apply();
+    }
+
+    public static void clearHistory(){
+        sPrefLog.edit().putString("history","").apply();
     }
 
     public static ArrayList<BookedRoomSO> getHistory() {
