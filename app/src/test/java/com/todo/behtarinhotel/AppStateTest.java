@@ -129,6 +129,18 @@ public class AppStateTest {
     @Test
     public void testCreditCardsLifecycle(){
         try {
+            AppState.clearPaymentCards();
+            final String firstName = "FirstN";
+            final String lastName = "LastN";
+            final int userId = 5;
+            final String email = "FirstN@gmail.com";
+            final String password = "password";
+            final String username = "Username";
+            final String encodingKey = "E8E9EAEBEDEEEFF0F2F3F4F5F7F8F9FA";
+            UserSO testUser = new UserSO(firstName, lastName, userId, email, password, username, encodingKey);
+            testUser.setKey("encodingkey");
+            AppState.userLoggedIn(testUser);
+
             assertEquals(AppState.getCreditCards().size(), 0);
             AppState.addPaymentCard(new PaymentCardSO("1111111111111111", "09", "25", "123"));
             AppState.addPaymentCard(new PaymentCardSO("2222222222222222", "10", "26", "124"));
@@ -153,7 +165,7 @@ public class AppStateTest {
         String roomDescription = "room description";
         String cancellationPolicy = "cancellation policy";
         String photoUrl = "www.google.com";
-        String roomPrice = "999.99";
+        float roomPrice = 999.99f;
         ArrayList<String> valueAdds = new ArrayList<>();
         valueAdds.add("12");
         int orderState = 1;

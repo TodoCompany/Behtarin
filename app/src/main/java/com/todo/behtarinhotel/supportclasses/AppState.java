@@ -332,6 +332,7 @@ public class AppState {
             paymentCards = gson.fromJson(AESCrypt.decrypt(loggedUser.getKey(), sPrefLog.getString("paymentCards", "")), listOfTestObject);
             paymentCards.add(paymentCardSO);
         }
+
         sPrefLog.edit().putString("paymentCards", AESCrypt.encrypt(loggedUser.getKey(), gson.toJson(paymentCards))).apply();
     }
 

@@ -301,9 +301,9 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="State province code"
-                            android:text="WA"
                             android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:singleLine="true"
+                            android:maxLength="2" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
@@ -312,21 +312,21 @@
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/base_text"
                             android:hint="Country code"
-                            android:text="UA"
                             android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:singleLine="true"
+                            android:maxLength="2" />
 
                         <com.rengwuxian.materialedittext.MaterialEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberSigned"
                             android:ems="10"
                             android:id="@+id/etWizardPostalCode"
                             android:textColor="@color/base_text"
                             android:hint="Postal code"
                             android:text="79000"
                             android:maxLines="1"
-                            android:singleLine="true"/>
+                            android:singleLine="true"
+                            android:maxLength="10" />
                     </LinearLayout>
 
                 </LinearLayout>

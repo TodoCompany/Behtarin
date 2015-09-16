@@ -83,6 +83,7 @@ public class BookFragment extends Fragment {
     private String arrivalDate;
     private String departureDate;
     private ProgressDialog progressDialog;
+    boolean isStateFilled = false;
 
     public BookFragment() {
     }
@@ -118,7 +119,6 @@ public class BookFragment extends Fragment {
         requiredEditTexts.add(etWizardCity);
         requiredEditTexts.add(etWizardAddress);
         requiredEditTexts.add(etWizardPostalCode);
-        requiredEditTexts.add(etStateProvinceCode);
         requiredEditTexts.add(etWizardCountryCode);
     }
 
@@ -294,6 +294,7 @@ public class BookFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 switch (CardTypeEnum.detect(s.toString())) {
@@ -307,6 +308,7 @@ public class BookFragment extends Fragment {
                         ivCardType.setImageDrawable(getResources().getDrawable(R.drawable.cards4));
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -472,6 +474,14 @@ public class BookFragment extends Fragment {
                 return false;
             }
         }
+        if (etWizardPostalCode.getText().toString().length() < 5) return false;
+
+        if (etWizardCountryCode.getText().toString().toLowerCase().equals("US".toLowerCase()) |
+                etWizardCountryCode.getText().toString().toLowerCase().equals("CA".toLowerCase()) |
+                etWizardCountryCode.getText().toString().toLowerCase().equals("AU".toLowerCase())){
+            if (etStateProvinceCode.getText().toString().length() != 2) return false;
+        }
+
         return true;
     }
 
