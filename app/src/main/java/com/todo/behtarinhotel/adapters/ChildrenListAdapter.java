@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -63,7 +62,7 @@ public class ChildrenListAdapter extends BaseAdapter {
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.fragment_room_builder_list_item, null);
+            view = lInflater.inflate(R.layout.fragment_room_builder_list_item, viewGroup,false);
         }
         childCounter = (TextView) view.findViewById(R.id.tv_counter_room_builder_fragment_item_child);
         if (childrenSOArrayList.get(i).getAge() == 0) {
@@ -149,15 +148,11 @@ public class ChildrenListAdapter extends BaseAdapter {
                     selectorWheelPaintField.setAccessible(true);
                     ((Paint) selectorWheelPaintField.get(numberPicker)).setColor(color);
                     ((EditText) child).setTextColor(color);
-                    ((EditText) child).setFocusable(false);
-                    ((EditText) child).setEnabled(false);
+                    child.setFocusable(false);
+                    child.setEnabled(false);
 
                     return true;
-                } catch (NoSuchFieldException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalAccessException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     Log.w("setNumberPickerTextColo", e);
                 }
             }
@@ -174,11 +169,7 @@ public class ChildrenListAdapter extends BaseAdapter {
                 try {
                     ColorDrawable colorDrawable = new ColorDrawable(color);
                     pf.set(picker, colorDrawable);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException | Resources.NotFoundException e) {
                     e.printStackTrace();
                 }
                 break;

@@ -80,7 +80,6 @@ public class FilterFragment extends Fragment {
 
         initViewsById(v);
 
-
         return v;
     }
 
@@ -122,7 +121,6 @@ public class FilterFragment extends Fragment {
         for(int i = 0; i<ivArr.length;i++){
             loadRes(i,ivArr[i]);
         }
-
 
         View.OnClickListener oclStars = new View.OnClickListener() {
             @Override
@@ -223,15 +221,11 @@ public class FilterFragment extends Fragment {
                     selectorWheelPaintField.setAccessible(true);
                     ((Paint) selectorWheelPaintField.get(numberPicker)).setColor(color);
                     ((EditText) child).setTextColor(color);
-                    ((EditText) child).setFocusable(false);
-                    ((EditText) child).setEnabled(false);
+                    child.setFocusable(false);
+                    child.setEnabled(false);
 
                     return true;
-                } catch (NoSuchFieldException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalAccessException e) {
-                    Log.w("setNumberPickerTextColo", e);
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     Log.w("setNumberPickerTextColo", e);
                 }
             }
@@ -248,11 +242,7 @@ public class FilterFragment extends Fragment {
                 try {
                     ColorDrawable colorDrawable = new ColorDrawable(color);
                     pf.set(picker, colorDrawable);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (Resources.NotFoundException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;

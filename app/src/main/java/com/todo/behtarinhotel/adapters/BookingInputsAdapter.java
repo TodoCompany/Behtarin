@@ -112,15 +112,19 @@ public class BookingInputsAdapter extends BaseAdapter {
         String[] smoke = roomInfo.getSmokingPreference().split(",");
         for(int i = 0; i<smoke.length;i++){
             RadioButton rb =(RadioButton)inflater.inflate(R.layout.radio_button,null);
-            if(smoke[i].equals("NS")){
-                rb.setText("Non smoking");
-                rb.setId(0);
-            }else if(smoke[i].equals("S")){
-                rb.setText("Smoking");
-                rb.setId(1);
-            }else if (smoke[i].equals("S")){
-                rb.setText("Either");
-                rb.setId(2);
+            switch (smoke[i]) {
+                case "NS":
+                    rb.setText("Non smoking");
+                    rb.setId(0);
+                    break;
+                case "S":
+                    rb.setText("Smoking");
+                    rb.setId(1);
+                    break;
+                case "E":
+                    rb.setText("Either");
+                    rb.setId(2);
+                    break;
             }
             rb.setTextColor(ctx.getResources().getColor(R.color.base_text));
             radioGroupSmoking.addView(rb);

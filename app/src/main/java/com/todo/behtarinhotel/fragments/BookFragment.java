@@ -75,7 +75,6 @@ public class BookFragment extends Fragment {
 
     private String apiKey = "&apiKey=RyqEsq69";
     private String sig = "&sig=" + DataLoader.getMD5EncryptedString(apiKey + System.currentTimeMillis() / 1000L);
-    private String url;
 
 
     ListView wizardRoomsList;
@@ -193,10 +192,9 @@ public class BookFragment extends Fragment {
             return;
 
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
+        int totalHeight;
 
-        view = listAdapter.getView(0, view, listView);
+        View view = listAdapter.getView(0, null, listView);
         view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
         view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
         totalHeight = view.getMeasuredHeight() * listAdapter.getCount();
@@ -329,7 +327,7 @@ public class BookFragment extends Fragment {
     }
 
     private void makeBookingRequest() {
-        url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?" +
+        String url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?" +
                 "&cid=55505" +
                 sig +
                 apiKey +
@@ -375,7 +373,6 @@ public class BookFragment extends Fragment {
                 Log.i("Response :", response.toString());
                 try {
                     if (getActivity() != null) {
-                        BookedRoomSO bookedRoomSO = null;
                         ArrayList<BookedRoomSO> bookedRooms = parseResponseIntoSO(response.getJSONObject("HotelRoomReservationResponse"));
                         sendDataToAPI(bookedRooms);
                         AppState.saveBookedRoom(bookedRooms);

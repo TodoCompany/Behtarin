@@ -3,12 +3,10 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +36,7 @@ import java.util.Calendar;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class SearchFragment extends Fragment {
 
     private boolean isSearchWithHotelId = false;
@@ -107,13 +103,13 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.inflater = inflater;
-        View rootView = inflater.inflate(R.layout.fragment_search, null, false);
+        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         initViewsById(rootView);
 
         listView = (ListView) rootView.findViewById(R.id.lv_room_fragment_search);
         if (soArrayList == null) {
-            soArrayList = new ArrayList<SearchRoomSO>();
+            soArrayList = new ArrayList<>();
             RoomQueryGuestSO guest = new RoomQueryGuestSO(false, 2);
             ArrayList<RoomQueryGuestSO> guestSOs = new ArrayList<>();
             guestSOs.add(guest);
@@ -238,11 +234,7 @@ public class SearchFragment extends Fragment {
         View.OnClickListener oclDatePicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view.getId() == R.id.et_check_in_search_fragment) {
-                    isCheckInSelected = true;
-                } else {
-                    isCheckInSelected = false;
-                }
+                isCheckInSelected = view.getId() == R.id.et_check_in_search_fragment;
                 showDatePicker();
             }
         };
@@ -351,8 +343,8 @@ public class SearchFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public void setParameters(int holelId,String hotelName){
-        this.hotelID = holelId;
+    public void setParameters(int hotelId,String hotelName){
+        this.hotelID = hotelId;
         isSearchWithHotelId = true;
         this.hotelName = hotelName;
     }

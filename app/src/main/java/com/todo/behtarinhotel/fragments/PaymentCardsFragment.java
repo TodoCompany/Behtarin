@@ -25,16 +25,11 @@ import com.todo.behtarinhotel.supportclasses.CardTypeEnum;
 
 import java.security.GeneralSecurityException;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class PaymentCardsFragment extends Fragment {
 
 
-    private View rootView;
     private PaymentCardsAdapter paymentCardsAdapter;
-    private ListView paymentCardsList;
-    private ButtonRectangle btnAddNewCard;
     private View addItemView;
     private EditText etCreditCardNumber, etCreditCardIdentifier, etCreditCardExMonth, etCreditCardExYear;
     private ImageView ivCardType;
@@ -54,9 +49,9 @@ public class PaymentCardsFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_payment_cards, container, false);
-        paymentCardsList = (ListView) rootView.findViewById(R.id.paymentCardsList);
-        btnAddNewCard = (ButtonRectangle) rootView.findViewById(R.id.btnAddNewCard);
+        View rootView = inflater.inflate(R.layout.fragment_payment_cards, container, false);
+        ListView paymentCardsList = (ListView) rootView.findViewById(R.id.paymentCardsList);
+        ButtonRectangle btnAddNewCard = (ButtonRectangle) rootView.findViewById(R.id.btnAddNewCard);
 
         paymentCardsAdapter = new PaymentCardsAdapter(getActivity());
         paymentCardsList.setAdapter(paymentCardsAdapter);
@@ -140,12 +135,9 @@ public class PaymentCardsFragment extends Fragment {
 
 
     public boolean isRequiredFieldsFilled() {
-        if (etCreditCardNumber.getText().length() == 16 &
+        return etCreditCardNumber.getText().length() == 16 &
                 etCreditCardExYear.getText().length() == 2 &
                 etCreditCardExMonth.getText().length() == 2 &
-                etCreditCardIdentifier.getText().length() == 3){
-            return true;
-        }
-        return false;
+                etCreditCardIdentifier.getText().length() == 3;
     }
 }

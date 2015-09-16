@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.google.gson.Gson;
@@ -82,7 +81,6 @@ public class MainFragment extends Fragment {
     ListView listView;
     SlideExpandableListAdapter slideExpandableListAdapter;
     MainActivityMainListAdapter adapter;
-    JsonObjectRequest jsonObjectRequest;
 
     private SwipeRefreshLayout swipeContainer;
     private ProgressBarCircularIndeterminate progressBar;
@@ -90,7 +88,6 @@ public class MainFragment extends Fragment {
     NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
     ButtonFlat buttonFlat;
 
-    JsonObjectRequest nextPageRequest;
     View ll;
     Response.ErrorListener errorListener;
 
@@ -229,7 +226,10 @@ public class MainFragment extends Fragment {
                     }.getType();
 
                     if (isWishListSearch) {
-                        SearchResultSO so = gson.fromJson(obj.toString(), SearchResultSO.class);
+                        SearchResultSO so = null;
+                        if (obj != null) {
+                            so = gson.fromJson(obj.toString(), SearchResultSO.class);
+                        }
                         searchResultSOArrayList = new ArrayList<>();
                         searchResultSOArrayList.add(so);
                         if (getActivity() != null) {
@@ -266,7 +266,7 @@ public class MainFragment extends Fragment {
                 }
             };
 
-            DataLoader.makeRequest(url,listener,errorListener);
+            DataLoader.makeRequest(url, listener, errorListener);
         }
     }
 
@@ -285,7 +285,6 @@ public class MainFragment extends Fragment {
                 case NO_HOTELS:
                     tvError.setText("Error: No hotels for query.");
                     buttonFlat.setVisibility(View.GONE);
-                    ;
                     break;
             }
 
@@ -378,7 +377,7 @@ public class MainFragment extends Fragment {
             }
         };
 
-        DataLoader.makeRequest(tempUrl,listener);
+        DataLoader.makeRequest(tempUrl, listener);
     }
 
 
@@ -472,7 +471,7 @@ public class MainFragment extends Fragment {
                     }
                 }
             }
-            if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
+            if (intent.getExtras() != null && intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
                 showError(NO_INTERNET);

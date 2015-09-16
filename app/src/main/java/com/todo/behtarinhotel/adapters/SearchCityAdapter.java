@@ -10,13 +10,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RetryPolicy;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.todo.behtarinhotel.R;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.supportclasses.DataLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,10 +63,11 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+
+        return new Filter() {
             @Override
-            protected Filter.FilterResults performFiltering(CharSequence constraint) {
-                Filter.FilterResults filterResults = new Filter.FilterResults();
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     List<String> cities = findClients(constraint.toString());
                     // Assign the data to the FilterResults
@@ -92,33 +89,23 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
                 }
             }
         };
-
-        return filter;
     }
 
     /**
      * Returns a search result for the given city.
      */
     private List<String> findClients(String city) {
+
         HashMap<String, String> params = new HashMap<>();
         params.put("getCity", city);
-        JSONObject obj = new JSONObject(params);
-        String str = obj.toString();
         String url;
         url = "http://dev.behtarinhotel.com/api/user/booking/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,url,new JSONObject(params), future, future);
-        int socketTimeout = 30000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        VolleySingleton.getInstance(mContext).addToRequestQueue(request);
-        long l = System.currentTimeMillis();
+        DataLoader.makeRequest(true, url, new JSONObject(params), future);
 
         try {
             JSONObject response = future.get(30, TimeUnit.SECONDS); // this will block (forever)
-
             if (response != null) {
-                long l1 = System.currentTimeMillis()-l;
                 Log.d("Response", response.toString());
                 ArrayList<String> results = new ArrayList<>();
                 JSONArray arr = new JSONArray();
@@ -128,14 +115,14 @@ public class SearchCityAdapter extends BaseAdapter implements Filterable {
                     e.printStackTrace();
                 }
 
-                if(arr!=null){
-                    for(int i = 0; i<arr.length();i++){
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
                         try {
                             JSONObject tempObj = arr.getJSONObject(i);
                             String tempStr;
-                            if(tempObj.getString("StateProvince").length()!=0){
+                            if (tempObj.getString("StateProvince").length() != 0) {
                                 tempStr = tempObj.getString("City") + (",") + tempObj.getString("StateProvince") + (",") + tempObj.getString("Country");
-                            }else{
+                            } else {
                                 tempStr = tempObj.getString("City") + (",") + tempObj.getString("Country");
                             }
                             results.add(tempStr);

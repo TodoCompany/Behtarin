@@ -2,8 +2,8 @@ package com.todo.behtarinhotel.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +44,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(View collection, int position) {
+    public Object instantiateItem(ViewGroup collection, int position) {
 
         ImageView imageView = new ImageView(context);
         imageView.setBackgroundColor(context.getResources().getColor(R.color.base_dark));
@@ -55,13 +55,13 @@ public class PhotoPagerAdapter extends PagerAdapter {
                 .error(R.drawable.empty)
                 .listener(listener)
                 .into(imageView);
-        ((ViewPager) collection).addView(imageView, 0);
+        collection.addView(imageView, 0);
         return imageView;
     }
 
     @Override
-    public void destroyItem(View collection, int position, Object view) {
-        ((ViewPager) collection).removeView((View) view);
+    public void destroyItem(ViewGroup collection, int position, Object view) {
+        collection.removeView((View) view);
     }
 
     @Override

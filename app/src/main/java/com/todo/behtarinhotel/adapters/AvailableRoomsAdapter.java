@@ -88,7 +88,7 @@ public class AvailableRoomsAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.available_room_item, null);
+            view = lInflater.inflate(R.layout.available_room_item, parent,false);
         }
 
         initViewsById(view);

@@ -55,7 +55,7 @@ public class ConfirmRoomsInfoAdapter extends BaseAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = lInflater.inflate(R.layout.confirm_room_item, null, false);
+            view = lInflater.inflate(R.layout.confirm_room_item, parent, false);
         }
         TextView tvRoomInfoFirstName = (TextView) view.findViewById(R.id.tvRoomInfoFirstName);
         TextView tvRoomInfoLastName = (TextView) view.findViewById(R.id.tvRoomInfoLastName);

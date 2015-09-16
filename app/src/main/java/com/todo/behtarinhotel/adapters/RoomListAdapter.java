@@ -64,7 +64,7 @@ public class RoomListAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.fragment_search_room_list_item, null);
+            view = lInflater.inflate(R.layout.fragment_search_room_list_item, viewGroup,false);
         } else {
             linearLayout = (LinearLayout) view.findViewById(R.id.lv_guests_fragment_search_list);
             linearLayout.removeAllViews();
@@ -74,7 +74,10 @@ public class RoomListAdapter extends BaseAdapter {
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MaterialNavigationDrawer) parentFragment.getActivity()).setFragmentChild(new RoomBuilderFragment(roomGuests.get(i).getGuests(), i), "");
+                RoomBuilderFragment roomBuilderFragment = new RoomBuilderFragment();
+                roomBuilderFragment.setData(roomGuests.get(i).getGuests(), i);
+                ((MaterialNavigationDrawer) parentFragment.getActivity()).setFragmentChild(new RoomBuilderFragment(),"");
+
             }
         });
 

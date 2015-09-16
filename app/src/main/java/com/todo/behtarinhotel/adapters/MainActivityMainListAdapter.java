@@ -161,7 +161,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.hotel_item, null);
+            view = lInflater.inflate(R.layout.hotel_item, viewGroup,false);
         }
 
 
@@ -193,7 +193,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         ivStar4 = (ImageView) view.findViewById(R.id.iv_star4_main_activity_main_list);
         ivStar5 = (ImageView) view.findViewById(R.id.iv_star5_main_activity_main_list);
 
-
         imageViews = new ArrayList<>();
         imageViews.add(ivStar1);
         imageViews.add(ivStar2);
@@ -201,24 +200,18 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         imageViews.add(ivStar4);
         imageViews.add(ivStar5);
 
-
         ivTripAdvisorRate = (ImageView) view.findViewById(R.id.iv_tripadvisor_rate_main_activity_main_list);
 
         tvHotelName = (TextView) view.findViewById(R.id.tv_hotel_name_main_activity_main_list);
-//        tvCity = (TextView) view.findViewById(R.id.tv_city_name_main_activity_main_list);
         tvAddress = (TextView) view.findViewById(R.id.tv_address_main_activity_main_list);
         tvPrice = (TextView) view.findViewById(R.id.tv_price_main_activity_main_list);
         tvLocationDescription = (TextView) view.findViewById(R.id.tv_location_description_main_activity_main_list);
 
-
         final SearchResultSO searchResultSO = searchResultSOArrayList.get(position);
         tvHotelName.setText(Html.fromHtml(searchResultSO.getHotelName()));
-//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
-        String str = Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()).toString();
         tvLocationDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvPrice.setText("$" + searchResultSO.getMinPrice());
-
 
         if (searchResultSO.getPhotoURL() != null && !searchResultSO.getPhotoURL().equals("")) {
             String temp;
@@ -231,12 +224,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                     .error(R.drawable.empty)
                     .listener(listener)
                     .into(ivPhoto);
-String string = searchResultSO.getTripAdvisorRatingURL().substring(0, searchResultSO.getTripAdvisorRatingURL().length() - 3)+"svg";
-//            Glide.with(activity)
-//                    .load(string)
-//                    .fitCenter()
-//                    .error(R.mipmap.ic_launcher)
-//                    .into(ivTripAdvisorRate);
+String string = searchResultSO.getTripAdvisorRatingURL().substring(0, searchResultSO.getTripAdvisorRatingURL().length() - 3)+"svg";        
             Uri uri = Uri.parse(string);
             requestBuilder
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -244,8 +232,6 @@ String string = searchResultSO.getTripAdvisorRatingURL().substring(0, searchResu
                     .load(uri)
                     .into(ivTripAdvisorRate);
         }
-
-
 
         rate = searchResultSO.getStars();
         for (int i = 0; i < 5; i++) {
@@ -280,20 +266,17 @@ String string = searchResultSO.getTripAdvisorRatingURL().substring(0, searchResu
             chbWishList.setChecked(false);
         }
 
-
-
         ivTripAdvisorRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tripAdvisorApiURL = "http://api.tripadvisor.com/api/partner/2.0/map/" + searchResultSO.getLatitude() +
                         "," + searchResultSO.getLongitude() + "/hotels?key=cc1fb67fbf9c4c4592a1b7071a926087";
-                final long l = System.currentTimeMillis();
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                         tripAdvisorApiURL,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                long l1 = System.currentTimeMillis()-l;
+
                                 try {
                                     JSONArray data = response.getJSONArray("data");
                                     JSONObject obj = data.getJSONObject(0);

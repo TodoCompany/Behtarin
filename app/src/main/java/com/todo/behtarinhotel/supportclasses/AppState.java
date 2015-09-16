@@ -4,13 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +13,6 @@ import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
 import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -50,7 +43,7 @@ public class AppState {
 
     public static UserSO getLoggedUser() {
         UserSO user = null;
-        if (sPrefLog.getInt("userID", -1) != -1){
+        if (sPrefLog.getInt("userID", -1) != -1) {
             user = new UserSO();
             user.setUserID(sPrefLog.getInt("userID", -1));
             user.setFirstName(sPrefLog.getString("firstName", " "));
@@ -108,36 +101,14 @@ public class AppState {
         values.put("hotelID", hotel);
         params.put("addWishList", values);
 
-        JSONObject obj = new JSONObject(params);
-        String str = obj.toString();
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
-                new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            // response :"status":200,"success":"Yep"
-
-                            Log.i("Response :", response.toString());
-
-                            if (response.getInt("status") == 200) {
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+            public void onResponse(JSONObject response) {
+                Log.i("Response :", response.toString());
             }
-        });
-        int socketTimeout = 30000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        req.setRetryPolicy(policy);
-        VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
+        };
 
+        DataLoader.makeRequest(true, "http://dev.behtarinhotel.com/api/user/booking/", new JSONObject(params), listener);
     }
 
     public static ArrayList<Integer> getWishList() {
@@ -152,7 +123,7 @@ public class AppState {
         }
     }
 
-    public static void clearWishlist(){
+    public static void clearWishlist() {
         sPrefLog.edit().remove("wishlist").apply();
     }
 
@@ -199,35 +170,14 @@ public class AppState {
         values.put("hotelID", hotelID);
         params.put("deleteWishList", values);
 
-        JSONObject obj = new JSONObject(params);
-        String str = obj.toString();
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, "http://dev.behtarinhotel.com/api/user/booking/",
-                new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            // response :"status":200,"success":"Yep"
-
-                            Log.i("Response :", response.toString());
-
-                            if (response.getInt("status") == 200) {
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+            public void onResponse(JSONObject response) {
+                Log.i("Response :", response.toString());
             }
-        });
-        int socketTimeout = 30000;//30 seconds - change to what you want
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        req.setRetryPolicy(policy);
-        VolleySingleton.getInstance(getMyContext()).addToRequestQueue(req);
+        };
+
+        DataLoader.makeRequest(true, "http://dev.behtarinhotel.com/api/user/booking/", new JSONObject(params), listener);
     }
 
     public static void setWishList(ArrayList<Integer> wishList) {
@@ -251,7 +201,6 @@ public class AppState {
                 return gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
             } catch (Exception notArray) {
                 ArrayList<BookedRoomSO> arrayList = new ArrayList<>();
-                String str = sPrefLog.getString("bookedRooms", "");
                 BookedRoomSO bookedRoomSO = gson.fromJson(sPrefLog.getString("bookedRooms", ""), BookedRoomSO.class);
                 arrayList.add(bookedRoomSO);
                 return arrayList;
@@ -275,12 +224,9 @@ public class AppState {
         addToHistory(roomsToBook);
     }
 
-    public static void setBookedRooms(ArrayList<BookedRoomSO> bookedRooms){
+    public static void setBookedRooms(ArrayList<BookedRoomSO> bookedRooms) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
-        }.getType();
-
         sPrefLog.edit().putString("bookedRooms", gson.toJson(bookedRooms)).apply();
     }
 
@@ -289,7 +235,7 @@ public class AppState {
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
-        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        ArrayList<BookedRoomSO> bookedRooms;
         if (sPrefLog.getString("bookedRooms", "").length() != 0) {
             bookedRooms = gson.fromJson(sPrefLog.getString("bookedRooms", ""), listOfTestObject);
             for (int i = 0; i < bookedRooms.size(); i++) {
@@ -302,14 +248,13 @@ public class AppState {
         }
     }
 
-    public static void clearBookedRooms(){
-        sPrefLog.edit().putString("bookedRooms","").apply();
+    public static void clearBookedRooms() {
+        sPrefLog.edit().putString("bookedRooms", "").apply();
     }
 
-    public static void clearHistory(){
-        sPrefLog.edit().putString("history","").apply();
+    public static void clearHistory() {
+        sPrefLog.edit().putString("history", "").apply();
     }
-
 
 
     public static ArrayList<BookedRoomSO> getHistory() {
@@ -345,7 +290,7 @@ public class AppState {
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<BookedRoomSO>>() {
         }.getType();
-        ArrayList<BookedRoomSO> bookedRooms = new ArrayList<>();
+        ArrayList<BookedRoomSO> bookedRooms;
         if (sPrefLog.getString("history", "").length() != 0) {
             bookedRooms = gson.fromJson(sPrefLog.getString("history", ""), listOfTestObject);
             for (int i = 0; i < bookedRooms.size(); i++) {
@@ -356,7 +301,6 @@ public class AppState {
             }
         }
     }
-
 
 
     public static ArrayList<PaymentCardSO> getCreditCards() throws GeneralSecurityException {
@@ -396,7 +340,7 @@ public class AppState {
         Gson gson = gsonBuilder.create();
         Type listOfTestObject = new TypeToken<ArrayList<PaymentCardSO>>() {
         }.getType();
-        ArrayList<PaymentCardSO> paymentCards = new ArrayList<>();
+        ArrayList<PaymentCardSO> paymentCards;
         if (sPrefLog.getString("paymentCards", "").length() != 0) {
             paymentCards = gson.fromJson(AESCrypt.decrypt(loggedUser.getKey(), sPrefLog.getString("paymentCards", "")), listOfTestObject);
             for (int i = 0; i < paymentCards.size(); i++) {

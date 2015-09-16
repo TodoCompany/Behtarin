@@ -73,7 +73,7 @@ public class BookedRoomsAdapter extends BaseAdapter {
         if (convertView != null){
             view = convertView;
         }else{
-            view = inflater.inflate(R.layout.booked_room_item, null, false);
+            view = inflater.inflate(R.layout.booked_room_item, parent, false);
         }
         final BookedRoomSO bookedRoom = bookedRooms.get(position);
         TextView tvHotelName = (TextView) view.findViewById(R.id.tvHotelName);

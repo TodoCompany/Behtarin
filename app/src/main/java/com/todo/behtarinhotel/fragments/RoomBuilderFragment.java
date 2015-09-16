@@ -25,9 +25,7 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class RoomBuilderFragment extends Fragment {
 
     ImageButton btnMinus, btnPlus;
@@ -35,19 +33,17 @@ public class RoomBuilderFragment extends Fragment {
     TextView tvAdults;
     ListView listView;
     LayoutInflater inflater;
-    ArrayList<RoomQueryGuestSO> childrenSOArrayList;
+    ArrayList<RoomQueryGuestSO> childrenSOArrayList = new ArrayList<>();
     TextView tvTitleAdults;
     TextView tvTitleChilds;
     int position = 9;
     Button btn;
     int adultCount = 1;
 
-
     public RoomBuilderFragment() {
-        childrenSOArrayList = new ArrayList<>();
     }
 
-    public RoomBuilderFragment(ArrayList<RoomQueryGuestSO> childrenSOArrayList, int position) {
+    public void setData(ArrayList<RoomQueryGuestSO> childrenSOArrayList, int position){
         this.childrenSOArrayList = new ArrayList<>();
         for (RoomQueryGuestSO item : childrenSOArrayList) {
             if (item.isChild()) {

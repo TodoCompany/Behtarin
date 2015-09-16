@@ -3,9 +3,8 @@
  import android.app.DatePickerDialog;
  import android.app.DatePickerDialog.OnDateSetListener;
  import android.app.Dialog;
- import android.os.Build;
- import android.os.Bundle;
  import android.app.DialogFragment;
+ import android.os.Build;
  import android.os.Bundle;
 
  import com.todo.behtarinhotel.R;

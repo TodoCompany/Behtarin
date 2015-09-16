@@ -53,7 +53,6 @@ public class ReadMoreFragment extends Fragment {
     LayoutInflater inflater;
     private MyMapView mapView;
     private GoogleMap googleMap;
-    LatLng markerPosition = new LatLng(49.840550, 24.028200);
 
     SearchResultSO searchResultSO;
     float rate;
@@ -64,7 +63,7 @@ public class ReadMoreFragment extends Fragment {
     ArrayList<ImageView> imageViews;
     ArrayList<ImageView> hotelImages;
     ArrayList<String> hotelImagesUrls;
-    int checkedImageNumber;
+
     RequestListener listener;
 
 
@@ -148,7 +147,6 @@ public class ReadMoreFragment extends Fragment {
         imageViews.add(hotelStar5);
 
         tvHotelName.setText(Html.fromHtml(searchResultSO.getHotelName()));
-//        tvCity.setText(searchResultSOArrayList.get(position).getCity());
         tvHotelAddress.setText(Html.fromHtml(searchResultSO.getAddress()));
         tvHotelDescription.setText(Html.fromHtml(Html.fromHtml(searchResultSO.getLocationDescription()).toString()));
         tvHotelPrice.setText(searchResultSO.getMinPrice() + " $");

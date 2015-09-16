@@ -25,7 +25,6 @@ public class DataLoader {
     public static final String departureDate = "&departureDate=";
     public static final String city = "&destinationString=";
     public static final String hotelIdList = "&hotelIdList=";
-    public static final String minStar = "&minStarRating=";
     public static final String limit = "&numberOfResults=";
     public static final String apiKey = "&apiKey=";
     public static final String cid = "&cid=";
@@ -71,10 +70,17 @@ public class DataLoader {
             System.out.println("Exception while encrypting to md5");
             e.printStackTrace();
         } // Encryption algorithm
-        mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
-        String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
-        while (md5.length() < 32) {
-            md5 = "0" + md5;
+        if (mdEnc != null) {
+            mdEnc.update(encTarget.getBytes(), 0, encTarget.length());
+        }
+        String md5 = null;
+        if (mdEnc != null) {
+            md5 = new BigInteger(1, mdEnc.digest()).toString(16);
+        }
+        if (md5 != null) {
+            while (md5.length() < 32) {
+                md5 = "0" + md5;
+            }
         }
         return md5;
     }

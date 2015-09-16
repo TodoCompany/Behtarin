@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.PopupMenu;
 
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.todo.behtarinhotel.fragments.MainFragment;
 import com.todo.behtarinhotel.fragments.PaymentCardsFragment;
 import com.todo.behtarinhotel.fragments.SearchFragment;
 import com.todo.behtarinhotel.fragments.WishListFragment;
-import com.todo.behtarinhotel.payment.MyPayPall;
 import com.todo.behtarinhotel.simpleobjects.RoomQueryGuestSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
@@ -30,10 +27,7 @@ import it.neokree.materialnavigationdrawer.elements.listeners.MaterialSectionLis
 
 public class MainActivity extends MaterialNavigationDrawer {
 
-    MyPayPall myPayPall;
     public SearchFragment searchFragment;
-    MainFragment mainFragment;
-    PopupMenu popupMenu;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -45,17 +39,15 @@ public class MainActivity extends MaterialNavigationDrawer {
 
     private void initDrawer() {
 
-
-
         setBackPattern(MaterialNavigationDrawer.BACKPATTERN_BACK_ANYWHERE);
         allowArrowAnimation();
         disableLearningPattern();
-            UserSO user = AppState.getLoggedUser();
-            addAccount(new MaterialAccount(
-                    getResources(),
-                    user.getFirstName() + " " + user.getLastName(), "",
-                    R.drawable.behtarin_logo_b,
-                    R.drawable.dubai));
+        UserSO user = AppState.getLoggedUser();
+        addAccount(new MaterialAccount(
+                getResources(),
+                user.getFirstName() + " " + user.getLastName(), "",
+                R.drawable.behtarin_logo_b,
+                R.drawable.dubai));
 
         addSection(newSection(getString(R.string.fragment_searchhotels), searchFragment));
         addSection(newSection("Room Management", new WishListFragment()));
@@ -71,11 +63,6 @@ public class MainActivity extends MaterialNavigationDrawer {
             }
         }));
         addSubheader("Subheader title");
-    }
-
-
-    public void setMainSearchFragment(MainFragment mainFragment) {
-        this.mainFragment = mainFragment;
     }
 
     @Override
@@ -109,6 +96,5 @@ public class MainActivity extends MaterialNavigationDrawer {
             searchFragment.addRoom(new SearchRoomSO(guests), position);
         }
     }
-
 
 }

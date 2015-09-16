@@ -13,9 +13,6 @@ import android.view.View;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.supportclasses.MeasureUtils;
 
-/**
- * Created by Andriy on 22.07.2015.
- */
 public class BehtarinLoader extends View {
 
     int resultWidth, resultHeight;

@@ -380,7 +380,7 @@ public class CheckAvailabilityFragment extends Fragment {
                     }
                 }
             }
-            if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
+            if (intent.getExtras()!=null && intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
                 Log.d("app", "There's no network connectivity");
                 clearLoadingScreen();
                 showError(NO_INTERNET);

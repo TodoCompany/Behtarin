@@ -57,7 +57,7 @@ public class PaymentCardsAdapter extends BaseAdapter {
     public View getView(final int i, View view, ViewGroup viewGroup) {
         View rootView;
         if (view == null) {
-            rootView = inflater.inflate(R.layout.payment_card_item, null, false);
+            rootView = inflater.inflate(R.layout.payment_card_item, viewGroup, false);
         }else{
             rootView = view;
         }
@@ -87,7 +87,7 @@ public class PaymentCardsAdapter extends BaseAdapter {
                     AppState.removePaymentCard(paymentCards.get(i));
                 } catch (GeneralSecurityException e) {
                     //Key is invalid
-                    paymentCards = new ArrayList<PaymentCardSO>();
+                    paymentCards = new ArrayList<>();
                 }
                 notifyDataSetChanged();
             }
