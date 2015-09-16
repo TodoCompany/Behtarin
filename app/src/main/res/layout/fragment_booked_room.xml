@@ -89,18 +89,14 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_line_height"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="#EBEBEB"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp" />
+                    android:layout_marginBottom="8dp" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -133,18 +129,14 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_line_height"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="#EBEBEB"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp" />
+                    android:layout_marginBottom="8dp" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -168,11 +160,9 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_line_height"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:background="#EBEBEB"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
+                    android:layout_marginTop="8dp">
 
                 </FrameLayout>
 
@@ -190,8 +180,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_line_height"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:background="#EBEBEB" />
+                    android:background="#EBEBEB"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
 

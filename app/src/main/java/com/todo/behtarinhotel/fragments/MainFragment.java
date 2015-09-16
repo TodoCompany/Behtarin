@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -40,9 +39,7 @@ import com.todo.behtarinhotel.simpleobjects.FilterSO;
 import com.todo.behtarinhotel.simpleobjects.SearchParamsSO;
 import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
-import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -224,7 +221,7 @@ public class MainFragment extends Fragment {
                         try {
                             obj = response.getJSONObject("HotelListResponse").getJSONObject("HotelList").getJSONObject("HotelSummary");
                         } catch (JSONException e1) {
-                            e1.printStackTrace();
+                            showError(NO_INTERNET);
                         }
                         e.printStackTrace();
                     }

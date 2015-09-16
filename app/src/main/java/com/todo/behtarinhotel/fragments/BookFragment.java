@@ -407,7 +407,7 @@ public class BookFragment extends Fragment {
             }
         };
 
-        DataLoader.makeRequest(true, url, listener, errorListener);
+        DataLoader.makePostRequest(url, listener, errorListener);
     }
 
     private ArrayList<BookedRoomSO> parseResponseIntoSO(JSONObject response) throws JSONException {

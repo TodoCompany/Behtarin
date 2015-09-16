@@ -12,10 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -31,7 +28,6 @@ import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.DataLoader;
-import com.todo.behtarinhotel.supportclasses.VolleySingleton;
 import com.todo.behtarinhotel.views.MyMapView;
 
 import org.json.JSONArray;
@@ -332,21 +328,17 @@ public class ReadMoreFragment extends Fragment {
     }
 
     private void setUpMapIfNeeded(Bundle savedInstanceState) {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mapView == null) {
-            mapView = (MyMapView) rootView.findViewById(R.id.mapView);
-            googleMap = mapView.getMap();
-
-            if (googleMap != null) {
-                setUpMap();
-            }
-        }
+        mapView = (MyMapView) rootView.findViewById(R.id.mapView);
+        googleMap = mapView.getMap();
+        setUpMap();
     }
 
     private void setUpMap() {
-        MapsInitializer.initialize(getActivity());
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
+        if (googleMap != null) {
+            MapsInitializer.initialize(getActivity());
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude())).title(searchResultSO.getHotelName()));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchResultSO.getLatitude(), searchResultSO.getLongitude()), 12));
+        }
     }
 
     @Override

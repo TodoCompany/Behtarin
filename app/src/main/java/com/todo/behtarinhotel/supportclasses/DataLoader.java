@@ -220,4 +220,22 @@ public class DataLoader {
         VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(jsonObjectRequest);
 
     }
+
+    public static void makePostRequest(String url,
+                                   Response.Listener<JSONObject> listener,
+                                   Response.ErrorListener errorListener) {
+
+        int socketTimeout = 20000;//20 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url,
+                new JSONObject(),
+                listener,
+                errorListener);
+
+        jsonObjectRequest.setRetryPolicy(policy);
+        VolleySingleton.getInstance(AppState.getMyContext()).addToRequestQueue(jsonObjectRequest);
+
+    }
 }

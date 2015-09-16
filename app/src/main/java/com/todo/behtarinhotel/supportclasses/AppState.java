@@ -408,4 +408,8 @@ public class AppState {
         }
     }
 
+    public static void clearPaymentCards(){
+        sPrefLog.edit().remove("paymentCards").apply();
+    }
+
 }
