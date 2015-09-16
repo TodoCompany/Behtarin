@@ -134,7 +134,7 @@ public class AppStateTest {
             AppState.addPaymentCard(new PaymentCardSO("2222222222222222", "10", "26", "124"));
             //TODO working....
 
-            
+
 
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
