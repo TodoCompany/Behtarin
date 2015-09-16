@@ -188,7 +188,19 @@ public class SearchFragment extends Fragment {
                         MainActivity parentActivity = (MainActivity) getActivity();
                         mainFragment = new MainFragment();
                         parentActivity.setFragmentChild(mainFragment, parentActivity.getString(R.string.fragment_availablehotels));
-                        SearchParamsSO searchParamsSO = new SearchParamsSO(etLocation.getText().toString().replaceAll(" ","%20"),
+                        String s = etLocation.getText().toString();
+                        int counter = 0;
+                        int position = 0;
+                        for( int i=0; i<s.length(); i++ ) {
+                            if( s.charAt(i) == ',' ) {
+                                counter++;
+                                position=i;
+                            }
+                        }
+                        if(counter == 1){
+                            s = s.substring(0, position) + "," + s.substring(position, s.length());
+                        }
+                        SearchParamsSO searchParamsSO = new SearchParamsSO(s.replaceAll(" ","%20"),
                                 etCheckIn.getText().toString(), etCheckOut.getText().toString(), soArrayList, starCount);
 
                         mainFragment.setSearchParams(searchParamsSO, isSearchWithHotelId, hotelID);

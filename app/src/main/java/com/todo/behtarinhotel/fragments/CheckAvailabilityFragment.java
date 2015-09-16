@@ -141,7 +141,7 @@ public class CheckAvailabilityFragment extends Fragment {
                             JSONArray hotelRoomsResponse = response.getJSONArray("HotelRoomResponse");
                             Type roomArray = new TypeToken<ArrayList<AvailableRoomsSO.RoomSO>>() {
                             }.getType();
-                            ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
+                            ArrayList<AvailableRoomsSO.RoomSO> rooms;
                             rooms = gson.fromJson(hotelRoomsResponse.toString(), roomArray);
                             availableRoomsSO.setRoomSO(rooms);
 
@@ -305,10 +305,8 @@ public class CheckAvailabilityFragment extends Fragment {
                             clearLoadingScreen();
                         }
                     }
-                } catch (JSONException e) {
+                } catch (JSONException | IllegalStateException e) {
                     e.printStackTrace();
-                } catch (IllegalStateException ie) {
-                    ie.printStackTrace();
                 }
                 Log.d("API", "parsing done");
             }
