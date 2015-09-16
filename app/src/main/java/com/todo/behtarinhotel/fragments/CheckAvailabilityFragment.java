@@ -220,13 +220,16 @@ public class CheckAvailabilityFragment extends Fragment {
 
                             }
                         } catch (Exception isNotArray) {
-                            JSONObject hotelRoomsResponse = response.getJSONObject("HotelRoomResponse");
-                            ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
-                            AvailableRoomsSO.RoomSO room = gson.fromJson(hotelRoomsResponse.toString(), AvailableRoomsSO.RoomSO.class);
-                            rooms.add(room);
-                            availableRoomsSO.setRoomSO(rooms);
-                            JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject("BedTypes");
-                            JSONObject rateInfos = hotelRoomsResponse.getJSONObject("RateInfos");
+
+                            try {
+                                JSONObject hotelRoomsResponse = response.getJSONObject("HotelRoomResponse");
+                                ArrayList<AvailableRoomsSO.RoomSO> rooms = new ArrayList<>();
+                                AvailableRoomsSO.RoomSO room = gson.fromJson(hotelRoomsResponse.toString(), AvailableRoomsSO.RoomSO.class);
+                                rooms.add(room);
+                                availableRoomsSO.setRoomSO(rooms);
+                                JSONObject bedTypesObject = hotelRoomsResponse.getJSONObject("BedTypes");
+                                JSONObject rateInfos = hotelRoomsResponse.getJSONObject("RateInfos");
+
 
                             String bedDescription = "";
                             ArrayList<AvailableRoomsSO.Bed> beds = new ArrayList<>();
@@ -295,6 +298,10 @@ public class CheckAvailabilityFragment extends Fragment {
 
                             availableRoomsSO.getRoomSO().get(0).setBedDescription(bedDescription);
                             availableRoomsSO.getRoomSO().get(0).setBed(beds);
+                            }catch(JSONException e){
+                                showError(response.getJSONObject("EanWsError").getString("presentationMessage"));
+                                return;
+                            }
                         }
 
                         AvailableRoomsAdapter adapter = new AvailableRoomsAdapter((MaterialNavigationDrawer) getActivity(), availableRoomsSO, rooms, arrivalDate, departureDate);
@@ -339,6 +346,16 @@ public class CheckAvailabilityFragment extends Fragment {
                     break;
             }
 
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+    }
+    private void showError(String error) {
+        if (getActivity() != null) {
+            roomsListView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
+            isErrorShowing = true;
+            progressBar.setVisibility(View.GONE);
+            swipeContainer.setRefreshing(false);
+            tvError.setText(error);
             errorLayout.setVisibility(View.VISIBLE);
         }
     }

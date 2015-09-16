@@ -1,6 +1,7 @@
 package com.todo.behtarinhotel;
 
 import com.todo.behtarinhotel.simpleobjects.BookedRoomSO;
+import com.todo.behtarinhotel.simpleobjects.PaymentCardSO;
 import com.todo.behtarinhotel.simpleobjects.UserSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 
@@ -11,6 +12,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -18,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -120,6 +123,24 @@ public class AppStateTest {
         }finally {
             AppState.clearHistory();
             assertEquals(AppState.getHistory().size(), 0);
+        }
+    }
+
+    @Test
+    public void testCreditCardsLifecycle(){
+        try {
+            assertEquals(AppState.getCreditCards().size(), 0);
+            AppState.addPaymentCard(new PaymentCardSO("1111111111111111", "09", "25", "123"));
+            AppState.addPaymentCard(new PaymentCardSO("2222222222222222", "10", "26", "124"));
+            //TODO working....
+
+            
+
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }finally {
+            AppState.clearPaymentCards();
         }
     }
 
