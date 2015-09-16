@@ -296,8 +296,7 @@ public class SearchFragment extends Fragment {
                             ibArray[i].setBackground(getResources().getDrawable(R.drawable.star_selected));
                         }
                         starCount = 5;
-                        break;
-                    }
+                        break;                    }
                 }
             }
         };

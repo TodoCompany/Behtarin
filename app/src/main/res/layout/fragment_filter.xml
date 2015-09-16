@@ -320,7 +320,9 @@
                 android:layout_alignTop="@+id/chb_trip_rate_1_filter_fragment"
                 android:layout_alignBottom="@+id/chb_trip_rate_1_filter_fragment"
                 android:layout_toRightOf="@+id/chb_trip_rate_1_filter_fragment"
-                android:src="@drawable/trip1" />
+                android:src="@drawable/trip11"
+                android:layout_toLeftOf="@+id/imageView34"
+                android:layout_toStartOf="@+id/imageView34" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -339,7 +341,8 @@
                 android:layout_alignTop="@+id/chb_trip_rate_2_filter_fragment"
                 android:layout_alignBottom="@+id/chb_trip_rate_2_filter_fragment"
                 android:layout_toRightOf="@+id/chb_trip_rate_2_filter_fragment"
-                android:src="@drawable/trip2" />
+                android:src="@drawable/trip22"
+                android:layout_alignRight="@+id/imageView33" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -358,7 +361,8 @@
                 android:layout_alignTop="@+id/chb_trip_rate_3_filter_fragment"
                 android:layout_alignBottom="@+id/chb_trip_rate_3_filter_fragment"
                 android:layout_toRightOf="@+id/chb_trip_rate_3_filter_fragment"
-                android:src="@drawable/trip3" />
+                android:src="@drawable/trip33"
+                android:layout_alignRight="@+id/imageView33" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -377,7 +381,8 @@
                 android:layout_alignTop="@+id/chb_trip_rate_4_filter_fragment"
                 android:layout_alignBottom="@+id/chb_trip_rate_4_filter_fragment"
                 android:layout_toRightOf="@+id/chb_trip_rate_4_filter_fragment"
-                android:src="@drawable/trip4" />
+                android:src="@drawable/trip44"
+                android:layout_alignRight="@+id/imageView33" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -396,7 +401,8 @@
                 android:layout_alignTop="@+id/chb_trip_rate_5_filter_fragment"
                 android:layout_alignBottom="@+id/chb_trip_rate_5_filter_fragment"
                 android:layout_toRightOf="@+id/chb_trip_rate_5_filter_fragment"
-                android:src="@drawable/trip5" />
+                android:src="@drawable/trip55"
+                android:layout_alignRight="@+id/imageView33" />
 
 
 

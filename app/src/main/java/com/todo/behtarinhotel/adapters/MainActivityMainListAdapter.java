@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.text.Html;
 import android.util.Log;
@@ -21,9 +22,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.caverock.androidsvg.SVG;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,18 +40,20 @@ import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
 import com.todo.behtarinhotel.simpleobjects.SearchRoomSO;
 import com.todo.behtarinhotel.supportclasses.AppState;
 import com.todo.behtarinhotel.supportclasses.VolleySingleton;
+import com.todo.behtarinhotel.supportclasses.svg.SvgDecoder;
+import com.todo.behtarinhotel.supportclasses.svg.SvgDrawableTranscoder;
+import com.todo.behtarinhotel.supportclasses.svg.SvgSoftwareLayerSetter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
-/**
- * Created by dmytro on 7/8/15.
- */
+
 public class MainActivityMainListAdapter extends BaseAdapter {
 
     public static final String PHOTO_URL_START = "http://images.travelnow.com";
@@ -56,7 +64,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     ImageView ivTripAdvisorRate;
     ButtonFlat btnReadMore, btnCheckAvailability;
     TextView tvHotelName;
-    //  TextView tvCity;
     TextView tvAddress;
     TextView tvPrice;
     TextView tvLocationDescription;
@@ -64,10 +71,6 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     float rate;
     Resources res;
     TextView tvLikeCounter;
-    //    @InjectView(R.id.btn_read_more_main_activity_main_list)
-//    Button btnReadMore;
-//    @InjectView(R.id.btn_check_availability_main_activity_main_list)
-//    Button btnCheckAvailability;
     Activity activity;
     LayoutInflater lInflater;
     ArrayList<SearchResultSO> searchResultSOArrayList;
@@ -79,9 +82,7 @@ public class MainActivityMainListAdapter extends BaseAdapter {
     String cacheLocation;
     int visibleItems = 20;
     int visibleItemsStep = 20;
-
-    GsonBuilder gsonBuilder;
-    Gson gson;
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     String url;
     private int posForLoading = 19;
@@ -101,6 +102,19 @@ public class MainActivityMainListAdapter extends BaseAdapter {
         this.cacheKey = cacheKey;
         this.cacheLocation = cacheLocation;
         this.url = url;
+
+        requestBuilder = Glide.with(activity)
+                .using(Glide.buildStreamModelLoader(Uri.class, activity), InputStream.class)
+                .from(Uri.class)
+                .as(SVG.class)
+                .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
+                .sourceEncoder(new StreamEncoder())
+                .cacheDecoder(new FileToStreamDecoder<>(new SvgDecoder()))
+                .decoder(new SvgDecoder())
+                .placeholder(R.color.base_grey)
+                .error(R.drawable.empty)
+                .animate(android.R.anim.fade_in)
+                .listener(new SvgSoftwareLayerSetter<Uri>());
 
         listener = new RequestListener() {
             @Override
@@ -217,11 +231,17 @@ public class MainActivityMainListAdapter extends BaseAdapter {
                     .error(R.drawable.empty)
                     .listener(listener)
                     .into(ivPhoto);
-
-            Glide.with(activity)
-                    .load(searchResultSO.getTripAdvisorRatingURL())
-                    .fitCenter()
-                    .error(R.mipmap.ic_launcher)
+String string = searchResultSO.getTripAdvisorRatingURL().substring(0, searchResultSO.getTripAdvisorRatingURL().length() - 3)+"svg";
+//            Glide.with(activity)
+//                    .load(string)
+//                    .fitCenter()
+//                    .error(R.mipmap.ic_launcher)
+//                    .into(ivTripAdvisorRate);
+            Uri uri = Uri.parse(string);
+            requestBuilder
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            // SVG cannot be serialized so it's not worth to cache it
+                    .load(uri)
                     .into(ivTripAdvisorRate);
         }
 

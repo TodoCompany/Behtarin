@@ -3,9 +3,12 @@ package com.todo.behtarinhotel.fragments;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.PictureDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,17 +18,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.caverock.androidsvg.SVG;
 import com.todo.behtarinhotel.R;
 import com.todo.behtarinhotel.simpleobjects.FilterSO;
-import com.todo.behtarinhotel.simpleobjects.SearchResultSO;
+import com.todo.behtarinhotel.supportclasses.svg.SvgDecoder;
+import com.todo.behtarinhotel.supportclasses.svg.SvgDrawableTranscoder;
+import com.todo.behtarinhotel.supportclasses.svg.SvgSoftwareLayerSetter;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class FilterFragment extends Fragment {
 
@@ -40,6 +50,7 @@ public class FilterFragment extends Fragment {
     FilterSO filterParams;
     MainFragment parentFragment;
     Button btnApply;
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
 
     public FilterFragment() {
@@ -54,7 +65,21 @@ public class FilterFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_filter, container, false);
 
+        requestBuilder = Glide.with(this)
+                .using(Glide.buildStreamModelLoader(Uri.class, getActivity()), InputStream.class)
+                .from(Uri.class)
+                .as(SVG.class)
+                .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
+                .sourceEncoder(new StreamEncoder())
+                .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
+                .decoder(new SvgDecoder())
+                .placeholder(R.color.base_grey)
+                .error(R.drawable.empty)
+                .animate(android.R.anim.fade_in)
+                .listener(new SvgSoftwareLayerSetter<Uri>());
+
         initViewsById(v);
+
 
         return v;
     }
@@ -85,6 +110,19 @@ public class FilterFragment extends Fragment {
 
         arrStar = new CheckBox[]{chbStar1, chbStar2, chbStar3, chbStar4, chbStar5};
         arrTrip = new CheckBox[]{chbTrip1, chbTrip2, chbTrip3, chbTrip4, chbTrip5};
+
+        ImageView iv1 = (ImageView) v.findViewById(R.id.imageView10);
+        ImageView iv2 = (ImageView) v.findViewById(R.id.imageView11);
+        ImageView iv3 = (ImageView) v.findViewById(R.id.imageView12);
+        ImageView iv4 = (ImageView) v.findViewById(R.id.imageView13);
+        ImageView iv5 = (ImageView) v.findViewById(R.id.imageView14);
+
+        ImageView[] ivArr = new ImageView[]{iv1, iv2, iv3, iv4, iv5};
+
+        for(int i = 0; i<ivArr.length;i++){
+            loadRes(i,ivArr[i]);
+        }
+
 
         View.OnClickListener oclStars = new View.OnClickListener() {
             @Override
@@ -272,6 +310,30 @@ public class FilterFragment extends Fragment {
                 arrTrip[i].setChecked(true);
             }
         }
+    }
+
+    private void loadRes(int i, ImageView iv) {
+        Uri uri;
+        switch (i){
+            case 0: uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/"
+                    + R.drawable.trip11);break;
+            case 1: uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/"
+                    + R.drawable.trip22);break;
+            case 2: uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/"
+                    + R.drawable.trip33);break;
+            case 3: uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/"
+                    + R.drawable.trip44);break;
+            case 4: uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getActivity().getPackageName() + "/"
+                    + R.drawable.trip55);break;
+            default:uri = Uri.EMPTY;
+        }
+
+        requestBuilder
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        // SVG cannot be serialized so it's not worth to cache it
+                        // and the getResources() should be fast enough when acquiring the InputStream
+                .load(uri)
+                .into(iv);
     }
 
 }
