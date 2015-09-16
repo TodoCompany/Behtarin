@@ -305,8 +305,15 @@ public class CheckAvailabilityFragment extends Fragment {
                             clearLoadingScreen();
                         }
                     }
-                } catch (JSONException | IllegalStateException e) {
-                    e.printStackTrace();
+                } catch (JSONException e) {
+                    try {
+                        showError(response.getJSONObject("EanWsError").getString("presentationMessage"));
+                        return;
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (IllegalStateException ie) {
+                    ie.printStackTrace();
                 }
                 Log.d("API", "parsing done");
             }
@@ -337,6 +344,16 @@ public class CheckAvailabilityFragment extends Fragment {
                     break;
             }
 
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+    }
+    private void showError(String error) {
+        if (getActivity() != null) {
+            roomsListView.setAdapter(new MainActivityMainListAdapter(getActivity(), new ArrayList<SearchResultSO>(), "", "", new ArrayList<SearchRoomSO>(), "", "", ""));
+            isErrorShowing = true;
+            progressBar.setVisibility(View.GONE);
+            swipeContainer.setRefreshing(false);
+            tvError.setText(error);
             errorLayout.setVisibility(View.VISIBLE);
         }
     }
